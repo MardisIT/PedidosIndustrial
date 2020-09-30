@@ -1,0 +1,28 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/ultimos_quince_dias"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:icon="@drawable/calendario_15_dias"
+        android:title="@string/ultimosQuinceDias"/>
+    <item
+        android:id="@+id/ultimos_treinta_dias"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:icon="@drawable/calendario_30_dias"
+        android:title="@string/ultimosTreintaDias"/>
+    <item
+        android:id="@+id/ultimos_sesenta_dias"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:icon="@drawable/calendario_60_dias"
+        android:title="@string/ultimosSesentaDias"/>
+    <item
+        android:id="@+id/avanzado"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:icon="@drawable/calendario_consulta"
+        android:title="@string/avanzado"/>
+    
+</menu>

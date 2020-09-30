@@ -1,0 +1,36 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <ImageView
+        android:id="@+id/imagen_cliente_consulta"
+        android:layout_width="41dp"
+        android:layout_height="38dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="5dp"
+        android:contentDescription="@string/vacio"
+        android:src="@drawable/icono_pedido_item" />
+
+
+    <TextView
+        android:id="@+id/txtRazonSocialClienteinventario"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/imagen_cliente_consulta"
+        android:layout_marginLeft="17dp"
+        android:layout_toRightOf="@+id/imagen_cliente_consulta"
+        android:text="@string/filler"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/txtFechainvnetario"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/txtRazonSocialClienteinventario"
+        android:layout_below="@+id/txtRazonSocialClienteinventario"
+        android:text="@string/filler"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+</RelativeLayout>

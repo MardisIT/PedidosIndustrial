@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+   <ImageView
+       android:id="@+id/imagen_cpte_item"
+       android:layout_width="23dp"
+       android:layout_height="37dp"
+       android:layout_marginLeft="8dp"
+       android:layout_marginTop="8dp"
+       android:layout_alignParentLeft="true"
+       android:layout_alignParentTop="true"
+
+       android:contentDescription="@string/vacio"
+       android:src="@drawable/cobranza" />
+
+   <TextView
+       android:id="@+id/txtDescripcionCpte"
+       android:layout_width="200dp"
+       android:layout_height="wrap_content"
+       android:layout_alignTop="@+id/imagen_cpte_item"
+       android:layout_marginLeft="20dp"
+       android:layout_toRightOf="@+id/imagen_cpte_item"
+       android:ellipsize="end"
+       android:fontFamily="@font/roboto_medium"
+       android:singleLine="true"
+       android:text="@string/filler"
+       android:textAppearance="?android:attr/textAppearanceSmall" />
+
+   <TextView
+       android:id="@+id/txtFecha"
+       android:layout_width="70dp"
+       android:layout_height="wrap_content"
+       android:layout_alignLeft="@+id/imagen_cpte_item"
+       android:ellipsize="end"
+       android:fontFamily="@font/roboto_medium"
+       android:layout_below="@+id/imagen_cpte_item"
+       android:text="@string/filler" />
+
+
+
+   <TextView
+       android:id="@+id/txtImporte"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:layout_alignBaseline="@+id/txtFecha"
+       android:layout_alignBottom="@+id/txtFecha"
+       android:layout_alignParentRight="true"
+       android:layout_marginBottom="0dp"
+       android:fontFamily="@font/roboto_medium"
+       android:text="@string/filler" />
+
+
+   <TextView
+       android:id="@+id/txtNroCpte"
+       android:layout_width="50dp"
+       android:layout_height="wrap_content"
+       android:layout_alignBaseline="@+id/txtFecha"
+       android:layout_alignBottom="@+id/txtFecha"
+       android:layout_toRightOf="@+id/txtFecha"
+       android:ellipsize="end"
+
+       android:fontFamily="@font/roboto_medium"
+       android:text="@string/filler" />
+
+   <TextView
+       android:id="@+id/Valorpago"
+       android:layout_width="100dp"
+       android:layout_height="wrap_content"
+       android:layout_alignLeft="@+id/txtFecha"
+       android:ellipsize="end"
+       android:fontFamily="@font/roboto_medium"
+       android:layout_below="@+id/txtFecha"
+       android:text="Valor Pago:" />
+   <EditText
+       android:id="@+id/txtvalorpago"
+       android:layout_width="150dp"
+       android:layout_height="wrap_content"
+       android:inputType="numberDecimal"
+       android:fontFamily="@font/roboto_medium"
+       android:layout_alignBaseline="@+id/Valorpago"
+       android:layout_alignBottom="@+id/Valorpago"
+       android:layout_toRightOf="@+id/Valorpago"
+       android:ellipsize="end"
+
+       />
+   <TextView
+       android:id="@+id/resulerror"
+       android:layout_width="100dp"
+       android:layout_height="wrap_content"
+       android:layout_alignLeft="@+id/txtvalorpago"
+       android:ellipsize="end"
+       android:textColor="#DE0814"
+       android:layout_below="@+id/txtvalorpago"
+       android:text=""
+       android:fontFamily="@font/roboto_medium"/>
+    
+</RelativeLayout>

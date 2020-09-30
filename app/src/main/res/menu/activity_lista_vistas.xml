@@ -1,0 +1,11 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:sysmobile="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/mnu_agregar_visita"
+        android:orderInCategory="100"
+        android:icon="@drawable/icono_agregar"
+        sysmobile:showAsAction="always"
+        android:title="Agregar Visitas"/>
+
+</menu>

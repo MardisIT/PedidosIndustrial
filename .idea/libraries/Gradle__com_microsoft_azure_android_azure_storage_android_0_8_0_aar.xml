@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="Gradle: com.microsoft.azure.android:azure-storage-android:0.8.0@aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/azure-storage-android-0.8.0.aar/22b81d2248436b874252d7240788c19d/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/azure-storage-android-0.8.0.aar/22b81d2248436b874252d7240788c19d/res" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.microsoft.azure.android/azure-storage-android/0.8.0/82c8c10e59b201e5c5e83ce12cfcf49d402ae29e/azure-storage-android-0.8.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

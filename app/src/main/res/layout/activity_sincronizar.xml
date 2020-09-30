@@ -1,0 +1,152 @@
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/relativeLayout3"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".psincronizar.ActivitySincronizar">
+
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="0dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
+        android:fontFamily="@font/roboto_bold"
+        android:text="SELECCIÓN: "
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btncargarlocalesCL" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="8dp"
+        android:fontFamily="@font/roboto_bold"
+        android:text="CAMPAÑA"
+        android:textColor="#FF0000"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/textView3"
+        app:layout_constraintTop_toBottomOf="@+id/btncargarlocalesCL" />
+
+
+    <Spinner
+        android:id="@+id/cmbcampaniaCL"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+
+
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="@android:drawable/btn_dropdown"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+
+    <Button
+        android:id="@+id/btncargarlocalesCL"
+        android:layout_width="0dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="@android:drawable/bottom_bar"
+        android:elevation="@dimen/abc_action_bar_default_padding_material"
+        android:fontFamily="@font/roboto_bold"
+        android:text="DESCARGAR CAMPAÑAS"
+        android:textColor="@color/bright_foreground_inverse_material_light"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="122dp"
+        android:layout_height="wrap_content"
+
+        android:layout_marginTop="8dp"
+        android:contentDescription="@string/vacio"
+        android:src="@drawable/sincronizacion2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cmbcampaniaCL" />
+
+    <ProgressBar
+        android:id="@+id/prgbEstadoConexion"
+        style="?android:attr/progressBarStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="@+id/imageView1"
+        app:layout_constraintTop_toBottomOf="@+id/imageView1" />
+
+    <Button
+        android:id="@+id/btnSincronizar"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="8dp"
+        android:background="@color/accent_material_light"
+        android:fontFamily="@font/roboto_bold"
+        android:text="@string/sincronizar"
+        android:textColor="@color/bright_foreground_inverse_material_light"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView1" />
+
+    <TextView
+        android:id="@+id/txtEstadoConexion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:text="@string/strIntentandoConectarAlWebService"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="@+id/btnSincronizar"
+        app:layout_constraintTop_toBottomOf="@+id/btnSincronizar" />
+    <TextView
+        android:id="@+id/txtIdVersionDivice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:autoText="false"
+android:gravity="center"
+        android:editable="true"
+        android:fontFamily="@font/roboto_bold"
+        android:text="ID DIVICE:"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/txtEstadoConexion"
+        app:layout_constraintTop_toBottomOf="@+id/txtEstadoConexion"
+        tools:ignore="MissingConstraints" />
+    <ImageButton
+        android:id="@+id/IdbtnCopi"
+        android:layout_width="21dp"
+        android:layout_marginLeft="10dp"
+        android:layout_height="wrap_content"
+        android:background="@color/zxing_transparent"
+        android:outlineAmbientShadowColor="#88379c"
+        android:gravity="center"
+        app:srcCompat="?attr/actionModeCopyDrawable"
+        tools:ignore="MissingConstraints"
+        app:layout_constraintStart_toStartOf="@+id/txtIdVersionDivice"
+        app:layout_constraintTop_toBottomOf="@+id/txtIdVersionDivice"/>
+
+
+</android.support.constraint.ConstraintLayout>

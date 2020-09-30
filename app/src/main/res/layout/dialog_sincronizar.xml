@@ -1,0 +1,253 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="fill_parent" >
+
+    <CheckBox
+    android:id="@+id/chkdesavena"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignLeft="@+id/chkCuenta"
+    android:layout_below="@+id/chkCuenta"
+    android:layout_marginTop="20dp"
+    android:clickable="false"
+    android:focusable="false"
+    android:text="DESCUENTO_AVENA" />
+
+    <CheckBox
+        android:id="@+id/chkdesformapago"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/chkdesavena"
+        android:layout_below="@+id/chkdesavena"
+        android:layout_marginTop="20dp"
+        android:clickable="false"
+        android:focusable="false"
+        android:text="DESCUENTO_FORMAPAGO" />
+
+    <CheckBox
+        android:id="@+id/chkdesvolumen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/chkdesformapago"
+        android:layout_below="@+id/chkdesformapago"
+        android:layout_marginTop="20dp"
+        android:clickable="false"
+        android:focusable="false"
+        android:text="DESCUENTO_VOLUMEN" />
+
+    <CheckBox
+        android:id="@+id/chkdesprecioescala"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/chkdesvolumen"
+        android:layout_below="@+id/chkdesvolumen"
+        android:layout_marginTop="20dp"
+        android:clickable="false"
+        android:focusable="false"
+        android:text="PRECIO_ESCALA" />
+    <CheckBox
+        android:id="@+id/chkcartera"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/chkdesprecioescala"
+        android:layout_below="@+id/chkdesprecioescala"
+        android:layout_marginTop="20dp"
+        android:clickable="false"
+        android:focusable="false"
+        android:text="CARTERA" />
+
+    <CheckBox
+        android:id="@+id/chkCuenta"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/chkArticulos"
+        android:layout_below="@+id/chkArticulos"
+        android:layout_marginTop="20dp"
+        android:clickable="false"
+        android:focusable="false"
+        android:text="Cuenta/Campaña" />
+
+
+    <CheckBox
+        android:id="@+id/chkArticulos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/chkClientes"
+        android:layout_below="@+id/chkClientes"
+        android:layout_marginTop="20dp"
+        android:clickable="false"
+        android:focusable="false"
+        android:text="@string/articulos" />
+
+    <CheckBox
+        android:id="@+id/chkClientes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/chkRubros"
+        android:layout_below="@+id/chkRubros"
+        android:layout_marginTop="16dp"
+        android:clickable="false"
+        android:focusable="false"
+        android:text="@string/clientes" />
+
+    <CheckBox
+        android:id="@+id/chkRubros"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/chkVendedores"
+        android:layout_below="@+id/chkVendedores"
+        android:layout_marginTop="15dp"
+        android:clickable="false"
+        android:focusable="false"
+        android:text="@string/rubros" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btnCerrarSincronizacion"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="14dp"
+        android:text="@string/vacio" />
+
+    <TextView
+        android:id="@+id/txtResultadoClientes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="40dp"
+        android:layout_below="@+id/chkClientes"
+        android:text="@string/filler"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <TextView
+        android:id="@+id/txtResultadoArticulos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="40dp"
+        android:layout_below="@+id/chkArticulos"
+        android:text="@string/filler"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+    <TextView
+        android:id="@+id/txtResultadoDesAvena"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="40dp"
+        android:layout_below="@+id/chkdesavena"
+        android:text="@string/filler"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+    <TextView
+        android:id="@+id/txtResultadoDesformapago"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="40dp"
+        android:layout_below="@+id/chkdesformapago"
+        android:text="@string/filler"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+    <TextView
+        android:id="@+id/txtResultadoDesvolumen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="40dp"
+        android:layout_below="@+id/chkdesvolumen"
+        android:text="@string/filler"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+    <TextView
+        android:id="@+id/txtResultadoPrecioescala"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="40dp"
+        android:layout_below="@+id/chkdesprecioescala"
+        android:text="@string/filler"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <TextView
+        android:id="@+id/txtResultadoCartera"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="40dp"
+        android:layout_below="@+id/chkcartera"
+        android:text="@string/filler"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+
+    <TextView
+        android:id="@+id/txtResultadoCuenta"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="40dp"
+        android:layout_below="@+id/chkCuenta"
+        android:text="@string/filler"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+    <TextView
+        android:id="@+id/txtResultadoVendedores"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="40dp"
+        android:layout_below="@+id/chkVendedores"
+        android:text="@string/filler"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <TextView
+        android:id="@+id/txtResultadoRubros"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="40dp"
+        android:layout_below="@+id/chkRubros"
+        android:text="@string/filler"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <ProgressBar
+        android:id="@+id/progressBar1"
+        android:layout_width="48dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+
+        />
+
+    <CheckBox
+        android:id="@+id/chkVendedores"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textView1"
+        android:layout_below="@+id/progressBar1"
+        android:layout_marginLeft="14dp"
+        android:clickable="false"
+        android:focusable="false"
+        android:text="@string/vendedores" />
+
+    <ImageView
+        android:id="@+id/imgSincronizar"
+        android:layout_width="5dp"
+        android:layout_height="5dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="8dp"
+        android:contentDescription="@string/vacio"
+        android:src="@drawable/icono_sincronizar"
+        />
+
+    <Button
+        android:id="@+id/btnCerrarSincronizacion"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtResultadoPrecioescala"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:text="@string/cerrar"
+        android:visibility="visible" />
+    
+</RelativeLayout>

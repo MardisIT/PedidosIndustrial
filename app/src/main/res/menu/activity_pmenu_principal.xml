@@ -1,0 +1,11 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:sysmobile="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/mnuConfiguracionMenuPrincipal"
+        android:orderInCategory="100"
+        android:icon="@drawable/icono_configuracion_menu"
+        sysmobile:showAsAction="always"
+        android:title="@string/action_settings"/>
+
+</menu>

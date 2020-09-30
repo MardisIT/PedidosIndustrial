@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <ImageView
+        android:id="@+id/imagen_articulo_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="5dp"
+        android:contentDescription="@string/vacio"
+        android:src="@drawable/icono_articulos_item" />
+
+   <TextView
+       android:id="@+id/txtdesprontopago"
+       android:layout_width="60dp"
+       android:layout_height="wrap_content"
+
+       android:layout_toLeftOf="@+id/txtdesnespeciald"
+       android:layout_alignBottom="@+id/txtTotal"
+       android:layout_marginRight="10dp"
+       android:layout_alignBaseline="@+id/txtTotal"
+       android:gravity="right"
+       android:text="@string/filler"
+       android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <TextView
+        android:id="@+id/txtdesnespeciald"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+
+        android:layout_toLeftOf="@+id/txtTotal"
+        android:layout_alignBottom="@+id/txtTotal"
+        android:layout_marginRight="10dp"
+        android:layout_alignBaseline="@+id/txtTotal"
+        android:gravity="right"
+        android:text="@string/filler"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <TextView
+        android:id="@+id/txtUnitario"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/txtTotal"
+        android:layout_alignBottom="@+id/txtTotal"
+        android:layout_marginRight="10dp"
+        android:layout_toLeftOf="@+id/txtdesprontopago"
+        android:gravity="right"
+        android:text="@string/filler"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+   <TextView
+       android:id="@+id/txtTotal"
+       android:layout_width="70dp"
+       android:layout_height="wrap_content"
+       android:layout_alignParentRight="true"
+       android:layout_below="@+id/txtDescripcionArticulo"
+       android:layout_marginRight="15dp"
+       android:gravity="right"
+       android:text="@string/filler"
+       android:textAppearance="?android:attr/textAppearanceSmall" />
+
+   <TextView
+       android:id="@+id/txtCantidad"
+       android:layout_width="70dp"
+       android:layout_height="wrap_content"
+       android:layout_alignBaseline="@+id/txtUnitario"
+       android:layout_alignBottom="@+id/txtUnitario"
+       android:layout_toLeftOf="@+id/txtUnitario"
+       android:gravity="right"
+       android:text="@string/filler"
+       android:textAppearance="?android:attr/textAppearanceSmall" />
+
+   <TextView
+       android:id="@+id/txtDescripcionArticulo"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:layout_alignTop="@+id/imagen_articulo_item"
+       android:layout_marginLeft="14dp"
+       android:layout_toRightOf="@+id/imagen_articulo_item"
+       android:text="@string/filler"
+       android:textAppearance="?android:attr/textAppearanceMedium" />
+    
+</RelativeLayout>

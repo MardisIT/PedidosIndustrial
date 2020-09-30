@@ -1,0 +1,143 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+
+    <LinearLayout
+        android:id="@id/linearLayout1"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:weightSum="2">
+    <ImageView
+        android:id="@+id/imagen_articulo_item"
+        android:layout_width="0dp"
+        android:layout_weight=".2"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="17dp"
+        android:layout_marginTop="15dp"
+        android:contentDescription="@string/vacio"
+        android:src="@drawable/icono_articulos_item" />
+    <TextView
+        android:id="@+id/txtCodArticulo"
+        android:layout_width="0dp"
+        android:layout_weight="1.8"
+        android:layout_marginTop="15dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="25dp"
+        android:text="@string/filler"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+</LinearLayout>
+    <LinearLayout
+        android:id="@+id/Layout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_alignLeft="@+id/linearLayout1"
+        android:layout_below="@+id/linearLayout1"
+        android:weightSum="1">
+        <TextView
+            android:id="@+id/txtDescArticulo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:text="@string/filler"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/Layout3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignLeft="@+id/Layout2"
+        android:layout_below="@+id/Layout2"
+        android:weightSum="2">
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/cantidad"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            tools:ignore="Suspicious0dp" />
+        <EditText
+            android:id="@+id/edtCantidadDlg"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+
+
+            android:ems="10"
+            android:inputType="numberDecimal" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/Layout4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+        android:layout_alignLeft="@+id/Layout3"
+        android:layout_below="@+id/Layout3"
+            android:weightSum="1">
+            <Spinner
+                android:id="@+id/cmbunidad"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:ems="10"
+                android:inputType="numberDecimal" />
+        </LinearLayout>
+    <LinearLayout
+        android:id="@+id/Layout5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+        android:layout_alignLeft="@+id/Layout4"
+        android:layout_below="@+id/Layout4"
+            android:weightSum="2">
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="Pago:"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+            <Spinner
+                android:id="@+id/cmbformapago"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+
+                android:ems="10"
+                android:inputType="numberDecimal" />
+        </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout10"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/Layout5"
+        android:layout_below="@+id/Layout5"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal"
+        android:layout_centerHorizontal="true"
+
+        >
+
+        <Button
+            android:id="@+id/btnAgregar"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="@string/agregar" />
+
+        <Button
+            android:id="@+id/btnCancelarAgregar"
+            android:layout_width="105dp"
+            android:layout_height="wrap_content"
+            android:text="@string/cancelar" />
+    </LinearLayout>
+
+
+</RelativeLayout>

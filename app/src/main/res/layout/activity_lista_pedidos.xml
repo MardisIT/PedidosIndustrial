@@ -1,0 +1,76 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/dim_foreground_material_dark">
+
+        <TextView
+            android:id="@+id/txtDescUnitario"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_toLeftOf="@+id/txtDescTotal"
+            android:fontFamily="@font/roboto_bold"
+            android:gravity="right"
+            android:text="@string/vacio"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/background_material_dark"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/txtDescTotal"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="12dp"
+            android:fontFamily="@font/roboto_bold"
+            android:gravity="right"
+            android:text="@string/abreviatura_total"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/background_material_dark"
+            android:textSize="15sp" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dip"
+        android:layout_weight="0.05"
+        android:orientation="vertical" >
+
+        <ListView
+            android:id="@+id/lstConsultaPedidos"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent">
+        </ListView>
+
+    </LinearLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/dim_foreground_material_dark">
+
+        <TextView
+            android:id="@+id/txtCantidadDePedidos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="12dp"
+            android:fontFamily="@font/roboto_bold"
+            android:gravity="right"
+            android:text="@string/cantidad_de_items"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/background_material_dark"
+            android:textSize="15sp" />
+
+
+    </RelativeLayout>
+
+</LinearLayout>

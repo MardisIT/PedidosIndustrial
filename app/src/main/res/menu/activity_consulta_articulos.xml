@@ -1,0 +1,23 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:sysmobile="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/mnu_ordenar_descripcion"
+        android:icon="@drawable/descripcion"
+        android:orderInCategory="200"
+        android:title="@string/ordenar_por_descripcion"
+        sysmobile:showAsAction="always" />
+    <item
+        android:id="@+id/mnu_ordenar_codigo"
+        android:orderInCategory="201"
+        android:icon="@drawable/codigo"
+        sysmobile:showAsAction="always"
+        android:title="@string/ordenar_por_codigo"/>
+    <item
+        android:id="@+id/mnu_borrar_parametros_orden"
+        android:icon="@drawable/icono_ordenar_refresh"
+        android:orderInCategory="300"
+        sysmobile:showAsAction="always"
+        android:title="@string/borrar_parametros"/>
+    
+</menu>

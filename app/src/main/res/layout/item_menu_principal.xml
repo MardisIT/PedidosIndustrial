@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/relativeLayout"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <ImageView
+        android:id="@+id/imagenOpcion7"
+        android:layout_width="wrap_content"
+        android:layout_height="63dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="1dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/base_boton"
+        android:contentDescription="@string/vacio"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.017" />
+
+    <ImageView
+        android:id="@+id/imagenOpcion"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="16dp"
+        android:contentDescription="@string/vacio"
+        android:src="@drawable/icono_clientes"
+        app:layout_constraintBottom_toBottomOf="@+id/imagenOpcion7"
+        app:layout_constraintStart_toStartOf="@+id/imagenOpcion7"
+        app:layout_constraintTop_toTopOf="@+id/imagenOpcion7" />
+
+
+    <ImageView
+        android:id="@+id/imagenOpcion3"
+        android:layout_width="16dp"
+        android:layout_height="29dp"
+        android:layout_marginEnd="16dp"
+        android:contentDescription="@string/vacio"
+        android:src="@drawable/go"
+        app:layout_constraintBottom_toBottomOf="@+id/imagenOpcion7"
+        app:layout_constraintEnd_toEndOf="@+id/imagenOpcion7"
+        app:layout_constraintTop_toTopOf="@+id/imagenOpcion7" />
+
+    <TextView
+        android:id="@+id/txtDescripcion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:fontFamily="@font/roboto_light"
+        android:text="@string/item_menu_principal_enviar_pendientes"
+        android:textAllCaps="false"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/background_floating_material_dark"
+        app:layout_constraintBottom_toBottomOf="@+id/imagenOpcion7"
+        app:layout_constraintStart_toEndOf="@+id/imagenOpcion"
+        app:layout_constraintTop_toTopOf="@+id/imagenOpcion7" />
+
+    <TextView
+        android:id="@+id/txtSinEnviar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:fontFamily="@font/roboto_bold"
+        android:text="@string/filler"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="@color/ColorPrimaryDark"
+        android:textSize="15sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/txtDescripcion"
+        app:layout_constraintEnd_toStartOf="@+id/imagenOpcion3"
+        app:layout_constraintStart_toEndOf="@+id/txtDescripcion" />
+
+</android.support.constraint.ConstraintLayout>

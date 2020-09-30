@@ -1,0 +1,104 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginBottom="10dp"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:layout_marginTop="10dp"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/text_view_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Nombre:" />
+
+        <TextView
+            android:id="@+id/text_view_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Dir. Abosulto: " />
+
+        <ImageView
+            android:id="@+id/image_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/app_name"
+            android:scaleType="centerCrop" />
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="onClickButton"
+            android:text="Tomar Fotografía" />
+
+        <Button
+            android:id="@+id/locationControllerGPS"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+
+            android:text="Tomar ubicación"
+            android:onClick="toggleGPSUpdates"/>
+        <TextView
+            android:id="@+id/longitudeTextGPS"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:text="longitude"
+            android:textSize="20sp"/>
+
+        <TextView
+            android:id="@+id/longitudeValueGPS"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_toRightOf="@id/longitudeTextGPS"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:text="0.0000"
+            android:textSize="20sp"/>
+
+        <TextView
+            android:id="@+id/latitudeTextGPS"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/longitudeTextGPS"
+            android:text="latitude"
+            android:textSize="20sp"/>
+
+        <TextView
+            android:id="@+id/latitudeValueGPS"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/longitudeValueGPS"
+            android:layout_toRightOf="@id/longitudeTextGPS"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:text="0.0000"
+            android:textSize="20sp"/>
+
+        <View
+            android:id="@+id/separator1"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/latitudeValueGPS"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:background="@color/material_blue_grey_800"/>
+        <Button
+            android:id="@+id/btnguardarvisita"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="Guardar Visita"
+            android:visibility="invisible"
+            android:onClick="guardarvisita"/>
+    </LinearLayout>
+
+</ScrollView>

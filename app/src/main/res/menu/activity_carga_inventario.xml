@@ -1,0 +1,17 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:sysmobile="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/mnu_grabar_inventario"
+        android:orderInCategory="100"
+        android:icon="@drawable/icono_grabar"
+        sysmobile:showAsAction="always"
+        android:title="Grabar Invnetario"/>
+    <item
+        android:id="@+id/mnu_cancelar_inventario"
+        android:orderInCategory="200"
+        android:icon="@drawable/icono_cancelar"
+        sysmobile:showAsAction="always"
+        android:title="Cancelar"/>
+
+</menu>

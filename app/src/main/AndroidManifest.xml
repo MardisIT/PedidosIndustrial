@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="ar.com.syswork.sysmobile"
+    android:versionCode="1"
+    android:versionName="1.0">
+
+    <uses-sdk
+        android:maxSdkVersion="26"
+        android:minSdkVersion="16"
+        android:targetSdkVersion="26" />
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.FLASHLIGHT" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+
+    <application
+        android:name=".shared.AppSysMobile"
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppBaseTheme"
+      >
+        <meta-data android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyC93iD3G--415PtX9DDxZq0APIMSz1M5dU" />
+        <activity
+            android:name=".psplash.ActivitySplash"
+            android:label="@string/app_name"
+            android:theme="@style/my">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".industrial.MapsActivity"
+            android:label="@string/title_activity_listavisita" >
+
+        </activity>
+        <activity
+            android:name=".plogin.ActivityLogin"
+            android:configChanges="orientation|screenSize"
+            android:label="@string/app_name"
+            android:windowSoftInputMode="adjustResize|stateVisible" />
+        <activity
+            android:name=".pmenuprincipal.ActivityMenuPrincipal"
+            android:configChanges="orientation|screenSize"
+            android:label="@string/title_activity_activity_pmenu_principal" />
+        <activity
+            android:name=".pconfig.ActivityConfig"
+            android:label="@string/title_activity_activity_config" />
+        <activity
+            android:name=".pconsultaclientes.ActivityConsultaClientes"
+            android:configChanges="orientation|screenSize"
+            android:label="@string/title_activity_activity_consulta_clientes" />
+        <activity
+            android:name=".pconsultagenerica.detalle.ActivityConsultaGenericaDetalle"
+            android:configChanges="orientation|screenSize"
+            android:label="@string/title_activity_activity_consulta_clientes_editar" />
+        <activity
+            android:name=".pconsultaarticulos.ActivityConsultaArticulos"
+            android:configChanges="orientation|screenSize"
+            android:label="@string/title_activity_activity_consulta_articulos" />
+        <activity
+            android:name=".pcargapedidos.ActivityCargaPedidos"
+            android:configChanges="orientation|screenSize"
+            android:label="@string/title_activity_activity_toma_pedidos" />
+        <activity
+            android:name=".plistapedidos.ActivityListaPedidos"
+            android:label="@string/title_activity_activity_lista_pedidos" />
+        <activity
+            android:name=".psincronizar.ActivitySincronizar"
+            android:label="@string/title_activity_activity_sincornizar" />
+        <activity
+            android:name=".penviapendientes.ActivityEnviaPendientes"
+            android:label="@string/title_activity_activity_envia_pendientes" />
+        <activity
+            android:name=".pconsultactacte.ActivityConsultaCtaCte"
+            android:label="@string/title_activity_activity_consulta_cta_cte" />
+        <activity
+            android:name=".pconsultastock.ActivityConsultaStock"
+            android:label="@string/title_activity_activity_consulta_stock" />
+        <activity
+            android:name=".item_cheques"
+            android:label="@string/title_activity_item_cheques" />
+        <activity
+            android:name=".pconsultactacte.dialog_chequespagos"
+            android:label="@string/title_activity_dialog_chequespagos" />
+        <activity
+            android:name=".pconsultactacte.dialog_vistaimagen"
+            android:label="@string/title_activity_dialog_vistaimagen" />
+        <activity
+            android:name=".pconsultactacte.reporte_pagos"
+            android:label="@string/title_activity_reporte_pagos" />
+        <activity
+            android:name=".item_reporte"
+            android:label="@string/title_activity_item_reporte" />
+        <activity
+            android:name=".plistainventario.InventarioActivity"
+            android:label="@string/title_activity_inventario" />
+        <activity
+            android:name=".item_lista_inventario"
+            android:label="@string/title_activity_item_lista_inventario" />
+        <activity
+            android:name=".pcargainventario.CargaInventarioActivity"
+            android:label="@string/title_activity_carga_inventario" />
+        <activity
+            android:name=".DialogSolicitarCantidadInventarioActivity"
+            android:label="@string/title_activity_dialog_solicitar_cantidad_inventario" />
+        <activity
+            android:name=".ItemCargaInventarioActivity"
+            android:label="@string/title_activity_item_carga_inventario" />
+        <activity
+            android:name=".visita"
+            android:label="@string/title_activity_visita" />
+        <activity
+            android:name=".fragment_main"
+            android:label="@string/title_activity_fragment_main" />
+        <activity
+            android:name=".item_carga_visitas"
+            android:label="@string/title_activity_item_carga_visitas" />
+        <activity
+            android:name=".plistavisitas.VisitaActivity"
+            android:label="@string/title_activity_listavisita" />
+
+    </application>
+
+
+</manifest>

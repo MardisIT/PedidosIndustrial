@@ -1,0 +1,73 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+
+	<RelativeLayout android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+        <TextView
+            android:id="@+id/txtzona"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Elija la Zona"
+            android:visibility="gone"/>
+
+        <Spinner
+            android:id="@+id/spnzona"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txtzona"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/txtlocalidad"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Elija la Localidad "
+            android:layout_below="@+id/spnzona"/>
+
+        <Spinner
+            android:id="@+id/spnlocalidad"
+            android:layout_below="@+id/txtlocalidad"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"/>
+
+
+
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+		android:weightSum="2">
+
+	    <EditText
+	        android:id="@+id/txtBuscar"
+	        android:layout_width="0dp"
+			android:layout_weight="1.8"
+	        android:layout_height="wrap_content"
+	        android:hint="@string/hint_busqueda_razon_social"
+	        android:ems="10" >
+	    </EditText>
+		
+		<ImageView
+		    android:contentDescription="@string/cuatro_espacios"
+	        android:id="@+id/imgBuscar"
+			android:layout_weight=".2"
+	        android:layout_width="0dp"
+	        android:layout_height="wrap_content"
+	        android:src="@drawable/icono_buscar_chico" />
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/lstConsultaCliente"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+        
+    </ListView>
+
+</LinearLayout>

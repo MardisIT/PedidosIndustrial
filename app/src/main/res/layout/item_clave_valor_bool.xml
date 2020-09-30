@@ -1,0 +1,27 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+
+    <TextView
+        android:id="@+id/txtClave"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="10dp"
+        android:ems="6"
+        android:text="@string/cuatro_espacios" />
+    
+    <CheckBox
+        android:id="@+id/checkValor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/txtClave"
+        android:focusable="false"
+        android:clickable="false"
+        android:text="@string/cuatro_espacios" />
+    
+</RelativeLayout>

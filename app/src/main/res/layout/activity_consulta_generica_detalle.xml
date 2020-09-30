@@ -1,0 +1,39 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".ActivityConsultaClientesDetaller" >
+
+    <ImageView
+        android:id="@+id/imgConsultaGenerica"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:contentDescription="@string/cuatro_espacios"
+        android:src="@drawable/icono_articulos_grande" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/imgConsultaGenerica"
+        android:layout_marginLeft="1dp"
+        android:orientation="vertical" >
+
+	    <ListView
+	        android:id="@+id/lstDetalleConsulta"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+		 >
+	
+	    </ListView>
+    </LinearLayout>
+
+
+</RelativeLayout>

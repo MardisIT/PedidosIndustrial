@@ -1,0 +1,22 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_splash_vertical_margin"
+    android:paddingLeft="@dimen/activity_splash_horizontal_margin"
+    android:paddingRight="@dimen/activity_splash_horizontal_margin"
+    android:paddingTop="@dimen/activity_splash_vertical_margin"
+    tools:context=".ActivitySplash" >
+    
+    <ImageView
+        android:id="@+id/imageViewSplash"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+	    android:layout_marginTop="0dp"
+	    android:layout_marginLeft="0dp"
+	    android:layout_marginRight="0dp"
+	    android:scaleType="fitXY"
+	    android:contentDescription="@string/cuatro_espacios"
+        android:src="@drawable/splash" />
+
+</RelativeLayout>

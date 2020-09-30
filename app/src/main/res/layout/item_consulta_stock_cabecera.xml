@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <ImageView
+        android:id="@+id/imagen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="5dp"
+        android:contentDescription="@string/vacio"
+        android:src="@drawable/symbolo_ok" />
+
+   <TextView
+       android:id="@+id/txtDescripcionDeposito"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:layout_alignTop="@+id/imagen"
+       android:layout_marginLeft="14dp"
+       android:layout_toRightOf="@+id/imagen"
+       android:text="@string/filler"
+       android:textAppearance="?android:attr/textAppearanceMedium" />
+
+   <TextView
+       android:id="@+id/txtTotal"
+       android:layout_width="100dp"
+       android:layout_height="wrap_content"
+       android:layout_alignBaseline="@+id/txtDescripcionDeposito"
+       android:layout_alignBottom="@+id/txtDescripcionDeposito"
+       android:layout_alignParentRight="true"
+       android:layout_marginRight="20dp"
+       android:gravity="right"
+       android:text="@string/filler"
+       android:textAppearance="?android:attr/textAppearanceMedium" />
+    
+</RelativeLayout>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <EditText
+        android:id="@+id/txtnumcheque"
+        android:layout_width="167dp"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/imagen_cpte_item"
+        android:layout_marginLeft="5dp"
+        android:layout_toRightOf="@+id/imagen_cpte_item"
+        android:ellipsize="end"
+        android:hint="Número Cheque"
+
+        android:singleLine="true" />
+
+    <EditText
+        android:id="@+id/txtbanco"
+        android:layout_width="169dp"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/txtnumcheque"
+        android:layout_below="@+id/txtnumcheque"
+        android:ellipsize="end"
+        android:hint="Banco" />
+
+
+    <EditText
+        android:id="@+id/txtvalorp"
+        android:layout_width="117dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/txtnumcheque"
+        android:ellipsize="end"
+        android:hint="Valor"
+        android:inputType="numberDecimal" />
+
+    <EditText
+        android:id="@+id/txtfechacheque"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:hint="DD/MM/YYYY"
+        android:maxLength="10"
+        android:inputType="date" />
+
+
+
+
+
+
+
+
+
+
+
+
+</RelativeLayout>

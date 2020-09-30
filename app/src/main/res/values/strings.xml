@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Recolector Pedidos</string>
+    <string name="never_value_tracking" translatable="false">true</string>
+
+    <string name="action_settings">Configuracion</string>
+    <string name="accion_solicita_usuario">codigo</string>
+    <string name="accion_solicita_password">password</string>
+    <string name="accion_ingresar">Ingresar</string>
+
+    <string name="titulo_pantalla_login">Login</string>
+    <string name="titulo_error_validacion_login">Error de Validacion</string>
+    <string name="mensaje_error_validacion_login">El usuario informado no existe, verifiquelo y vuelva a intentarlo</string>
+    <string name="mensaje_error_validacion_password_login">La contraseña informada no es valida, verifiquelo y vuelva a intentarlo</string>
+    <string name="vacio">.</string>
+    <string name="cuatro_espacios"></string>
+    <string name="never_value" translatable="false"></string>
+    <string name="filler">FILLER-</string>
+
+    <string name="title_activity_activity_pmenu_principal">Ventas</string>
+    <string name="title_activity_activity_sincornizar">SINCRONIZAR DATOS</string>
+    <string name="title_activity_activity_config">CONFIGURACION</string>
+    <string name="title_activity_activity_consulta_clientes">CLIENTES</string>
+    <string name="title_activity_activity_consulta_clientes_editar">CLIENTES</string>
+    <string name="title_activity_activity_envia_pendientes">ENVIAR PEDIDOS PENDIENTES</string>
+    <string name="title_activity_activity_consulta_articulos">ARTICULOS</string>
+    <string name="title_activity_activity_toma_pedidos">PEDIDOS</string>
+    <string name="title_activity_activity_consulta_cta_cte">CUENTA CORRIENTE</string>
+    <string name="title_activity_activity_consulta_stock">Consulta Stock</string>
+    <string name="title_activity_activity_lista_pedidos">Lista Pedidos</string>
+
+    <string name="item_menu_principal_sincronizar">Sincronizar</string>
+    <string name="item_menu_principal_carga_pedidos">Pedidos</string>
+    <string name="item_menu_principal_enviar_pendientes">Enviar Pendientes</string>
+    <string name="item_menu_principal_consulta_datos_clientes">Clientes</string>
+    <string name="item_menu_principal_consulta_articulos">Articulos</string>
+    <string name="item_menu_principal_consulta_cuenta_corriente">Cuentas Corrientes</string>
+    <string name="item_menu_principal_consulta_reportepagos">Reporte Pagos</string>
+    <string name="item_menu_principal_inventario">Inventario Productos</string>
+
+    <string name="hint_busqueda_razon_social">razon social</string>
+    <string name="hint_busqueda_descripcion">descripcion</string>
+    <string name="hint_busqueda_codigo">codigo</string>
+
+    <string name="ordenar_por_razon_social">Ordenar por Razon Social</string>
+    <string name="ordenar_por_codigo">Ordenar por Codigo</string>
+    <string name="ordenar_por_descripcion">Ordenar por Descripcion</string>
+    <string name="borrar_parametros">Borrar Parametros</string>
+
+    <string name="resumen_del_inventario">Resumen del Inventario</string>
+
+
+    <string name="hello_world">Hello world!</string>
+    <string name="resumen_del_pedido">Resumen del Pedido</string>
+    <string name="agregar_pedido">Agregar Pedido</string>
+    <string name="cantidad_de_items">Items:</string>
+    <string name="importe_total_pedido">Importe Total:</string>
+    <string name="cantidad">Cantidad:  </string>
+    <string name="cod_prod">Cod.:</string>
+    <string name="cod_prod_minusculas">cod. producto</string>
+    <string name="agregar">Agregar</string>
+    <string name="cancelar">Cancelar</string>
+    <string name="abreviatura_codigo">COD:</string>
+    <string name="abreviatura_cantidad">CANT</string>
+    <string name="abreviatura_unitario">UNIT</string>
+    <string name="abreviatura_total">TOTAL</string>
+    <string name="ingrese_la_cantidad">Ingrese la Cantidad</string>
+    <string name="grabar_pedido">Grabar Pedido</string>
+    <string name="grabar_pedido_y_enviar">Grabar y Enviar</string>
+    <string name="enviar_y_facturar">Enviar y Facturar</string>
+    <string name="api_server" translatable="false">https://dyvenpro.azurewebsites.net/</string>
+
+    <string name="cancelar_pedido">Cancelar Pedido</string>
+    <string name="que_hacer_con_el_item">Que hacer con el ITEM?</string>
+    <string name="eliminar_item">Eliminar Item</string>
+    <string name="cancelar_item">Cancelar</string>
+    <string name="sincronizar">Sincronizar</string>
+    <string name="parsear">Parsear</string>
+    <string name="vendedores">Vendedores</string>
+    <string name="rubros">Rubros</string>
+    <string name="clientes">Clientes</string>
+    <string name="articulos">Articulos</string>
+
+    <string name="sincronizando">Sincronizando</string>
+    <string name="chequespagos">Cheques Pagos</string>
+    <string name="cerrar">Cerrar</string>
+    <string name="procesando">Procesando..</string>
+    <string name="procesado_correctamente">Procesado Correctamente</string>
+    <string name="conectando">Conectando..</string>
+    <string name="descarga_exitosa">Descarga Exitosa</string>
+    <string name="descargando">Descargando</string>
+    <string name="leyenda_sincronizacion">El proceso de sincronizacion, bajará la informacion de Vendedores, Articulos, Clientes y Rubros, este proceso puede demorar mucho tiempo, dependiendo de la cantidad de registros</string>
+    <string name="ruta_web_service">Ruta WEB Service</string>
+    <string name="puerto_web_service">Puerto WEB Service</string>
+    <string name="tiempoDeEsperaPorRespuesta">Tiempo Max. Espera Respuesta (seg.)</string>
+
+    <string name="hint_ruta_web_service">Ej: http://syswork.com.ar/ws </string>
+    <string name="hint_puerto_web_service">Ej:80</string>
+    <string name="hint_tiempoDeEsperaPorRespuesta">Ej:30</string>
+
+    <string name="aceptar">Aceptar</string>
+    <string name="leyenda_envia_pendientes">Este proceso enviará los Pedidos Pendientes, y una vez confirmada la recepcion del WebService los eliminará de la base local.</string>
+    <string name="enviaPendientes">Envia Pendientes Pedidos</string>
+    <string name="pedidosPendientes">Pedidos Pendientes</string>
+    <string name="avisoVendedorVacio">No hay cargados vendedores, por tanto la unica opcion habilitada es SINCRONIZAR, realice la sincronizacion, y luego salga del sistema para validar su Vendedor asociado </string>
+    <string name="avisoAlOperador">aviso al Operador</string>
+    <string name="seCrearonLosPedidosExitosamente">Se Crearon los pedidos Existosamente</string>
+    <string name="seCrearonLosPagosExitosamente">Se Crearon los pagos Existosamente</string>
+    <string name="seProdujoUnErrorAlSubirLosPedidos">Se produjo un error al subir los Pedidos</string>
+    <string name="seProdujoUnErrorDeComunicacion">Se produjo un error de comunicacion</string>
+    <string name="obteniendoDatos">Obteniendo Datos..</string>
+    <string name="ultimosQuinceDias">Ult. 15 dias</string>
+    <string name="ultimosTreintaDias">Ult. 30 dias</string>
+    <string name="ultimosSesentaDias">Ult. 60 dias</string>
+    <string name="avanzado">Avanzado</string>
+    <string name="huboErrorDeComunicaciones">Hubo un Error de Comunicaciones</string>
+    <string name="fechaDesde">Fecha Desde</string>
+    <string name="fechaHasta">Fecha Hasta</string>
+    <string name="valorDesdeMayorQueHalorHasta">Valor DESDE mayor que valor HASTA!!</string>
+    <string name="comoLlegarAlcliente">Como llegar?</string>
+    <string name="llamarPorTelefono">Llamar</string>
+    <string name="enviarMail">Enviar Mail</string>
+    <string name="consultarStockOnLine">Consultar Stock On-Line</string>
+    <string name="modificarcantidad">Modificar</string>
+    <string name="deposito_no_actualizado">DEPOSITO NO ACTUALIZADO - SINCRONICE</string>
+
+    <string name="debeInformarElCodigoDelProducto">Debe Informar el codigo del producto</string>
+    <string name="debeInformarLaCantidad">Debe Informar la cantidad</string>
+    <string name="elCodigoInformadoNoEsCorrecto">El Codigo informado no es correcto</string>
+    <string name="noHaCargadoProductos">No ha cargado Productos</string>
+    <string name="ocurrioUnErrorAlGrabar">Ocurrio un error al Grabar</string>
+    <string name="pedidoGrabadoConExito">Pedido Grabado con Exito!!!</string>
+
+
+    <string name="invnetarioGrabadoConExito">Inventario Grabado con Exito!!!</string>
+
+    <string name="textoLecturaCodigoDeBarras">Enfoque entre 9 y 11 cm de distancia del codigo de Barras</string>
+    <string name="textoTituloInstalarBarcodeScanner">Instalar Barcode Scanner?</string>
+    <string name="textoMensajeInstalarBarcodeScanner">Esta funcion requiere la Aplicacion Barcode Scanner. Desea instalarla?</string>
+    <string name="textoMarketNoInstalado">Android market no esta instalado,no se puede instalar Barcode Scanner</string>
+
+    <string name="stockActual">Actual</string>
+    <string name="stockComprometido">Comprometido</string>
+    <string name="stockSugerido">Sugerido</string>
+
+    <string name="strIntentandoConectarAlWebService">Intentando Conectar al WebService</string>
+    <string name="errorDeConexionAlWebService">Error de Conexion al WebService</string>
+
+    <string name="confirmacionSalir">Presione nuevamente para cerrar la carga de Pedidos</string>
+
+    <string name="haCargadoItemsEnElPedidoRealmenteDeseaSalir">Ha cargado items en el pedido, realmente desea salir?</string>
+
+    <string name="SI">Si</string>
+    <string name="NO">No</string>
+
+    <string name="solicitaClaseDePrecio">Solicita Clase de Precio</string>
+    <string name="solicitaIncluirEnReparto">Solicita incluir en reparto</string>
+    <string name="incluirEnReparto">Incluir en Reparto?</string>
+    <string name="debeSeleccionarLaClaseDePrecio">Debe Seleccionar la clase de Precio</string>
+    <string name="clasesDePrecioHabilitadas">Clases de Precio Habilitadas</string>
+    <string name="hint_clasesDePrecioHabilitadas">EJ: 1;3;5;7</string>
+    <string name="cuenta">Cuenta/Campaña</string>
+    <string name="title_activity_dialog_pagos">Reporte Pagos</string>
+    <string name="title_activity_pagos">PAGOS</string>
+    <string name="title_activity_item_cheques">item_cheques</string>
+    <string name="title_activity_dialog_chequespagos">dialog_chequespagos</string>
+    <string name="title_activity_dialog_vistaimagen">dialog_vistaimagen</string>
+    <string name="title_activity_reporte_pagos">Reporte Pagos</string>
+    <string name="title_activity_dialogo_reporte">dialogo_reporte</string>
+    <string name="title_activity_item_reporte">item_reporte</string>
+    <string name="title_activity_item_forma_pago">item_forma_pago</string>
+    <string name="title_activity_inventario">Lista de Invetarios</string>
+    <string name="title_activity_item_lista_inventario">item_lista_inventario</string>
+    <string name="title_activity_lista_inventario">ListaInventarioActivity</string>
+    <string name="title_activity_carga_inventario">Ingresar Inventario</string>
+    <string name="title_activity_dialog_solicitar_cantidad_inventario">
+        DialogSolicitarCantidadInventarioActivity
+    </string>
+    <string name="title_activity_item_carga_inventario">Inventario</string>
+    <string name="title_activity_visita">visita</string>
+    <string name="pause">1</string>
+    <string name="resume">2</string>
+    <string name="title_activity_fragment_main">fragment_main</string>
+    <string name="title_activity_item_carga_visitas">item_carga_visitas</string>
+    <string name="title_activity_listavisita">Visitas Clientes</string>
+    <string name="title_activity_lista_vistas">lista_vistas</string>
+
+</resources>

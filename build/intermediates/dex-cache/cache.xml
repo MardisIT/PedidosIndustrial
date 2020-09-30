@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="false"
+        jar="D:\Android\Version Pedidos\SysMobile-master\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\19.1.0\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="24.0.2"
+        sha1="3499ceba05ca1f6037c6a2fad73df8f636224a28">
+        <dex dex="D:\Android\Version Pedidos\SysMobile-master\app\build\intermediates\pre-dexed\debug\com.android.support-appcompat-v7-19.1.0_3a9b9d84b7dc4640a7c3e1af3f22f9401bb502b5.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\Android\Sdk\extras\android\m2repository\com\android\support\support-v4\19.1.0\support-v4-19.1.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="24.0.2"
+        sha1="85f201b380937e61a9dce6ca90ccf6872abbfb67">
+        <dex dex="D:\Android\Version Pedidos\SysMobile-master\app\build\intermediates\pre-dexed\debug\support-v4-19.1.0_6b3c518bc9c8bcc2951748b7b651357ab447fc9a.jar" />
+    </item>
+
+</items>

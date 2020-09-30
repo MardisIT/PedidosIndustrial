@@ -1,0 +1,66 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".ActivityEnviaPendientes" >
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:gravity="center_horizontal"
+        android:text="@string/leyenda_envia_pendientes"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:contentDescription="@string/vacio"
+        android:src="@drawable/enviapedidospendientes" />
+
+    <Button
+        android:id="@+id/btnEnviarPendientes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imageView1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="14dp"
+        android:text="@string/enviaPendientes" />
+    <Button
+        android:id="@+id/btnEnviarPendientesPagos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btnEnviarPendientes"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="14dp"
+        android:visibility="gone"
+        android:text="ENVIAR PENDIENTES PAGOS" />
+    <Button
+        android:id="@+id/btnEnviarPendientesInventario"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btnEnviarPendientesPagos"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="14dp"
+        android:text="ENVIAR PENDIENTES INVENTARIO" />
+    <Button
+        android:id="@+id/btnEnviarPendientesvisitas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btnEnviarPendientesInventario"
+        android:layout_centerHorizontal="true"
+        android:visibility="gone"
+        android:layout_marginTop="14dp"
+        android:text="ENVIAR PENDIENTES VISISTAS" />
+
+</RelativeLayout>
