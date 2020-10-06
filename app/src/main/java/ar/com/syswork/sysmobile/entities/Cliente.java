@@ -33,6 +33,78 @@ public class Cliente {
 	public String imeI_ID;
 	public String LatitudeBranch;
 	public String LenghtBranch;
+	private String estadoenvio;
+private  String Nombre;
+private String Apellido;
+private String cedula;
+private String celular;
+private String provincia;
+private String parroquia;
+private	String canton;
+
+	public String getCedula() {
+		return cedula;
+	}
+
+	public void setCedula(String cedula) {
+		this.cedula = cedula;
+	}
+
+	public String getCelular() {
+		return celular;
+	}
+
+	public void setCelular(String celular) {
+		this.celular = celular;
+	}
+
+	public String getProvincia() {
+		return provincia;
+	}
+
+	public void setProvincia(String provincia) {
+		this.provincia = provincia;
+	}
+
+	public String getParroquia() {
+		return parroquia;
+	}
+
+	public void setParroquia(String parroquia) {
+		this.parroquia = parroquia;
+	}
+
+	public String getCanton() {
+		return canton;
+	}
+
+	public void setCanton(String canton) {
+		this.canton = canton;
+	}
+
+	public String getNombre() {
+		return Nombre;
+	}
+
+	public void setNombre(String nombre) {
+		Nombre = nombre;
+	}
+
+	public String getApellido() {
+		return Apellido;
+	}
+
+	public void setApellido(String apellido) {
+		Apellido = apellido;
+	}
+
+	public String getEstadoenvio() {
+		return estadoenvio;
+	}
+
+	public void setEstadoenvio(String estadoenvio) {
+		this.estadoenvio = estadoenvio;
+	}
 
 	public String getIdbranch() {
 		return idbranch;

@@ -135,7 +135,7 @@ public List<ConfiguracionDB> getAll(String where) {
         ArrayList<ConfiguracionDB> lista = new ArrayList<>();
         ConfiguracionDB configuracionDB = null;
 
-        String sql = "SELECT Id_cuenta,Id_campania,FormaBusqueda,Estado,FechaCarga,Formularios FROM Configuracion" ;
+        String sql = "SELECT Id_cuenta,Id_cuenta,Id_campania,FormaBusqueda,Estado,FechaCarga,Formularios FROM Configuracion" ;
 
         if (!where.equals("")){
         sql = sql + " WHERE " + where;

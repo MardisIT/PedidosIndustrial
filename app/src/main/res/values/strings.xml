@@ -184,6 +184,8 @@
     <string name="title_activity_fragment_main">fragment_main</string>
     <string name="title_activity_item_carga_visitas">item_carga_visitas</string>
     <string name="title_activity_listavisita">Visitas Clientes</string>
+
+    <string name="title_activity_listareportepedidos">Reporte Productos Pedidos</string>
     <string name="title_activity_lista_vistas">lista_vistas</string>
 
 </resources>

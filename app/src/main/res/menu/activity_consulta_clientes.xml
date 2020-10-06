@@ -25,5 +25,11 @@
         android:orderInCategory="300"
         sysmobile:showAsAction="always"
         android:title="@string/borrar_parametros"/>
+    <item
+        android:id="@+id/mnu_nuevos"
+        android:icon="@drawable/icono_agregar"
+        android:orderInCategory="300"
+        sysmobile:showAsAction="always"
+        android:title="@string/borrar_parametros"/>
     
 </menu>

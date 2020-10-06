@@ -32,6 +32,11 @@ public class ActivityConsultaClientes extends AppCompatActivity {
 	private LogicaConsultaClientes logicaConsultaClientes;
 	private int posicionItemSeleccionado;
 	private AdapterConsultaClientes adapterConsultaClientes;
+	private PantallaManagerConsultaClientes pantallaManagerConsultaClientes;
+	public void setPantallaManager(PantallaManagerConsultaClientes pantallaManagerConsultaClientes) {
+		this.pantallaManagerConsultaClientes = pantallaManagerConsultaClientes;
+
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +60,7 @@ public class ActivityConsultaClientes extends AppCompatActivity {
 		listenerConsultaClientes.setOrigenDeLaConsulta(origenDeLaConsulta);
 		
 		//Creo el pantallaManager
-		PantallaManagerConsultaClientes pantallaManagerConsultaClientes = new PantallaManagerConsultaClientes(this, listenerConsultaClientes);
+		 pantallaManagerConsultaClientes = new PantallaManagerConsultaClientes(this, listenerConsultaClientes);
 		pantallaManagerConsultaClientes.seteaListener();
 		
 		listenerConsultaClientes.setPantallaManager(pantallaManagerConsultaClientes);
@@ -179,6 +184,10 @@ public class ActivityConsultaClientes extends AppCompatActivity {
 			case R.id.mnu_ubicacion:
 				Intent intent = new Intent(getApplication(), MapsActivity.class);
 				startActivityForResult(intent, 0);
+				return true;
+			case R.id.mnu_nuevos:
+				pantallaManagerConsultaClientes.muestraDetalleClienteNuevo();
+
 				return true;
 			default:
 				return super.onOptionsItemSelected(item);    

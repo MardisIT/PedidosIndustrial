@@ -61,6 +61,7 @@ public class AdapterConsultaGenericaDetalle extends ArrayAdapter<ItemClaveValor>
 				case ItemClaveValor.TIPO_STRING: 
 					view = lInflater.inflate(R.layout.item_clave_valor_text, null);
 					envoltorio.edtValor= (EditText) view.findViewById(R.id.txtValor);
+					envoltorio.edtValor.setEnabled(true);
 					break;
 				default:
 					break;

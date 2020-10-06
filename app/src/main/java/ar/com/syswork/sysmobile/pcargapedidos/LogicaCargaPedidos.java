@@ -37,6 +37,8 @@ import ar.com.syswork.sysmobile.daos.DaoDESCUENTO_VOLUMEN;
 import ar.com.syswork.sysmobile.daos.DaoPRECIO_ESCALA;
 import ar.com.syswork.sysmobile.daos.DaoPedido;
 import ar.com.syswork.sysmobile.daos.DaoPedidoItem;
+import ar.com.syswork.sysmobile.daos.Daoreportecabecera;
+import ar.com.syswork.sysmobile.daos.Daoreporteitem;
 import ar.com.syswork.sysmobile.daos.DataManager;
 import ar.com.syswork.sysmobile.entities.Articulo;
 import ar.com.syswork.sysmobile.entities.Cartera;
@@ -47,6 +49,9 @@ import ar.com.syswork.sysmobile.entities.DESCUENTO_VOLUMEN;
 import ar.com.syswork.sysmobile.entities.PRECIO_ESCALA;
 import ar.com.syswork.sysmobile.entities.Pedido;
 import ar.com.syswork.sysmobile.entities.PedidoItem;
+import ar.com.syswork.sysmobile.entities.reportecabecera;
+import ar.com.syswork.sysmobile.entities.reporteitem;
+
 import ar.com.syswork.sysmobile.penviapendientes.ListenerEnviaPendientes;
 import ar.com.syswork.sysmobile.penviapendientes.LogicaEnviaPendientes;
 import ar.com.syswork.sysmobile.penviapendientes.PantallaManagerEnviaPendientes;
@@ -72,10 +77,16 @@ public class LogicaCargaPedidos implements IAlertResult
 	private DaoArticulo daoArticulo;
 	private DaoPedido daoPedido;
 	private DaoPedidoItem daoPedidoItem;
+
+	//Reporte FabianAguirre
+	private Daoreportecabecera daoreportecabecera;
+	private Daoreporteitem daoreporteitem;
+
 	private  DaoDESCUENTO_FORMAPAGO daoDESCUENTO_formapago;
 	private DaoPRECIO_ESCALA daoPRECIO_escala;
 	private DaoDESCUENTO_VOLUMEN daoDESCUENTO_volumen;
 	private DaoDESCUENTO_AVENA daoDESCUENTO_avena;
+
 
 	
 	private AdapterCargaPedidos adapterCargaPedidos;
@@ -120,7 +131,8 @@ public class LogicaCargaPedidos implements IAlertResult
 		daoPRECIO_escala=dataManager.getDaoPRECIO_escala();
 		daoDESCUENTO_volumen=dataManager.getDaoDESCUENTO_volumen();
 		daoDESCUENTO_avena=dataManager.getDaoDESCUENTO_avena();
-
+		daoreportecabecera=dataManager.getDaoreportecabecera();
+		daoreporteitem=dataManager.getDaoreporteitem();
 
 
 		listaPedidoItems = new ArrayList<PedidoItem>();
@@ -608,6 +620,13 @@ public  double CalcularDescuentoMix(String codigoProductoActual,String opcion,do
 		{
 			Pedido tmpPedido = daoPedido.getById((int)_idPedidoAEliminar);
 			daoPedido.delete(tmpPedido);
+			for (reportecabecera x:
+			daoreportecabecera.getAll("idpedido="+tmpPedido.getIdPedido())) {
+				daoreporteitem.deleteAllKey(String.valueOf(x.get_id()));
+				daoreportecabecera.delete(x);
+			}
+
+
 
 			daoPedidoItem.deleteByIdPedido(_idPedidoAEliminar);
 			utilDialogos.muestraToastGenerico(a, "Pedido eliminado correcto..!!!", false);
@@ -654,11 +673,21 @@ public  double CalcularDescuentoMix(String codigoProductoActual,String opcion,do
 		pedido.setIncluirEnReparto(incluirEnReparto);
 		
 		idPedido = daoPedido.save(pedido);
+
+		int idReporteEncabezado=0;
+
 		
 		PedidoItem pedidoItem = null;
 		
 		if (idPedido!=-1)
 		{
+			reportecabecera _Reportecabecera= new reportecabecera();
+			_Reportecabecera.setIdpedido((int) idPedido);
+			_Reportecabecera.setFecha(fecha);
+			_Reportecabecera.setCodcliente(cliente.getCodigo());
+			idReporteEncabezado= (int) daoreportecabecera.save(_Reportecabecera);
+
+
 			Iterator<PedidoItem> i = listaPedidoItems.iterator();
 			while (i.hasNext())
 			{
@@ -666,6 +695,15 @@ public  double CalcularDescuentoMix(String codigoProductoActual,String opcion,do
 				
 				pedidoItem.setIdPedido(idPedido);
 				idPedidoItem = daoPedidoItem.save(pedidoItem);
+				reporteitem _Reporteitem=new reporteitem();
+
+				_Reporteitem.setCodcabecera(idReporteEncabezado);
+				_Reporteitem.setCodproducto(pedidoItem.getIdArticulo());
+				_Reporteitem.setCantidad(pedidoItem.getCantidad());
+				_Reporteitem.setUnidad(pedidoItem.getUnidcajas());
+				_Reporteitem.setPrecio(pedidoItem.getImporteUnitario());
+				_Reporteitem.setTotal(pedidoItem.getTotal());
+				daoreporteitem.save(_Reporteitem);
 				
 				if (idPedidoItem==-1)
 				{
@@ -922,6 +960,9 @@ public  double CalcularDescuentoMix(String codigoProductoActual,String opcion,do
 		}
  		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.a, android.R.layout.simple_spinner_item, lista); 
  		spClasesDePrecio.setAdapter(adapter);
+		int pos=adapter.getPosition("Clase 1");
+		if(pos>-1)
+			spClasesDePrecio.setSelection(pos);
 	}
 
 	

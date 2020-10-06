@@ -22,11 +22,14 @@ import android.widget.Toast;
 import java.util.List;
 
 import ar.com.syswork.sysmobile.R;
+import ar.com.syswork.sysmobile.daos.DaoConfiguracion;
 import ar.com.syswork.sysmobile.daos.DaoCuenta;
 import ar.com.syswork.sysmobile.daos.DaoVendedor;
 import ar.com.syswork.sysmobile.daos.DataManager;
 import ar.com.syswork.sysmobile.entities.Capania;
+import ar.com.syswork.sysmobile.entities.ConfiguracionDB;
 import ar.com.syswork.sysmobile.entities.CuentaSession;
+import ar.com.syswork.sysmobile.entities.Token;
 import ar.com.syswork.sysmobile.shared.AppSysMobile;
 
 public class PantallaManagerSincronizacion {
@@ -77,6 +80,7 @@ public class PantallaManagerSincronizacion {
 	private AppSysMobile app;
 	private DataManager dm;
 	private DaoCuenta daoCuenta;
+	private DaoConfiguracion daoConfiguracion;
 	final CuentaSession objcuentaSession= new CuentaSession();
 	public PantallaManagerSincronizacion(final ActivitySincronizar a, ListenerSincronizacion listenerSincronizacion)
 	{
@@ -93,6 +97,7 @@ public class PantallaManagerSincronizacion {
 		app = (AppSysMobile) a.getApplication();
 		dm = app.getDataManager();
 		daoCuenta=dm.getDaoCuenta();
+		daoConfiguracion=dm.getDaoConfiguracion();
 		List<Capania> listOBJ= daoCuenta.getAll("");
 		ArrayAdapter<Capania> adaptador;
 		adaptador = new ArrayAdapter<Capania>(a, R.layout.support_simple_spinner_dropdown_item, listOBJ);
@@ -111,6 +116,26 @@ public class PantallaManagerSincronizacion {
 			}
 		});
 		cmbcampaniaCL.setAdapter(adaptador);
+		Capania campania = new Capania();
+		String objb="";
+		for (ConfiguracionDB da : daoConfiguracion.getAll("")
+		) {
+			objb=da.getId_cuenta();
+		}
+		if(objb!="") {
+			for (Capania x : listOBJ
+			) {
+				if (x.getIdAccount().equals(objb)) {
+					campania = x;
+				}
+
+			}
+		}
+		if(campania.getIdAccount()!="") {
+			int pos=adaptador.getPosition(campania);
+			if(pos>-1)
+				cmbcampaniaCL.setSelection(pos);
+		}
 		cmbcampaniaCL.setOnItemSelectedListener(
 				new AdapterView.OnItemSelectedListener() {
 					public void onItemSelected(AdapterView<?> parent,

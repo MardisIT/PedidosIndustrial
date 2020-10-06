@@ -6,6 +6,10 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -19,26 +23,37 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Base64;
 import android.util.Base64OutputStream;
+import android.widget.Toast;
 
 import ar.com.syswork.sysmobile.R;
+import ar.com.syswork.sysmobile.Tracking.JavaRestClient;
+import ar.com.syswork.sysmobile.Tracking.User;
 import ar.com.syswork.sysmobile.daos.DaoChequePagos;
+import ar.com.syswork.sysmobile.daos.DaoCliente;
+import ar.com.syswork.sysmobile.daos.DaoConfiguracion;
 import ar.com.syswork.sysmobile.daos.DaoInventario;
 import ar.com.syswork.sysmobile.daos.DaoPagos;
 import ar.com.syswork.sysmobile.daos.DaoPagosDetalles;
 import ar.com.syswork.sysmobile.daos.DaoPedido;
 import ar.com.syswork.sysmobile.daos.DaoPedidoItem;
+import ar.com.syswork.sysmobile.daos.DaoToken;
 import ar.com.syswork.sysmobile.daos.DaoVisitasUio;
 import ar.com.syswork.sysmobile.daos.Daoinventariodetalles;
 import ar.com.syswork.sysmobile.daos.DataManager;
 import ar.com.syswork.sysmobile.entities.ChequePagos;
+import ar.com.syswork.sysmobile.entities.Cliente;
+import ar.com.syswork.sysmobile.entities.ConfiguracionDB;
 import ar.com.syswork.sysmobile.entities.Inventario;
 import ar.com.syswork.sysmobile.entities.Pagos;
 import ar.com.syswork.sysmobile.entities.PagosDetalles;
 import ar.com.syswork.sysmobile.entities.Pedido;
 import ar.com.syswork.sysmobile.entities.PedidoItem;
+import ar.com.syswork.sysmobile.entities.Token;
 import ar.com.syswork.sysmobile.entities.VisitasUio;
 import ar.com.syswork.sysmobile.pconsultactacte.ListenerConsultaCtaCte;
 import ar.com.syswork.sysmobile.entities.inventariodetalles;
+import ar.com.syswork.sysmobile.pconsultagenerica.detalle.ActivityConsultaGenericaDetalle;
+import ar.com.syswork.sysmobile.pconsultagenerica.detalle.envioclientenuevo;
 import ar.com.syswork.sysmobile.shared.AppSysMobile;
 
 public class LogicaEnviaPendientes implements Callback {
@@ -46,12 +61,15 @@ public class LogicaEnviaPendientes implements Callback {
 	private DataManager dm;
 	private AppSysMobile app;
 	private DaoPedido daoPedido;
+	private DaoCliente daoCliente;
 	private DaoPedidoItem daoPedidoItem;
 	private DaoPagos daoPagos;
+	private DaoToken daoToken;
 	private DaoPagosDetalles daoPagosDetalles;
 	private DaoChequePagos daoChequePagos;
 	private DaoInventario daoInventario;
 	private Daoinventariodetalles daoinventariodetalles;
+	private DaoConfiguracion daoConfiguracion;
 	private DaoVisitasUio daoVisitasUio;
 	public static String EnvioOpcion = "";
 
@@ -78,6 +96,10 @@ public class LogicaEnviaPendientes implements Callback {
 		daoPedido = dm.getDaoPedido();
 		daoPedidoItem = dm.getDaoPedidoItem();
 		daoPagos = dm.getDaoPagos();
+		daoCliente = dm.getDaoCliente();
+		daoConfiguracion=dm.getDaoConfiguracion();
+		daoToken = dm.getDaoToken();
+		ValidToken();
 		daoPagosDetalles = dm.getDaoPagosDetalles();
 		daoChequePagos = dm.getDaoChequePagos();
 		daoInventario = dm.getDaoInventario();
@@ -129,17 +151,36 @@ public class LogicaEnviaPendientes implements Callback {
 		String jSonPedidos = obtieneJsonPedidos();
 		//String jSonPagos=obtieneJsonPagos();
 		EnvioOpcion = "pedidos";
-		if (jSonPedidos.equals("")) {
-			pantallaManagerEnviaPendientes.mostrarMensajeNoHayRegistrosPendientes();
-			return;
+		List<Cliente> lstcClientes = new ArrayList<>();
+		lstcClientes = daoCliente.getAll(" estadoenvio = 'P'");
+		String token = "";
+		for (Token a : daoToken.getAll("")
+		) {
+			token = a.getToken();
 		}
-		pantallaManagerEnviaPendientes.muestraDialogoEnviaPendientes();
-		pantallaManagerEnviaPendientes.seteaTxtResultadoEnvio(a.getString(R.string.conectando));
-		Handler h = new Handler(this);
-		ThreadEnvio te = new ThreadEnvio(h, jSonPedidos);
-		Thread t = new Thread(te);
-		t.start();
+		if(lstcClientes.size()>0) {
+			for (Cliente c : lstcClientes
+			) {
+				envioclientenuevo fetchJsonTask = new envioclientenuevo(this.a);
+				fetchJsonTask.execute(obtieneJsonCliente(c.getCodigo()), token);
 
+			}
+			Toast.makeText(app, "Enviado clientes nuevos..!! Enviar pedidos nuevamente ", Toast.LENGTH_SHORT).show();
+
+			return;
+		}else {
+
+			if (jSonPedidos.equals("")) {
+				pantallaManagerEnviaPendientes.mostrarMensajeNoHayRegistrosPendientes();
+				return;
+			}
+			pantallaManagerEnviaPendientes.muestraDialogoEnviaPendientes();
+			pantallaManagerEnviaPendientes.seteaTxtResultadoEnvio(a.getString(R.string.conectando));
+			Handler h = new Handler(this);
+			ThreadEnvio te = new ThreadEnvio(h, jSonPedidos);
+			Thread t = new Thread(te);
+			t.start();
+		}
 
 	}
 	public void enviarVisistasPendientes() {
@@ -366,6 +407,7 @@ public class LogicaEnviaPendientes implements Callback {
 
 				jsonPedido = new JSONObject();
 				try {
+
 
 					jsonPedido.put("id", 0);
 					jsonPedido.put("codCliente", pedido.getCodCliente());
@@ -727,5 +769,93 @@ public class LogicaEnviaPendientes implements Callback {
 	public void setIdPagosEnviar(long idPagosEnviar)
 	{
 		this.idPagosEnviar = idPagosEnviar;
+	}
+	private String obtieneJsonCliente(String codigo) {
+		String jSonCliente1 = "";
+		JSONObject jsonCliente;
+		jsonCliente= new JSONObject();
+		String aconnt="0";
+		for (ConfiguracionDB da : daoConfiguracion.getAll("")
+		) {
+			aconnt=da.getId_cuenta();
+		}
+		try {
+			jsonCliente.put("account", Integer.valueOf(aconnt));
+			jsonCliente.put("iduser", "1");
+			jsonCliente.put("option", 1);
+			jsonCliente.put("_route", obtieneJsonDetalleDeRuta(codigo));
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+
+		return jsonCliente.toString();
+	}
+	private void ValidToken(){
+		JavaRestClient tarea = new JavaRestClient(this.a);
+		String date="";
+		for (Token a:daoToken.getAll("")
+		) {
+			date= a.getFecha();
+		}
+
+		try {
+			Date datetoken=new SimpleDateFormat("dd-MM-yyyy").parse(date);
+			Date dateNow = new Date();
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(datetoken); // Configuramos la fecha que se recibe
+			calendar.add(Calendar.DAY_OF_YEAR, 5);  // numero de días a añadir, o restar en caso de días<0
+			Date ExpToke=calendar.getTime();
+			if(dateNow.compareTo(ExpToke)>0 ){
+				User _user =new User();
+				tarea.getToken2(_user,this.a);
+			}
+
+		}catch (Exception e){
+			User _user =new User();
+			tarea.getToken2(_user,this.a);
+
+		}
+	}
+	public JSONObject obtieneJsonDetalleDeRuta(String codigo){
+		Cliente cliente;
+		JSONObject jsonCliente;
+		cliente = daoCliente.getByKey(codigo);
+		jsonCliente= new JSONObject();
+		if (cliente!= null) {
+			try {
+				jsonCliente.put("Codigo_Encuesta", cliente.getCodigo());
+				jsonCliente.put("PT_indice", cliente.getCodigo());
+				jsonCliente.put("Tipo", cliente.getLocalidad());
+				jsonCliente.put("local", cliente.getRazonSocial());
+				jsonCliente.put("Dirección", cliente.getCalleNroPisoDpto());
+				jsonCliente.put("Referencia", cliente.getReference());
+				jsonCliente.put("Nombres", cliente.getNombre());
+				jsonCliente.put("Apellidos", cliente.getApellido());
+				jsonCliente.put("Mail", cliente.getMail());
+				jsonCliente.put("Cédula", cliente.getCedula());
+				jsonCliente.put("Celular", cliente.getCelular());
+				jsonCliente.put("Telefono", cliente.getTelefono());
+				jsonCliente.put("Latitud", cliente.getLatitudeBranch());
+				jsonCliente.put("Longitud", cliente.getLenghtBranch());
+				jsonCliente.put("Provincia", "GUAYAS");
+				jsonCliente.put("Canton", "GUAYAQUIL");
+				jsonCliente.put("Parroquia", "GUAYAQUIL");
+				jsonCliente.put("CLUSTER", "1");
+				jsonCliente.put("Estado", "Activo");
+				jsonCliente.put("RUTA", cliente.getCuit());
+				jsonCliente.put("IMEI", cliente.getImeI_ID());
+
+
+
+
+
+
+
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return jsonCliente;
 	}
 }

@@ -38,7 +38,7 @@ public class ThreadSincronizacion implements Runnable{
 			rutaAcceso = AppSysMobile.WS_ACCESO_DEPOSITOS ;
 			break;
 		case AppSysMobile.WS_CLIENTES:
-			rutaAcceso = AppSysMobile.WS_ACCESO_CLIENTES +"idAccount="+ objcuentaSession.getCu_idAccount()+"&IDDEVICE="+"358240051111110";
+			rutaAcceso = AppSysMobile.WS_ACCESO_CLIENTES +"idAccount="+ objcuentaSession.getCu_idAccount()+"&IDDEVICE="+AppSysMobile.WS_IMAIL;
 			servidor="engine";
 
 			break;

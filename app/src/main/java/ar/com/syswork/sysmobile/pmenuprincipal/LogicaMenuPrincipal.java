@@ -105,6 +105,13 @@ public class LogicaMenuPrincipal {
 		itemMP.setImagen(R.drawable.icono_cuenta_corriente);
 		itemMP.setAccion(AppSysMobile.OPC_MENU_PRINCIPAL_REPORTE);
 		listaOpciones.add(itemMP);*/
+		itemMP = new ItemMenuPrincipal();
+		itemMP.setTitulo("Reporte Pedidos");
+		itemMP.setCantidad(0);
+		itemMP.setImagen(R.drawable.icono_cuenta_corriente);
+		itemMP.setAccion(AppSysMobile.OPC_MENU_PRINCIPAL_RPEDIDOS);
+		listaOpciones.add(itemMP);
+
 
 		itemMP = new ItemMenuPrincipal();
 		itemMP.setTitulo("Inventario Productos");
@@ -166,6 +173,11 @@ public class LogicaMenuPrincipal {
 			case AppSysMobile.OPC_MENU_PRINCIPAL_INVENTARIO:
 
 				i = new Intent(a,ar.com.syswork.sysmobile.plistainventario.InventarioActivity.class);
+
+				break;
+			case AppSysMobile.OPC_MENU_PRINCIPAL_RPEDIDOS:
+
+				i = new Intent(a,ar.com.syswork.sysmobile.reportepedidos.ReporteActivity.class);
 
 				break;
 			case AppSysMobile.OPC_MENU_PRINCIPAL_VISITAS:

@@ -138,6 +138,9 @@
         <activity
             android:name=".plistavisitas.VisitaActivity"
             android:label="@string/title_activity_listavisita" />
+        <activity
+            android:name=".reportepedidos.ReporteActivity"
+            android:label="@string/title_activity_listareportepedidos" />
 
     </application>
 

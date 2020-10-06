@@ -23,7 +23,7 @@ public class ListenerConsultaClientes implements OnClickListener, OnItemClickLis
 	String localidad = "";
 	public void setPantallaManager(PantallaManagerConsultaClientes pantallaManagerConsultaClientes) {
 		this.pantallaManagerConsultaClientes = pantallaManagerConsultaClientes;
-		
+
 	}
 	public void setLogica(LogicaConsultaClientes logicaConsultaClientes) {
 		this.logicaConsultaClientes = logicaConsultaClientes;
@@ -59,6 +59,8 @@ public class ListenerConsultaClientes implements OnClickListener, OnItemClickLis
 				break;
             case AppSysMobile.DESDE_CARGA_VISITAS:
                 pantallaManagerConsultaClientes.llamarCargaVisitas(cliente);
+			case AppSysMobile.DESDE_NUEVO_CLIENTE:
+				pantallaManagerConsultaClientes.muestraDetalleClienteNuevo();
 
                 break;
 		
@@ -125,7 +127,7 @@ public class ListenerConsultaClientes implements OnClickListener, OnItemClickLis
 				System.out.println("PARAMETRO " + parametro);
 
 
-				logicaConsultaClientes.cargarRegistros(-1,campoBusqueda + " LIKE '%" + parametro + "%'");
+				logicaConsultaClientes.cargarRegistros(-1,campoBusqueda + " LIKE '%" + parametro + "%' or propietario like '%" + parametro + "%'");
 				logicaConsultaClientes.notificarCambiosAdapter();
 			}
 

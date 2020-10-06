@@ -50,7 +50,7 @@ public class AdapterConsultaClientes extends ArrayAdapter<Cliente> {
 		
 		Cliente cliente = getItem(position);
 
-		envoltorio.txtRazonSocial.setText(cliente.getRazonSocial());
+		envoltorio.txtRazonSocial.setText(cliente.getRazonSocial()+" "+ cliente.getPropietario());
 		envoltorio.txtCodigo.setText(cliente.getCodigo() + " / " + cliente.getCodigoOpcional());
 
 		// Si es el Ultimo, RECARGO

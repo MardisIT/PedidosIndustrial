@@ -1,0 +1,23 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:sysmobile="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/mnu_grabar"
+        android:orderInCategory="100"
+        android:icon="@drawable/icono_grabar"
+        sysmobile:showAsAction="always"
+        android:title="@string/grabar_pedido"/>
+       <item
+        android:id="@+id/mnu_ubicacion"
+        android:orderInCategory="100"
+        android:icon="@drawable/ubicacion"
+        sysmobile:showAsAction="always"
+        android:title="@string/enviar_y_facturar"/>
+    <item
+        android:id="@+id/mnu_cancelar"
+        android:orderInCategory="200"
+        android:icon="@drawable/icono_cancelar"
+        sysmobile:showAsAction="always"
+        android:title="@string/cancelar_pedido"/>
+
+</menu>

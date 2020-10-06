@@ -3,6 +3,8 @@
     <color name="ColorPrimaryDark">#003449</color>
     <color name="ColorAccent">#00352F</color>
     <color name="ColorActionBarTitle">#ffffff</color>
+    <color name="colorvalidador">#f20a0a</color>
+
     <!--
         Base application theme for API 14+. This theme completely replaces
         AppBaseTheme from BOTH res/values/styles.xml and

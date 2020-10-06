@@ -33,6 +33,7 @@ public class AppSysMobile extends Application {
 	public static final int DESDE_SCANNER = 3;
 	public static final int DESDE_CARGA_INVENTARIO = 4;
 	public static final int DESDE_CARGA_VISITAS = 5;
+	public static final int DESDE_NUEVO_CLIENTE = 6;
 
 	
 	// Utilizado para opciones del menu principal
@@ -46,6 +47,8 @@ public class AppSysMobile extends Application {
 	public final static int OPC_MENU_PRINCIPAL_REPORTE= 7;
 	public final static int OPC_MENU_PRINCIPAL_INVENTARIO= 8;
 	public final static int OPC_MENU_PRINCIPAL_VISITAS= 9;
+
+	public final static int OPC_MENU_PRINCIPAL_RPEDIDOS= 10;
 
 	public final static int WS_VENDEDORES = 1;
 	public final static int WS_RUBROS = 2;
@@ -96,6 +99,7 @@ public class AppSysMobile extends Application {
 
 
 	public  static String WS_IMAIL="";
+	public  static String WS_ACCOUNT="";
 	public  static  String WS_ESTADOSIN="";
 
 

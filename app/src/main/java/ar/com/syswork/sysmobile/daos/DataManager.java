@@ -42,6 +42,10 @@ public class DataManager {
 	private static  DaoConfiguracion daoConfiguracion;
 	private  static  DaoToken daoToken;
 
+	//reporte ventas fabian
+	private  static  Daoreportecabecera daoreportecabecera;
+	private  static  Daoreporteitem daoreporteitem;
+
 
 	public DataManager(Context c)
 	{
@@ -76,6 +80,10 @@ public class DataManager {
 			//traking fabian
 			setDaoConfiguracion(new DaoConfiguracion(db));
 			setDaoToken(new DaoToken(db));
+
+			//reporte ventas fabian
+			setDaoreportecabecera(new Daoreportecabecera(db));
+			setDaoreporteitem(new Daoreporteitem(db));
 
 
 		}
@@ -270,5 +278,20 @@ public class DataManager {
 	}
 	public  void setDaoToken (DaoToken daoToken){
 		DataManager.daoToken=daoToken;
+	}
+
+
+
+	public  void setDaoreportecabecera (Daoreportecabecera daoreportecabecera){
+		DataManager.daoreportecabecera=daoreportecabecera;
+	}
+	public  void setDaoreporteitem (Daoreporteitem daoreporteitem){
+		DataManager.daoreporteitem=daoreporteitem;
+	}
+	public Daoreporteitem getDaoreporteitem() {
+		return DataManager.daoreporteitem;
+	}
+	public Daoreportecabecera getDaoreportecabecera() {
+		return DataManager.daoreportecabecera;
 	}
 }

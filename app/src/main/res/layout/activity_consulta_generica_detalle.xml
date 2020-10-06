@@ -25,14 +25,424 @@
         android:layout_below="@+id/imgConsultaGenerica"
         android:layout_marginLeft="1dp"
         android:orientation="vertical" >
+		<ScrollView
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content">
+<LinearLayout
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
 
-	    <ListView
+	android:orientation="vertical">
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:orientation="horizontal"
+		android:weightSum="2">
+		<TextView
+		android:layout_height="match_parent"
+		android:layout_width="0dp"
+			android:text="Código Local 1 *"
+			android:textColor="@color/colorvalidador"
+			android:layout_marginStart="8dp"
+			android:layout_marginTop="24dp"
+			android:textSize="18sp"
+			android:fontFamily="@font/roboto_bold"
+		android:layout_weight="1"/>
+		<EditText
+			android:id="@+id/edcodigol1"
+			android:layout_height="match_parent"
+			android:layout_width="0dp"
+			android:layout_weight="1">
+
+		</EditText>
+	</LinearLayout>
+	<LinearLayout
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:orientation="horizontal"
+	android:weightSum="2">
+	<TextView
+		android:layout_height="match_parent"
+		android:layout_width="0dp"
+		android:text="Código Local 2"
+		android:textColor="@color/colorvalidador"
+		android:layout_marginStart="8dp"
+		android:layout_marginTop="24dp"
+		android:fontFamily="@font/roboto_bold"
+		android:textSize="18sp"
+		android:layout_weight="1"/>
+	<EditText
+		android:id="@+id/edcodigol2"
+		android:layout_height="match_parent"
+		android:layout_width="0dp"
+		android:layout_weight="1">
+
+	</EditText>
+</LinearLayout>
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:orientation="horizontal"
+		android:weightSum="2">
+		<TextView
+			android:layout_height="match_parent"
+			android:layout_width="0dp"
+			android:text="Nombre Local"
+			android:textColor="@color/colorvalidador"
+			android:layout_marginStart="8dp"
+			android:layout_marginTop="24dp"
+			android:fontFamily="@font/roboto_bold"
+			android:textSize="18sp"
+			android:layout_weight="1"/>
+		<EditText
+			android:id="@+id/ednombrelocal"
+			android:layout_height="match_parent"
+			android:layout_width="0dp"
+			android:layout_weight="1">
+
+		</EditText>
+	</LinearLayout>
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:orientation="horizontal"
+		android:weightSum="2">
+		<TextView
+			android:layout_height="match_parent"
+			android:layout_width="0dp"
+			android:text="Dirección"
+			android:textColor="@color/colorvalidador"
+			android:layout_marginStart="8dp"
+			android:layout_marginTop="24dp"
+			android:fontFamily="@font/roboto_bold"
+			android:textSize="18sp"
+			android:layout_weight="1"/>
+		<EditText
+			android:id="@+id/eddireccion"
+			android:layout_height="match_parent"
+			android:layout_width="0dp"
+			android:layout_weight="1">
+
+		</EditText>
+	</LinearLayout>
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:orientation="horizontal"
+		android:weightSum="2">
+		<TextView
+			android:layout_height="match_parent"
+			android:layout_width="0dp"
+			android:text="Tipo Local"
+			android:textColor="@color/colorvalidador"
+			android:layout_marginStart="8dp"
+			android:layout_marginTop="24dp"
+			android:fontFamily="@font/roboto_bold"
+			android:textSize="18sp"
+			android:layout_weight="1"/>
+		<EditText
+			android:id="@+id/edlocalidad"
+			android:layout_height="match_parent"
+			android:layout_width="0dp"
+			android:hint="TIENDA/SUPERMERCADO"
+			android:layout_weight="1">
+
+		</EditText>
+	</LinearLayout>
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:orientation="horizontal"
+		android:weightSum="2">
+		<TextView
+			android:layout_height="match_parent"
+			android:layout_width="0dp"
+			android:text="Ruta"
+			android:textColor="@color/colorvalidador"
+			android:layout_marginStart="8dp"
+			android:layout_marginTop="24dp"
+			android:fontFamily="@font/roboto_bold"
+			android:textSize="18sp"
+			android:layout_weight="1"/>
+		<EditText
+			android:id="@+id/edruta"
+			android:enabled="false"
+			android:layout_height="match_parent"
+			android:layout_width="0dp"
+			android:layout_weight="1">
+
+		</EditText>
+	</LinearLayout>
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:orientation="horizontal"
+		android:weightSum="2">
+		<TextView
+			android:layout_height="match_parent"
+			android:layout_width="0dp"
+			android:text="Iva"
+			android:layout_marginStart="8dp"
+			android:layout_marginTop="24dp"
+			android:fontFamily="@font/roboto_bold"
+			android:textSize="18sp"
+			android:layout_weight="1"/>
+		<CheckBox
+			android:id="@+id/ediva"
+			android:layout_height="match_parent"
+			android:layout_width="0dp"
+			android:layout_weight="1">
+
+		</CheckBox>
+	</LinearLayout>
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:orientation="horizontal"
+		android:weightSum="2">
+		<TextView
+			android:layout_height="match_parent"
+			android:layout_width="0dp"
+			android:text="Teléfono"
+			android:layout_marginStart="8dp"
+			android:layout_marginTop="24dp"
+			android:fontFamily="@font/roboto_bold"
+			android:textSize="18sp"
+			android:layout_weight="1"/>
+		<EditText
+			android:id="@+id/edtelefono"
+			android:layout_height="match_parent"
+			android:layout_width="0dp"
+			android:layout_weight="1">
+
+		</EditText>
+	</LinearLayout>
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:orientation="horizontal"
+		android:weightSum="2">
+		<TextView
+			android:layout_height="match_parent"
+			android:layout_width="0dp"
+			android:text="Email"
+			android:layout_marginStart="8dp"
+			android:layout_marginTop="24dp"
+			android:fontFamily="@font/roboto_bold"
+			android:textSize="18sp"
+			android:layout_weight="1"/>
+		<EditText
+			android:id="@+id/edemail"
+			android:layout_height="match_parent"
+			android:layout_width="0dp"
+			android:layout_weight="1">
+
+		</EditText>
+	</LinearLayout>
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:orientation="horizontal"
+		android:weightSum="2">
+		<TextView
+			android:layout_height="match_parent"
+			android:layout_width="0dp"
+			android:text="Propietario"
+			android:layout_marginStart="8dp"
+			android:layout_marginTop="24dp"
+			android:fontFamily="@font/roboto_bold"
+			android:textSize="18sp"
+			android:layout_weight="1"/>
+		<EditText
+			android:id="@+id/edpropietario"
+			android:layout_height="match_parent"
+			android:layout_width="0dp"
+			android:layout_weight="1">
+
+		</EditText>
+	</LinearLayout>
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:orientation="horizontal"
+		android:weightSum="2">
+		<TextView
+			android:layout_height="match_parent"
+			android:layout_width="0dp"
+			android:text="Longitude"
+			android:textColor="@color/colorvalidador"
+			android:layout_marginStart="8dp"
+			android:layout_marginTop="24dp"
+			android:fontFamily="@font/roboto_bold"
+			android:textSize="18sp"
+			android:layout_weight="1"/>
+		<EditText
+			android:id="@+id/edlongitud"
+			android:enabled="false"
+			android:layout_height="match_parent"
+			android:layout_width="0dp"
+			android:text="0.00"
+			android:inputType="numberDecimal"
+			android:tooltipText="Seleccione el boton de ubicación menu superior para actualizar!!"
+
+			android:layout_weight="1">
+
+		</EditText>
+	</LinearLayout>
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:orientation="horizontal"
+		android:weightSum="2">
+		<TextView
+			android:layout_height="match_parent"
+			android:layout_width="0dp"
+			android:textColor="@color/colorvalidador"
+			android:text="Latitude"
+			android:layout_marginStart="8dp"
+			android:layout_marginTop="24dp"
+			android:fontFamily="@font/roboto_bold"
+			android:textSize="18sp"
+			android:layout_weight="1"/>
+		<EditText
+			android:id="@+id/edlatitude"
+			android:layout_height="match_parent"
+			android:layout_width="0dp"
+			android:text="0.00"
+			android:enabled="false"
+			android:tooltipText="Seleccione el boton de ubicación menu superior para actualizar!!"
+			android:inputType="numberDecimal"
+			android:layout_weight="1">
+
+		</EditText>
+	</LinearLayout>
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:orientation="horizontal"
+		android:weightSum="2">
+		<TextView
+			android:layout_height="match_parent"
+			android:layout_width="0dp"
+			android:text="Ref. Dirección"
+			android:layout_marginStart="8dp"
+			android:layout_marginTop="24dp"
+			android:fontFamily="@font/roboto_bold"
+			android:textSize="18sp"
+			android:layout_weight="1"/>
+		<EditText
+			android:id="@+id/edreferencia"
+			android:layout_height="match_parent"
+			android:layout_width="0dp"
+			android:layout_weight="1">
+
+		</EditText>
+	</LinearLayout>
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:orientation="horizontal"
+		android:weightSum="2">
+		<TextView
+			android:layout_height="match_parent"
+			android:layout_width="0dp"
+			android:text="Nombres Propietario"
+			android:layout_marginStart="8dp"
+			android:layout_marginTop="24dp"
+			android:textColor="@color/colorvalidador"
+			android:fontFamily="@font/roboto_bold"
+			android:textSize="18sp"
+			android:layout_weight="1"/>
+		<EditText
+			android:id="@+id/ednombres"
+			android:layout_height="match_parent"
+			android:layout_width="0dp"
+			android:layout_weight="1">
+
+		</EditText>
+	</LinearLayout>
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:orientation="horizontal"
+		android:weightSum="2">
+		<TextView
+			android:layout_height="match_parent"
+			android:layout_width="0dp"
+			android:text="Apellidos Propietario"
+			android:textColor="@color/colorvalidador"
+			android:layout_marginStart="8dp"
+			android:layout_marginTop="24dp"
+			android:fontFamily="@font/roboto_bold"
+			android:textSize="18sp"
+			android:layout_weight="1"/>
+		<EditText
+			android:id="@+id/edapellidos"
+			android:layout_height="match_parent"
+			android:layout_width="0dp"
+			android:layout_weight="1">
+
+		</EditText>
+	</LinearLayout>
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:orientation="horizontal"
+		android:weightSum="2">
+		<TextView
+			android:layout_height="match_parent"
+			android:layout_width="0dp"
+			android:text="Cédula"
+			android:textColor="@color/colorvalidador"
+			android:layout_marginStart="8dp"
+			android:layout_marginTop="24dp"
+			android:fontFamily="@font/roboto_bold"
+			android:textSize="18sp"
+			android:layout_weight="1"/>
+		<EditText
+			android:id="@+id/edcedula"
+			android:layout_height="match_parent"
+			android:layout_width="0dp"
+			android:layout_weight="1">
+
+		</EditText>
+	</LinearLayout>
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:orientation="horizontal"
+		android:weightSum="2">
+		<TextView
+			android:layout_height="match_parent"
+			android:layout_width="0dp"
+			android:text="Celular"
+			android:layout_marginStart="8dp"
+			android:layout_marginTop="24dp"
+			android:fontFamily="@font/roboto_bold"
+			android:textSize="18sp"
+			android:layout_weight="1"/>
+		<EditText
+			android:id="@+id/edacelular"
+			android:layout_height="match_parent"
+			android:layout_width="0dp"
+			android:layout_weight="1">
+
+		</EditText>
+	</LinearLayout>
+</LinearLayout>
+		</ScrollView>
+
+		<ListView
+			android:visibility="invisible"
 	        android:id="@+id/lstDetalleConsulta"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
 		 >
+
 	
 	    </ListView>
+
     </LinearLayout>
 
 

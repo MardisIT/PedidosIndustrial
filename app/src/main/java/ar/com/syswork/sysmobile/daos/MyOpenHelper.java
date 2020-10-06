@@ -19,7 +19,7 @@ public class MyOpenHelper extends SQLiteOpenHelper
 	private String  dbFileName;
 	private Context context;
 	private MyOpenHelper dbHelper;
-	private static final int DB_VERSION = 15;
+	private static final int DB_VERSION = 14;
 
 	public MyOpenHelper(Context context, String name) 
 	{

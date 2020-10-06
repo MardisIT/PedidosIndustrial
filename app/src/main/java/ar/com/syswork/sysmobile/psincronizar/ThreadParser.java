@@ -2,7 +2,9 @@ package ar.com.syswork.sysmobile.psincronizar;
 
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -37,6 +39,8 @@ import ar.com.syswork.sysmobile.daos.DaoDeposito;
 import ar.com.syswork.sysmobile.daos.DaoPRECIO_ESCALA;
 import ar.com.syswork.sysmobile.daos.DaoRubro;
 import ar.com.syswork.sysmobile.daos.DaoVendedor;
+import ar.com.syswork.sysmobile.daos.Daoreportecabecera;
+import ar.com.syswork.sysmobile.daos.Daoreporteitem;
 import ar.com.syswork.sysmobile.daos.DataManager;
 import ar.com.syswork.sysmobile.entities.Articulo;
 import ar.com.syswork.sysmobile.entities.Capania;
@@ -70,6 +74,8 @@ public class ThreadParser implements Runnable{
 	private DaoDeposito daoDeposito;
 	private DaoCuenta daoCuenta;
 	private DaoConfiguracion daoConfiguracion;
+	private Daoreportecabecera daoreportecabecera;
+	private Daoreporteitem daoreporteitem;
 
 	private DaoDESCUENTO_AVENA daoDESCUENTO_avena;
 	private DaoDESCUENTO_FORMAPAGO daoDESCUENTO_formapago;
@@ -121,6 +127,8 @@ public class ThreadParser implements Runnable{
 			daoPRECIO_escala=dataManager.getDaoPRECIO_escala();
 			daoCartera=dataManager.getDaoCartera();
 			daoConfiguracion=dataManager.getDaoConfiguracion();
+			daoreportecabecera=dataManager.getDaoreportecabecera();
+			daoreporteitem=dataManager.getDaoreporteitem();
 
 		}catch (Exception ex){
 			Log.d("SW","Error ejecutar guardado");
@@ -487,8 +495,11 @@ public class ThreadParser implements Runnable{
 		if (this.pagina == 1)
 			daoCliente.deleteAll();
 
-		
+		daoConfiguracion.deleteAll();
+		daoreporteitem.deleteAll();
+		daoreportecabecera.deleteAll();
 		cliente = new Cliente();
+
 		
 		// msgJson viene comprimido, lo descomprimo y continuo
 		/*try {
@@ -505,13 +516,14 @@ public class ThreadParser implements Runnable{
 		try
 		{
 			arrayJson = new JSONArray(msgJson);
+			String ruta = "";
 			for (int x = 0; x<arrayJson.length() ;x++) {
 				jsObject = arrayJson.getJSONObject(x);
 
 
 				cliente.setCodigo(jsObject.getString("code"));
 				cliente.setCodigoOpcional(jsObject.getString("externalCode"));
-				cliente.setRazonSocial(jsObject.getString("name") +" "+jsObject.getString("propietario"));
+				cliente.setRazonSocial(jsObject.getString("name"));
 				cliente.setCalleNroPisoDpto(jsObject.getString("mainStreet"));
 				cliente.setLocalidad(jsObject.getString("typeBusiness"));
 				cliente.setCuit(jsObject.getString("rutaaggregate"));
@@ -521,10 +533,23 @@ public class ThreadParser implements Runnable{
 				cliente.setCpteDefault("");
 				cliente.setIdVendedor(jsObject.getString("imeI_ID"));
 				cliente.setTelefono("");
+				ruta=jsObject.getString("rutaaggregate");
 				cliente.setLatitudeBranch(jsObject.getString("latitudeBranch"));
 				cliente.setLenghtBranch(jsObject.getString("lenghtBranch"));
 				cliente.setMail("");
 				cliente.setPropietario(jsObject.getString("propietario"));
+				cliente.setEstadoenvio("S");
+				cliente.setReference(jsObject.getString("reference"));
+				cliente.setNombre("");
+				cliente.setApellido("");
+				cliente.setCedula(jsObject.getString("cedula"));
+				cliente.setCelular(jsObject.getString("celular"));
+				cliente.setProvincia(jsObject.getString("province"));
+				cliente.setCanton(jsObject.getString("district"));
+				cliente.setParroquia(jsObject.getString("district"));
+				cliente.setImeI_ID(AppSysMobile.WS_IMAIL);
+
+
 
 				daoCliente.save(cliente);
 				Capania capania= daoCuenta.getByKey(jsObject.getString("imeI_ID"));
@@ -559,6 +584,18 @@ public class ThreadParser implements Runnable{
 			ConfiguracionDB configuracionDB= new ConfiguracionDB();
 			configuracionDB.setAccountNombre(objcuentaSession.getCu_AccountNombre());
 			configuracionDB.setCampaniaNombre(objcuentaSession.getCu_CampaniaNombre());
+			configuracionDB.setFormaBusqueda(ruta);
+			Calendar c = Calendar.getInstance();
+			SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+			String formattedDate = df.format(c.getTime());
+			configuracionDB.setFechaCarga(formattedDate);
+			configuracionDB.setFormularios("");
+			configuracionDB.setEstado("A");
+
+			configuracionDB.setId_cuenta(objcuentaSession.getCu_idAccount());
+			configuracionDB.setId_campania(objcuentaSession.getCu_idcampania());
+
+			daoConfiguracion.save(configuracionDB);
 			JavaRestClient tarea = new JavaRestClient(a);
 			_trackingBussiness.SetLocationMerch(a,configuracionDB);
 			tarea.SetRouteBranches(_route);

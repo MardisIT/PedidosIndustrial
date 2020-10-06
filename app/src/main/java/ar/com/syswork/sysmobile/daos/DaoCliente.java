@@ -21,8 +21,9 @@ public class DaoCliente implements DaoInterface<Cliente>{
 		String sql;
 		sql = "INSERT INTO Clientes (Codigo,CodigoOpcional,RazonSocial,"
 				+ "calleNroPisoDpto,Localidad,Cuit,"
-				+ "Iva,ClaseDePrecio,PorcDto,CpteDefault,idVendedor,telefono,email,LatitudeBranch,LenghtBranch,propietario"
-				+ ") VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+				+ "Iva,ClaseDePrecio,PorcDto,CpteDefault,idVendedor,telefono,email,LatitudeBranch,LenghtBranch,propietario,estadoenvio" +
+				",Referencia,Nombres,Apellidos,Cedula,Celular,Provincia,Canton,Parroquia,IMEI"
+				+ ") VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 		
 		statement = db.compileStatement(sql);
 	}
@@ -48,6 +49,17 @@ public class DaoCliente implements DaoInterface<Cliente>{
 		statement.bindString(14, cliente.getLatitudeBranch());
 		statement.bindString(15, cliente.getLenghtBranch());
 		statement.bindString(16, cliente.getPropietario());
+		statement.bindString(17, cliente.getEstadoenvio());
+
+		statement.bindString(18, cliente.getReference());
+		statement.bindString(19, cliente.getNombre());
+		statement.bindString(20, cliente.getApellido());
+		statement.bindString(21, cliente.getCedula());
+		statement.bindString(22, cliente.getCelular());
+		statement.bindString(23, cliente.getProvincia());
+		statement.bindString(24, cliente.getCanton());
+		statement.bindString(25, cliente.getParroquia());
+		statement.bindString(26, cliente.getImeI_ID());
 
 		return statement.executeInsert();
 	}
@@ -67,6 +79,9 @@ public class DaoCliente implements DaoInterface<Cliente>{
 				+ "idVendedor ='" + cliente.getIdVendedor() + "'," 
 				+ "telefono ='" + cliente.getTelefono() + "',"
 				+ "propietario ='" + cliente.getPropietario() + "',"
+				+ "LatitudeBranch ='" + cliente.getLatitudeBranch() + "',"
+				+ "LenghtBranch ='" + cliente.getLenghtBranch() + "',"
+				+ "estadoenvio ='" + cliente.getEstadoenvio() + "',"
 				+ "email ='" + cliente.getMail() + "'" 
 				+ " WHERE Codigo = '" + cliente.getCodigo() +  "'" ;
 		
@@ -89,7 +104,7 @@ public class DaoCliente implements DaoInterface<Cliente>{
 				
 		c = db.rawQuery("SELECT Codigo,CodigoOpcional,RazonSocial,"
 				+ "calleNroPisoDpto,Localidad,Cuit,"
-				+ "Iva,ClaseDePrecio,PorcDto,CpteDefault,idVendedor,telefono,email ,LatitudeBranch, LenghtBranch,propietario FROM CLIENTES WHERE codigo = '" + key + "'", null);
+				+ "Iva,ClaseDePrecio,PorcDto,CpteDefault,idVendedor,telefono,email ,LatitudeBranch, LenghtBranch,propietario ,estadoenvio,Referencia,Nombres,Apellidos,Cedula,Celular,Provincia,Canton,Parroquia,IMEI  FROM CLIENTES WHERE codigo = '" + key + "'", null);
 		
 		
 		
@@ -114,6 +129,18 @@ public class DaoCliente implements DaoInterface<Cliente>{
 			cliente.setLatitudeBranch(c.getString(13));
 			cliente.setLenghtBranch(c.getString(14));
 			cliente.setPropietario(c.getString(15));
+			cliente.setEstadoenvio(c.getString(16));
+
+			cliente.setReference(c.getString(17));
+			cliente.setNombre(c.getString(18));
+			cliente.setApellido(c.getString(19));
+			cliente.setCedula(c.getString(20));
+			cliente.setCelular(c.getString(21));
+			cliente.setProvincia(c.getString(22));
+			cliente.setCanton(c.getString(23));
+			cliente.setParroquia(c.getString(24));
+			cliente.setImeI_ID(c.getString(25));
+
 
 		}
 		if(!c.isClosed())
@@ -133,7 +160,7 @@ public class DaoCliente implements DaoInterface<Cliente>{
 
 		String sql = "SELECT Codigo,CodigoOpcional,RazonSocial,"
 				+ "calleNroPisoDpto,Localidad,Cuit,"
-				+ "Iva,ClaseDePrecio,PorcDto,CpteDefault,idVendedor,telefono,email,LatitudeBranch, LenghtBranch,propietario FROM CLIENTES" ;
+				+ "Iva,ClaseDePrecio,PorcDto,CpteDefault,idVendedor,telefono,email,LatitudeBranch, LenghtBranch,propietario,estadoenvio,Referencia,Nombres,Apellidos,Cedula,Celular,Provincia,Canton,Parroquia,IMEI FROM CLIENTES" ;
 		
 		if (!where.equals("")){
 			sql = sql + " WHERE " + where;
@@ -161,6 +188,18 @@ public class DaoCliente implements DaoInterface<Cliente>{
 				cliente.setLatitudeBranch(c.getString(13));
 				cliente.setLenghtBranch(c.getString(14));
 				cliente.setPropietario(c.getString(15));
+				cliente.setEstadoenvio(c.getString(16));
+
+				cliente.setReference(c.getString(17));
+				cliente.setNombre(c.getString(18));
+				cliente.setApellido(c.getString(19));
+				cliente.setCedula(c.getString(20));
+				cliente.setCelular(c.getString(21));
+				cliente.setProvincia(c.getString(22));
+				cliente.setCanton(c.getString(23));
+				cliente.setParroquia(c.getString(24));
+				cliente.setImeI_ID(c.getString(25));
+
 				lista.add(cliente);
 			}
 			
@@ -183,7 +222,7 @@ public class DaoCliente implements DaoInterface<Cliente>{
 		
 		String sql = "SELECT Codigo,CodigoOpcional,RazonSocial,"
 				+ "calleNroPisoDpto,Localidad,Cuit,"
-				+ "Iva,ClaseDePrecio,PorcDto,CpteDefault,idVendedor,telefono,email,LatitudeBranch, LenghtBranch,propietario FROM CLIENTES" ;
+				+ "Iva,ClaseDePrecio,PorcDto,CpteDefault,idVendedor,telefono,email,LatitudeBranch, LenghtBranch,propietario,estadoenvio,Referencia,Nombres,Apellidos,Cedula,Celular,Provincia,Canton,Parroquia,IMEI FROM CLIENTES" ;
 		
 		if (!where.equals("")){
 			sql = sql + " WHERE " + where;
@@ -220,6 +259,19 @@ public class DaoCliente implements DaoInterface<Cliente>{
 				cliente.setLatitudeBranch(c.getString(13));
 				cliente.setLenghtBranch(c.getString(14));
 				cliente.setPropietario(c.getString(15));
+				cliente.setEstadoenvio(c.getString(16));
+
+				cliente.setReference(c.getString(17));
+				cliente.setNombre(c.getString(18));
+				cliente.setApellido(c.getString(19));
+				cliente.setCedula(c.getString(20));
+				cliente.setCelular(c.getString(21));
+				cliente.setProvincia(c.getString(22));
+				cliente.setCanton(c.getString(23));
+				cliente.setParroquia(c.getString(24));
+				cliente.setImeI_ID(c.getString(25));
+
+
 				lista.add(cliente);
 			}
 			

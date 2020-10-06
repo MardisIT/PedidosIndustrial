@@ -1,0 +1,111 @@
+package ar.com.syswork.sysmobile.pconsultagenerica.detalle;
+
+import android.app.Activity;
+import android.os.AsyncTask;
+import android.util.Log;
+
+import com.google.gson.JsonObject;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
+import ar.com.syswork.sysmobile.daos.DaoCliente;
+import ar.com.syswork.sysmobile.daos.DaoToken;
+import ar.com.syswork.sysmobile.daos.DataManager;
+import ar.com.syswork.sysmobile.entities.Cliente;
+import ar.com.syswork.sysmobile.shared.AppSysMobile;
+
+public class envioclientenuevo extends AsyncTask<String, Void, String> {
+    private AppSysMobile app;
+    private DataManager dm;
+    private  Activity a;
+    private DaoCliente daoCliente;
+    private DaoToken daoToken;
+    public envioclientenuevo(Activity a) {
+        this.a = a;
+    }
+    @Override
+    protected String doInBackground(String... params) {
+        HttpURLConnection urlConnection = null;
+
+        try {
+            JsonObject postData = new JsonObject();
+            URL url = new URL("http://dyvenpro.azurewebsites.net/api/Branch/LoadTask");
+            urlConnection = (HttpURLConnection) url.openConnection();
+            urlConnection.setRequestProperty("Content-Type", "application/json");
+            urlConnection.setRequestProperty("Authorization", "Bearer " + params[1]);
+            urlConnection.setRequestMethod("POST");
+            urlConnection.setDoOutput(true);
+            urlConnection.setDoInput(true);
+            urlConnection.setChunkedStreamingMode(0);
+            OutputStream out = new BufferedOutputStream(urlConnection.getOutputStream());
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(
+                    out, "UTF-8"));
+            writer.write(params[0]);
+            writer.flush();
+
+            int code = urlConnection.getResponseCode();
+            if (code != 200) {
+
+                throw new IOException("Invalid response from server: " + code);
+
+            }
+
+            BufferedReader rd = new BufferedReader(new InputStreamReader(
+                    urlConnection.getInputStream()));
+            String line;
+            while ((line = rd.readLine()) != null) {
+                Log.i("data", line);
+            }
+            return params[0].toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "";
+        } finally {
+            if (urlConnection != null) {
+                urlConnection.disconnect();
+            }
+        }
+
+
+    }
+
+
+    @Override
+    protected void onPostExecute(String jsonString) {
+        super.onPostExecute(jsonString);
+        if (jsonString != "") {
+            try {
+                JSONObject jsonObject = new JSONObject(jsonString);
+                JSONObject _ruta= new JSONObject(jsonObject.getString("_route"));
+                String codelocal=_ruta.getString("Codigo_Encuesta");
+                if(codelocal!=""){
+                    app = (AppSysMobile) a.getApplicationContext();
+                    dm = app.getDataManager();
+                    daoCliente = dm.getDaoCliente();
+                    Cliente c=daoCliente.getByKey(codelocal);
+                    c.setEstadoenvio("S");
+                    daoCliente.update(c);
+                }
+
+            } catch (JSONException err) {
+                Log.d("Error", err.toString());
+            }
+        }
+    }
+
+
+
+}
+
+

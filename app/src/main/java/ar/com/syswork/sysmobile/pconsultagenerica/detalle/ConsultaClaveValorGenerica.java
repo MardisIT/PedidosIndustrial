@@ -5,6 +5,8 @@ import java.util.List;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.widget.EditText;
+
 import ar.com.syswork.sysmobile.R;
 import ar.com.syswork.sysmobile.entities.ItemClaveValor;
 import ar.com.syswork.sysmobile.shared.AppSysMobile;
@@ -12,7 +14,7 @@ import ar.com.syswork.sysmobile.shared.AppSysMobile;
 public class ConsultaClaveValorGenerica {
 	private int icono;
 	private String titulo;
-	
+
 	private List<ItemClaveValor> listaClaveValor = new ArrayList<ItemClaveValor>();
 	private Activity a;
 	
@@ -20,18 +22,23 @@ public class ConsultaClaveValorGenerica {
 	{
 		this.listaClaveValor = listaClaveValor;
 		this.a =a;
+
 	}
 	
 	public void lanzarActivity()
 	{
+
 		Intent i = new Intent(a,ar.com.syswork.sysmobile.pconsultagenerica.detalle.ActivityConsultaGenericaDetalle.class);
 		i.putExtra("icono_detalle", icono);
 		i.putExtra("titulo", titulo);
 		
 		AppSysMobile app = (AppSysMobile) a.getApplication();
 		app.setListaClaveValor(listaClaveValor);
+
 		
 		a.startActivity(i);
+		a.finish();
+
 	}
 	
 	public int getIcono() {
