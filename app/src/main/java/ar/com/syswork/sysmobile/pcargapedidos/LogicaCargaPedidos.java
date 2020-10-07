@@ -21,6 +21,8 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Paint;
 import android.net.Uri;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
@@ -28,9 +30,12 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import ar.com.syswork.sysmobile.Tracking.TrackingBussiness;
 import ar.com.syswork.sysmobile.daos.DaoArticulo;
 import ar.com.syswork.sysmobile.daos.DaoCartera;
 import ar.com.syswork.sysmobile.daos.DaoCliente;
+import ar.com.syswork.sysmobile.daos.DaoConfiguracion;
+import ar.com.syswork.sysmobile.daos.DaoCuenta;
 import ar.com.syswork.sysmobile.daos.DaoDESCUENTO_AVENA;
 import ar.com.syswork.sysmobile.daos.DaoDESCUENTO_FORMAPAGO;
 import ar.com.syswork.sysmobile.daos.DaoDESCUENTO_VOLUMEN;
@@ -41,8 +46,10 @@ import ar.com.syswork.sysmobile.daos.Daoreportecabecera;
 import ar.com.syswork.sysmobile.daos.Daoreporteitem;
 import ar.com.syswork.sysmobile.daos.DataManager;
 import ar.com.syswork.sysmobile.entities.Articulo;
+import ar.com.syswork.sysmobile.entities.Capania;
 import ar.com.syswork.sysmobile.entities.Cartera;
 import ar.com.syswork.sysmobile.entities.Cliente;
+import ar.com.syswork.sysmobile.entities.ConfiguracionDB;
 import ar.com.syswork.sysmobile.entities.DESCUENTO_AVENA;
 import ar.com.syswork.sysmobile.entities.DESCUENTO_FORMAPAGO;
 import ar.com.syswork.sysmobile.entities.DESCUENTO_VOLUMEN;
@@ -72,6 +79,7 @@ public class LogicaCargaPedidos implements IAlertResult
 	private AppSysMobile app;
 	
 	private DataManager dataManager;
+	TrackingBussiness _trackingBussiness=new TrackingBussiness();
 	
 	private DaoCliente daoCliente;
 	private DaoArticulo daoArticulo;
@@ -86,7 +94,8 @@ public class LogicaCargaPedidos implements IAlertResult
 	private DaoPRECIO_ESCALA daoPRECIO_escala;
 	private DaoDESCUENTO_VOLUMEN daoDESCUENTO_volumen;
 	private DaoDESCUENTO_AVENA daoDESCUENTO_avena;
-
+	private DaoCuenta daoCuenta;
+	private DaoConfiguracion daoConfiguracion;
 
 	
 	private AdapterCargaPedidos adapterCargaPedidos;
@@ -133,7 +142,8 @@ public class LogicaCargaPedidos implements IAlertResult
 		daoDESCUENTO_avena=dataManager.getDaoDESCUENTO_avena();
 		daoreportecabecera=dataManager.getDaoreportecabecera();
 		daoreporteitem=dataManager.getDaoreporteitem();
-
+		daoCuenta=dataManager.getDaoCuenta();
+		daoConfiguracion=dataManager.getDaoConfiguracion();
 
 		listaPedidoItems = new ArrayList<PedidoItem>();
 
@@ -636,7 +646,32 @@ public  double CalcularDescuentoMix(String codigoProductoActual,String opcion,do
 			pantallaManagerCargaPedidos.finalizaActivityCargaPedidos();
 		}
 	}
+@RequiresApi(api = Build.VERSION_CODES.LOLLIPOP_MR1)
+public void enviotrking(){
+	List<Capania> listOBJ= daoCuenta.getAll("");
+	Capania campania = new Capania();
+	String objb="";
+	for (ConfiguracionDB da : daoConfiguracion.getAll("")
+	) {
+		objb=da.getId_cuenta();
+	}
+	if(objb!="") {
+		for (Capania x : listOBJ
+		) {
+			if (x.getIdAccount().equals(objb)) {
+				campania = x;
+			}
 
+		}
+	}
+	ConfiguracionDB configuracionDB= new ConfiguracionDB();
+	configuracionDB.setAccountNombre(campania.getAccountNombre());
+	configuracionDB.setCampaniaNombre(campania.getCampaniaNombre());
+
+
+	_trackingBussiness.SetLocationMerch(this.a,configuracionDB);
+}
+	@RequiresApi(api = Build.VERSION_CODES.LOLLIPOP_MR1)
 	@SuppressLint("SimpleDateFormat")
 	public void grabarPedido(boolean enviarAutomaticamente,boolean facturar,long _idPedidoAEliminar,boolean incluirEnReparto) 
 	{
@@ -658,8 +693,12 @@ public  double CalcularDescuentoMix(String codigoProductoActual,String opcion,do
 	    {
 	    	Pedido tmpPedido = daoPedido.getById((int)_idPedidoAEliminar);
 	    	daoPedido.delete(tmpPedido);
-	    	
 	    	daoPedidoItem.deleteByIdPedido(_idPedidoAEliminar);
+			for (reportecabecera x:
+					daoreportecabecera.getAll("idpedido="+tmpPedido.getIdPedido())) {
+				daoreporteitem.deleteAllKey(String.valueOf(x.get_id()));
+				daoreportecabecera.delete(x);
+			}
 	    }
 	    
 		Pedido pedido = new Pedido();
@@ -676,6 +715,8 @@ public  double CalcularDescuentoMix(String codigoProductoActual,String opcion,do
 
 		int idReporteEncabezado=0;
 
+
+		enviotrking();
 		
 		PedidoItem pedidoItem = null;
 		

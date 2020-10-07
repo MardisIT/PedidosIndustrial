@@ -1,8 +1,8 @@
 <component name="libraryTable">
   <library name="Gradle: com.android.support:design-button:28.0.0-alpha1@aar">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/design-button-28.0.0-alpha1.aar/9664ae934db6662e8fb9bf8aa79d8348/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/design-button-28.0.0-alpha1.aar/9664ae934db6662e8fb9bf8aa79d8348/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/design-button-28.0.0-alpha1.aar/c40591b405fb3b9ce7e21cce5083cf4b/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/design-button-28.0.0-alpha1.aar/c40591b405fb3b9ce7e21cce5083cf4b/res" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>

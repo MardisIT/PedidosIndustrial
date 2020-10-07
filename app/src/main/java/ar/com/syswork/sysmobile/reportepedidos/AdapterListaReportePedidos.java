@@ -13,6 +13,7 @@ import java.util.List;
 import ar.com.syswork.sysmobile.R;
 import ar.com.syswork.sysmobile.entities.VisitasUio;
 import ar.com.syswork.sysmobile.entities.reporteitem;
+import ar.com.syswork.sysmobile.util.Utilidades;
 
 public class AdapterListaReportePedidos extends ArrayAdapter<reportepedidosE>
 {
@@ -57,8 +58,8 @@ public class AdapterListaReportePedidos extends ArrayAdapter<reportepedidosE>
         envoltorio.txtcodProductoD.setText(visitasUio.getCodProductoD());
         envoltorio.txtDescripcionProd.setText(visitasUio.getDescripcionProd());
         envoltorio.txtcantidadpro.setText(String.valueOf(visitasUio.getCantidadpro()));
-        envoltorio.txtpreciop.setText(String.valueOf(visitasUio.getPreciop()));
-        envoltorio.txttotalp.setText(String.valueOf(visitasUio.getTotalp()));
+        envoltorio.txtpreciop.setText(String.valueOf(Double.toString(Utilidades.Redondear((visitasUio.getPreciop()),2))));
+        envoltorio.txttotalp.setText(String.valueOf(Double.toString(Utilidades.Redondear((visitasUio.getTotalp()),2))));
         envoltorio.txtunidades.setText(String.valueOf(visitasUio.getUnidades()));
 
 

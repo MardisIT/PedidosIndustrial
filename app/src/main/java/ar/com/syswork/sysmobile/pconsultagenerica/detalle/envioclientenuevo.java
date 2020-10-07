@@ -1,8 +1,11 @@
 package ar.com.syswork.sysmobile.pconsultagenerica.detalle;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
+import android.nfc.Tag;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.gson.JsonObject;
 
@@ -33,6 +36,12 @@ public class envioclientenuevo extends AsyncTask<String, Void, String> {
     private DaoToken daoToken;
     public envioclientenuevo(Activity a) {
         this.a = a;
+    }
+    private ProgressDialog progreso;
+    @Override
+    protected void onPreExecute()
+    {
+
     }
     @Override
     protected String doInBackground(String... params) {
@@ -84,23 +93,29 @@ public class envioclientenuevo extends AsyncTask<String, Void, String> {
     @Override
     protected void onPostExecute(String jsonString) {
         super.onPostExecute(jsonString);
-        if (jsonString != "") {
-            try {
-                JSONObject jsonObject = new JSONObject(jsonString);
-                JSONObject _ruta= new JSONObject(jsonObject.getString("_route"));
-                String codelocal=_ruta.getString("Codigo_Encuesta");
-                if(codelocal!=""){
-                    app = (AppSysMobile) a.getApplicationContext();
-                    dm = app.getDataManager();
-                    daoCliente = dm.getDaoCliente();
-                    Cliente c=daoCliente.getByKey(codelocal);
-                    c.setEstadoenvio("S");
-                    daoCliente.update(c);
-                }
+        try {
+            if (jsonString != "") {
+                try {
+                    JSONObject jsonObject = new JSONObject(jsonString);
+                    JSONObject _ruta = new JSONObject(jsonObject.getString("_route"));
+                    String codelocal = _ruta.getString("Codigo_Encuesta");
+                    if (codelocal != "") {
+                        app = (AppSysMobile) a.getApplicationContext();
+                        dm = app.getDataManager();
+                        daoCliente = dm.getDaoCliente();
+                        Cliente c = daoCliente.getByKey(codelocal);
+                        c.setEstadoenvio("S");
+                        daoCliente.update(c);
+                    }
 
-            } catch (JSONException err) {
-                Log.d("Error", err.toString());
+                } catch (JSONException err) {
+                    Log.d("Error", err.toString());
+                }
+                Toast.makeText(app, "Clientes enviados", Toast.LENGTH_SHORT).show();
             }
+        } catch (Exception ex) {
+            Toast.makeText(app, "Error de envio cliente: "+ex.getMessage(), Toast.LENGTH_SHORT).show();
+
         }
     }
 

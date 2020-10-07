@@ -1,8 +1,10 @@
 package ar.com.syswork.sysmobile.pcargapedidos;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.support.annotation.RequiresApi;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
@@ -128,6 +130,7 @@ public class ActivityCargaPedidos extends AppCompatActivity implements IAlertRes
 		return true;
 	}
 	
+	@RequiresApi(api = Build.VERSION_CODES.LOLLIPOP_MR1)
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) 
 	{
@@ -284,6 +287,7 @@ public class ActivityCargaPedidos extends AppCompatActivity implements IAlertRes
 		}
 	}
 
+	@RequiresApi(api = Build.VERSION_CODES.LOLLIPOP_MR1)
 	@Override
 	public void onAlertResult(int idAlert, int which) 
 	{

@@ -45,8 +45,7 @@
         <ListView
             android:id="@+id/lstReportePedidos"
             android:layout_width="match_parent"
-            android:layout_height="fill_parent">
-        </ListView>
+            android:layout_height="fill_parent"></ListView>
 
     </LinearLayout>
 

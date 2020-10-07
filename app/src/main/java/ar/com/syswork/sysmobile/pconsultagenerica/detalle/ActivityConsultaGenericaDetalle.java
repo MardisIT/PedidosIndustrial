@@ -252,8 +252,9 @@ public void guardarcliente(){
 					envioclientenuevo fetchJsonTask = new envioclientenuevo(this);
 					fetchJsonTask.execute(obtieneJsonCliente(c.getCodigo()), token);
 				}
+				finish();
 			}
-			finish();
+
 		}else {
 			Toast.makeText(app, "Completar campos obligatorios", Toast.LENGTH_SHORT).show();
 		}
