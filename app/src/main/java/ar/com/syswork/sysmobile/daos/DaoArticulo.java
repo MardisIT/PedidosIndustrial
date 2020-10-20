@@ -177,6 +177,11 @@ public class DaoArticulo implements DaoInterface<Articulo> {
 		return lista;
 	}
 
+	@Override
+	public Articulo CodigosActual() {
+		return null;
+	}
+
 	public List<Articulo> getAllWithLimit(String where,int limitDesde, String order) {
 		
 		ArrayList<Articulo> lista = new ArrayList<Articulo>();

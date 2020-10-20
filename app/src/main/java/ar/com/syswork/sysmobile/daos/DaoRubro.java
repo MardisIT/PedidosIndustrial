@@ -98,6 +98,11 @@ public class DaoRubro implements DaoInterface<Rubro>{
 		return lista;
 	}
 
+	@Override
+	public Rubro CodigosActual() {
+		return null;
+	}
+
 
 	public void deleteAll() {
 		db.execSQL("DELETE FROM Rubros");

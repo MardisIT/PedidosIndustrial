@@ -11,7 +11,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Build;
 import android.provider.Settings;
-import android.support.annotation.RequiresApi;
+import androidx.annotation.RequiresApi;
 import android.telephony.SubscriptionInfo;
 import android.telephony.SubscriptionManager;
 import android.telephony.TelephonyManager;
@@ -19,10 +19,15 @@ import android.telephony.TelephonyManager;
 //import com.evernote.android.job.JobManager;
 //import com.evernote.android.job.JobManagerCreateException;
 
+import com.evernote.android.job.JobManager;
+import com.evernote.android.job.JobManagerCreateException;
+
+import ar.com.syswork.sysmobile.daos.DaoCodigosNuevos;
 import ar.com.syswork.sysmobile.daos.DataManager;
 import ar.com.syswork.sysmobile.entities.ItemClaveValor;
 import ar.com.syswork.sysmobile.gps.GpsReader;
 import ar.com.syswork.sysmobile.industrial.DemoJobCreator;
+import ar.com.syswork.sysmobile.pconsultagenerica.detalle.obtenerCodigos;
 
 public class AppSysMobile extends Application {
 	
@@ -62,6 +67,7 @@ public class AppSysMobile extends Application {
 	public  final  static  int  WS_DESVOLUMEN=10;
 	public  final  static  int  WS_DESPRECIOESCALA=11;
 	public  final  static  int  WS_CARTERA=12;
+	public  final  static  int  WS_CODIGOS=13;
 
 	public final static int WS_RECIBE_DATOS = 1;
 	public final static int WS_RECIBE_ERRORES = 2;
@@ -96,6 +102,7 @@ public class AppSysMobile extends Application {
 	public final static String WS_CONSULTA_DESVOLUMEN = "/GetDescuentoVolumens";
 	public final static String WS_CONSULTA_DESPRECIOESCALA = "/GetPrecioEscalas";
 	public  final  static  String WS_CONSULTA_CARTERA="/GetCartera";
+	public  final  static  String WS_CONSULTA_CODIGOS="http://dyvenpro.azurewebsites.net/api/Order/SequeceOrder?";
 
 
 	public  static String WS_IMAIL="";
@@ -108,6 +115,7 @@ public class AppSysMobile extends Application {
 	public final static String WS_LOCALES_RUTA = "http://geomardis6728.cloudapp.net/servicios/api/Task?";
 	//SETTERS
 	public final static String WS_ACCESO_GRABAR_PEDIDOS = "https://dyvenpro.azurewebsites.net/api/Order/PEDIDOS";
+	public final static String WS_ACCESO_GRABAR_PEDIDOS_INDUSTRIAL = "https://pedido.gnoboa.com:2108/api/PedidoCobertura/AgregarLista";
 	public final static String WS_ACCESO_GRABAR_PAGOS = "http://geomardis6728.cloudapp.net/API/api/PAGOS";
 	public final static String WS_ACCESO_GRABAR_INVENTARIO = "https://dyvenpro.azurewebsites.net/api/Order/inventario";
 	public final static String WS_ACCESO_GRABAR_VISITAS = "http://geomardis6728.cloudapp.net/API/api/visitasUios";
@@ -119,6 +127,7 @@ public class AppSysMobile extends Application {
 	private GpsReader gpsReader;
 	
 	private String vendedorLogueado;
+
 	
 	private List<ItemClaveValor> listaClaveValor = new ArrayList<ItemClaveValor>();
 
@@ -212,12 +221,16 @@ public class AppSysMobile extends Application {
 		//singleton = this;
 		//Actividad=(Activity) this.getApplicationContext();
 
-		/*try {
-			JobManager
-					.create(this)
-					.addJobCreator(DemoJobCreator);
+		try {
+			JobManager.create(this).addJobCreator(DemoJobCreator);
 		} catch (JobManagerCreateException e) {
 
+		}
+		/*daoCodigosNuevos=dm.getDaoCodigosNuevos();
+		if(daoCodigosNuevos.getAll("uri=''").size()==0)
+		{
+			obtenerCodigos fetchJsonTask = new obtenerCodigos((Activity) this.getApplicationContext());
+			fetchJsonTask.execute("", "");
 		}*/
 		
 		setRutaWebService(ruta);

@@ -199,8 +199,10 @@ public class DaoCartera implements DaoInterface<Cartera>{
         return lista;
     }
 
-
-
+    @Override
+    public Cartera CodigosActual() {
+        return null;
+    }
 
 
     public void deleteAll() {

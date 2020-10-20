@@ -10,7 +10,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;;
 
 import ar.com.syswork.sysmobile.R;
 import ar.com.syswork.sysmobile.plistapedidos.ListenerListaPedidos;

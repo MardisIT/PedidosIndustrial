@@ -205,6 +205,11 @@ private SQLiteStatement statement;
         return lista;
     }
 
+    @Override
+    public VisitasUio CodigosActual() {
+        return null;
+    }
+
     public int getCount()
     {
         return 	getCount("");

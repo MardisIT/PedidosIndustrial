@@ -101,6 +101,11 @@ public class DaoVendedor implements DaoInterface<Vendedor>{
 		return lista;
 	}
 
+	@Override
+	public Vendedor CodigosActual() {
+		return null;
+	}
+
 	public int getCount()
 	{
 		int cant=0;

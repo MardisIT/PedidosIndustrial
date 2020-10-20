@@ -9,4 +9,5 @@ public interface DaoInterface<T>
 	void delete(T type);
 	T getByKey(String key);
 	List<T> getAll(String where);
+	T CodigosActual();
 }

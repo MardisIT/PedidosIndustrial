@@ -2,8 +2,10 @@ package ar.com.syswork.sysmobile.pcargainventario;
 
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.RequiresApi;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
@@ -12,15 +14,10 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;;
 
 import ar.com.syswork.sysmobile.R;
-import ar.com.syswork.sysmobile.entities.Inventario;
-import ar.com.syswork.sysmobile.entities.PedidoItem;
 import ar.com.syswork.sysmobile.entities.inventariodetalles;
-import ar.com.syswork.sysmobile.pcargapedidos.ListenerCargaPedidos;
-import ar.com.syswork.sysmobile.pcargapedidos.LogicaCargaPedidos;
-import ar.com.syswork.sysmobile.pcargapedidos.PantallaManagerCargaPedidos;
 import ar.com.syswork.sysmobile.shared.AppSysMobile;
 import ar.com.syswork.sysmobile.util.AlertManager;
 import ar.com.syswork.sysmobile.util.IAlertResult;
@@ -231,6 +228,7 @@ public class CargaInventarioActivity extends AppCompatActivity implements IAlert
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onAlertResult(int idAlert, int which)
     {

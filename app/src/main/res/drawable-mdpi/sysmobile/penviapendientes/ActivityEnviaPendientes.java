@@ -2,7 +2,7 @@ package ar.com.syswork.sysmobile.penviapendientes;
 
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import androidx.appcompat.app.ActionBarActivity;
 
 import ar.com.syswork.sysmobile.R;
 

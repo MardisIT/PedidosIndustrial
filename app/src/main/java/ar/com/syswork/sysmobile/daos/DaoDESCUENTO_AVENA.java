@@ -135,8 +135,10 @@ public class DaoDESCUENTO_AVENA implements DaoInterface<DESCUENTO_AVENA>  {
         return lista;
     }
 
-
-
+    @Override
+    public DESCUENTO_AVENA CodigosActual() {
+        return null;
+    }
 
 
     public void deleteAll() {

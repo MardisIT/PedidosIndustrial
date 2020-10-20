@@ -209,6 +209,11 @@ public class DaoPagos implements DaoInterface<Pagos>{
         return lista;
     }
 
+    @Override
+    public Pagos CodigosActual() {
+        return null;
+    }
+
     public int getCount()
     {
         return 	getCount("");

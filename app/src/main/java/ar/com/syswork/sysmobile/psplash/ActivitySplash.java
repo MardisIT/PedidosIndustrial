@@ -3,13 +3,19 @@ package ar.com.syswork.sysmobile.psplash;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
 import android.view.Menu;
+
+import androidx.annotation.RequiresApi;
+
 import ar.com.syswork.sysmobile.R;
+import ar.com.syswork.sysmobile.daos.DaoCodigosNuevos;
 import ar.com.syswork.sysmobile.daos.DaoVendedor;
 import ar.com.syswork.sysmobile.daos.DataManager;
+import ar.com.syswork.sysmobile.pconsultagenerica.detalle.obtenerCodigos;
 import ar.com.syswork.sysmobile.shared.AppSysMobile;
 
 public class ActivitySplash extends Activity {
@@ -17,7 +23,9 @@ public class ActivitySplash extends Activity {
 	private Timer timer;
 	private DataManager dm;
 	private AppSysMobile app;
+	DaoCodigosNuevos daoCodigosNuevos;
 	
+	@RequiresApi(api = Build.VERSION_CODES.LOLLIPOP_MR1)
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 	
@@ -33,6 +41,7 @@ public class ActivitySplash extends Activity {
 		
 		//inicializo las SharedPreferens
 		app.iniciaConfiguracion();
+
 		
 		//inicializo el GPS
 		/*
@@ -58,7 +67,13 @@ public class ActivitySplash extends Activity {
 	private void lanzarActivity(){
 		DaoVendedor daoVendedor = dm.getDaoVendedor();
 		Intent i ;
-		
+
+		daoCodigosNuevos=dm.getDaoCodigosNuevos();
+		if(daoCodigosNuevos.getAll("uri=''").size()==0)
+		{
+			obtenerCodigos fetchJsonTask = new obtenerCodigos(ActivitySplash.this);
+			fetchJsonTask.execute("", "");
+		}
 		if (daoVendedor.getCount()==0)
 		{
 			i = new Intent(ActivitySplash.this, ar.com.syswork.sysmobile.pmenuprincipal.ActivityMenuPrincipal.class);

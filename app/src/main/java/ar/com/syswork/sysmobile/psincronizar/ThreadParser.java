@@ -1,7 +1,6 @@
 package ar.com.syswork.sysmobile.psincronizar;
 
 
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -11,12 +10,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.accounts.NetworkErrorException;
 import android.app.Activity;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.RequiresApi;
+import androidx.annotation.RequiresApi;
 import android.util.Log;
 
 //import androidx.annotation.RequiresApi;
@@ -30,6 +28,7 @@ import ar.com.syswork.sysmobile.Tracking.TrackingBussiness;
 import ar.com.syswork.sysmobile.daos.DaoArticulo;
 import ar.com.syswork.sysmobile.daos.DaoCartera;
 import ar.com.syswork.sysmobile.daos.DaoCliente;
+import ar.com.syswork.sysmobile.daos.DaoCodigosNuevos;
 import ar.com.syswork.sysmobile.daos.DaoConfiguracion;
 import ar.com.syswork.sysmobile.daos.DaoCuenta;
 import ar.com.syswork.sysmobile.daos.DaoDESCUENTO_AVENA;
@@ -46,6 +45,7 @@ import ar.com.syswork.sysmobile.entities.Articulo;
 import ar.com.syswork.sysmobile.entities.Capania;
 import ar.com.syswork.sysmobile.entities.Cartera;
 import ar.com.syswork.sysmobile.entities.Cliente;
+import ar.com.syswork.sysmobile.entities.CodigosNuevos;
 import ar.com.syswork.sysmobile.entities.ConfiguracionDB;
 import ar.com.syswork.sysmobile.entities.CuentaSession;
 import ar.com.syswork.sysmobile.entities.DESCUENTO_AVENA;
@@ -57,7 +57,6 @@ import ar.com.syswork.sysmobile.entities.Rubro;
 import ar.com.syswork.sysmobile.entities.Vendedor;
 import ar.com.syswork.sysmobile.industrial.rutasupervisor;
 import ar.com.syswork.sysmobile.shared.AppSysMobile;
-import ar.com.syswork.sysmobile.util.Utilidades;
 
 public class ThreadParser implements Runnable{
 
@@ -82,7 +81,7 @@ public class ThreadParser implements Runnable{
 	private DaoDESCUENTO_VOLUMEN daoDESCUENTO_volumen;
 	private DaoPRECIO_ESCALA daoPRECIO_escala;
 	private DaoCartera daoCartera;
-	
+private DaoCodigosNuevos daoCodigosNuevos;
 	
 	private Cliente cliente;
 	private Articulo articulo;
@@ -120,6 +119,7 @@ public class ThreadParser implements Runnable{
 			daoDeposito = dataManager.getDaoDeposito();
 			daoVendedor = dataManager.getDaoVendedor();
 			daoCuenta=dataManager.getDaoCuenta();
+			daoCodigosNuevos=dataManager.getDaoCodigosNuevos();
 
 			daoDESCUENTO_avena=dataManager.getDaoDESCUENTO_avena();
 			daoDESCUENTO_formapago=dataManager.getDaoDESCUENTO_formapago();
@@ -187,6 +187,10 @@ public class ThreadParser implements Runnable{
 				grabarCartera();
 				Log.d("SW","grabo cartera()");
 				break;
+			case AppSysMobile.WS_CODIGOS:
+				grabarCartera();
+				Log.d("SW","grabo cartera()");
+				break;
 		}
 		
 		enviaMensaje("TERMINO", tipoParser);
@@ -241,6 +245,45 @@ public class ThreadParser implements Runnable{
 			}
 		}
 	}
+	private  void grabarCodigos(){
+		if(msgJson.equals("")==false){
+			if (pagina==1)
+				daoCodigosNuevos.deleteAll();
+
+			CodigosNuevos codigosNuevos    = new CodigosNuevos();
+
+			/*try {
+				msgJson = Utilidades.Decompress(msgJson);
+
+			} catch (IOException e1) {
+				e1.printStackTrace();
+				Log.d("SW","Error Decompress VENDEDORES");
+			}*/
+
+
+
+			try
+			{
+				arrayJson = new JSONArray(msgJson);
+				for (int x = 0; x<arrayJson.length() ;x++)
+				{
+					jsObject = arrayJson.getJSONObject(x);
+					codigosNuevos.setID(jsObject.getInt("id"));
+					codigosNuevos.setIdAccount(jsObject.getString("codcli").trim());
+					codigosNuevos.setCode(jsObject.getInt("nombreCliente"));
+					codigosNuevos.setEstado(jsObject.getString("feFac").trim());
+					codigosNuevos.setUri(jsObject.getString("feDes").trim());
+					codigosNuevos.setImei_id(jsObject.getString("tpD").trim());
+					daoCodigosNuevos.save(codigosNuevos);
+				}
+			}
+			catch(JSONException e)
+			{
+				Log.d("SW","Error ejecutar guardado códigos nuevos");
+			}
+		}
+	}
+
 	private  void grabarAvena(){
 		if(msgJson.equals("")==false){
 			if (pagina==1)

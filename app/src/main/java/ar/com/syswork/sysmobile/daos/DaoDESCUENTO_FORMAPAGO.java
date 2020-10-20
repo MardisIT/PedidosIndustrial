@@ -124,8 +124,10 @@ public class DaoDESCUENTO_FORMAPAGO implements DaoInterface<DESCUENTO_FORMAPAGO>
         return lista;
     }
 
-
-
+    @Override
+    public DESCUENTO_FORMAPAGO CodigosActual() {
+        return null;
+    }
 
 
     public void deleteAll() {

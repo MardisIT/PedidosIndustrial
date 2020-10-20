@@ -3,7 +3,9 @@
     <CLASSES>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.api.client/google-api-client/1.4.0-alpha/dc53561f51c54150b5a048daafa91e625f6c75ed/google-api-client-1.4.0-alpha.jar!/" />
     </CLASSES>
-    <JAVADOC />
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.api.client/google-api-client/1.4.0-alpha/8b8bb9816a6dcb2922de4eee3d3e6bd79212599f/google-api-client-1.4.0-alpha-javadoc.jar!/" />
+    </JAVADOC>
     <SOURCES>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.api.client/google-api-client/1.4.0-alpha/99fddfe36c1c5af18c605a862c624a4720e439b0/google-api-client-1.4.0-alpha-sources.jar!/" />
     </SOURCES>

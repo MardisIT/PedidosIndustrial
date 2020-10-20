@@ -225,4 +225,9 @@ public class DaoPedidoItem implements DaoInterface<PedidoItem>{
 			}
 		return lista;
 	}
+
+	@Override
+	public PedidoItem CodigosActual() {
+		return null;
+	}
 }

@@ -9,9 +9,13 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
+
+
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -26,6 +30,7 @@ import android.widget.Toast;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
+
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
@@ -45,7 +50,7 @@ import ar.com.syswork.sysmobile.pconsultaclientes.LogicaConsultaClientes;
 import ar.com.syswork.sysmobile.pconsultaclientes.PantallaManagerConsultaClientes;
 import ar.com.syswork.sysmobile.shared.AppSysMobile;
 
-public class MapsActivity extends AppCompatActivity   implements
+public class MapsActivity extends AppCompatActivity implements
         OnMapReadyCallback, GoogleMap.OnMapClickListener {
     private GoogleMap mapa;
     private LatLng UPV = new LatLng(39.481106, -0.340987);

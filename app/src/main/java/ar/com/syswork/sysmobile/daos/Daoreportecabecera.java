@@ -131,8 +131,10 @@ public class Daoreportecabecera implements DaoInterface<reportecabecera>  {
         return lista;
     }
 
-
-
+    @Override
+    public reportecabecera CodigosActual() {
+        return null;
+    }
 
 
     public void deleteAll() {

@@ -12,6 +12,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.UUID;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -25,11 +26,14 @@ import android.util.Base64;
 import android.util.Base64OutputStream;
 import android.widget.Toast;
 
+import com.google.gson.JsonObject;
+
 import ar.com.syswork.sysmobile.R;
 import ar.com.syswork.sysmobile.Tracking.JavaRestClient;
 import ar.com.syswork.sysmobile.Tracking.User;
 import ar.com.syswork.sysmobile.daos.DaoChequePagos;
 import ar.com.syswork.sysmobile.daos.DaoCliente;
+import ar.com.syswork.sysmobile.daos.DaoCodigosNuevos;
 import ar.com.syswork.sysmobile.daos.DaoConfiguracion;
 import ar.com.syswork.sysmobile.daos.DaoInventario;
 import ar.com.syswork.sysmobile.daos.DaoPagos;
@@ -42,6 +46,7 @@ import ar.com.syswork.sysmobile.daos.Daoinventariodetalles;
 import ar.com.syswork.sysmobile.daos.DataManager;
 import ar.com.syswork.sysmobile.entities.ChequePagos;
 import ar.com.syswork.sysmobile.entities.Cliente;
+import ar.com.syswork.sysmobile.entities.CodigosNuevos;
 import ar.com.syswork.sysmobile.entities.ConfiguracionDB;
 import ar.com.syswork.sysmobile.entities.Inventario;
 import ar.com.syswork.sysmobile.entities.Pagos;
@@ -61,6 +66,7 @@ public class LogicaEnviaPendientes implements Callback {
 	private DataManager dm;
 	private AppSysMobile app;
 	private DaoPedido daoPedido;
+	private DaoCodigosNuevos daoCodigosNuevos;
 	private DaoCliente daoCliente;
 	private DaoPedidoItem daoPedidoItem;
 	private DaoPagos daoPagos;
@@ -74,6 +80,7 @@ public class LogicaEnviaPendientes implements Callback {
 	public static String EnvioOpcion = "";
 
 	private Activity a;
+	private JSONArray jsonArrayPedidosL;
 	private PantallaManagerEnviaPendientes pantallaManagerEnviaPendientes;
 
 	private boolean desdeCargaDePedidos = false;
@@ -99,6 +106,7 @@ public class LogicaEnviaPendientes implements Callback {
 		daoCliente = dm.getDaoCliente();
 		daoConfiguracion=dm.getDaoConfiguracion();
 		daoToken = dm.getDaoToken();
+		daoCodigosNuevos=dm.getDaoCodigosNuevos();
 		ValidToken();
 		daoPagosDetalles = dm.getDaoPagosDetalles();
 		daoChequePagos = dm.getDaoChequePagos();
@@ -180,6 +188,9 @@ public class LogicaEnviaPendientes implements Callback {
 			ThreadEnvio te = new ThreadEnvio(h, jSonPedidos);
 			Thread t = new Thread(te);
 			t.start();
+
+
+
 		}
 
 	}
@@ -384,6 +395,7 @@ public class LogicaEnviaPendientes implements Callback {
 		return lastVal;
 	}
 
+
 	private String obtieneJsonPedidos() {
 		String jSonPedidos = "";
 		JSONArray jsonArrayPedidos = null;
@@ -431,18 +443,31 @@ public class LogicaEnviaPendientes implements Callback {
 	}
 
 	private JSONArray obtieneJsonDetalleDePedido(long idPedido) {
-
 		PedidoItem pedidoItem;
 		JSONObject jsoPedidoItem;
 		JSONArray jsa = null;
+		jsonArrayPedidosL=null;
+		JSONObject jsonObjectPedidoL;
+		Calendar cal = Calendar.getInstance();
+		Date date = cal.getTime();
+		SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");
+		SimpleDateFormat df1 = new SimpleDateFormat("yyyyMMddhhmmss");
+		String fecha = df.format(date);
+		String fecha1 = df1.format(date);
 
 		List<PedidoItem> listaItemsPedidos = daoPedidoItem.getAll(" idPedido = " + idPedido);
+		Pedido localPedido=daoPedido.getById((int)idPedido);
+		CodigosNuevos codigosNuevos= new CodigosNuevos();
+		codigosNuevos= daoCodigosNuevos.CodigosActual();
 		if (listaItemsPedidos.size() > 0) {
 			jsa = new JSONArray();
+			jsonArrayPedidosL=new JSONArray();
 			Iterator<PedidoItem> i = listaItemsPedidos.iterator();
+			UUID idOne = UUID.randomUUID();
 			while (i.hasNext()) {
 				pedidoItem = i.next();
 				jsoPedidoItem = new JSONObject();
+				jsonObjectPedidoL= new JSONObject();
 
 				try {
 					jsoPedidoItem.put("id",0);
@@ -458,6 +483,24 @@ public class LogicaEnviaPendientes implements Callback {
 					jsoPedidoItem.put("formapago", pedidoItem.getFormaPago());
 					jsoPedidoItem.put("unidad", pedidoItem.getUnidcajas());
 
+
+
+					//armar json para envio servidor industrial
+					jsonObjectPedidoL.put("P_PEDIDO",codigosNuevos.getCodeunico());
+					jsonObjectPedidoL.put("P_ORDEN", codigosNuevos.getCodeunico()+""+pedidoItem.getIdPedidoItem());
+					jsonObjectPedidoL.put("P_FECHA",Integer.valueOf(fecha));
+					jsonObjectPedidoL.put("P_PRODUCTO",pedidoItem.getIdArticulo());
+					jsonObjectPedidoL.put("P_PRECIO",pedidoItem.getImporteUnitario());
+					jsonObjectPedidoL.put("P_CANTIDAD",pedidoItem.getCantidad());
+					jsonObjectPedidoL.put("P_ESTADO",0);
+					jsonObjectPedidoL.put("P_FILLER","");
+					jsonObjectPedidoL.put("p_CLIENTE",localPedido.getCodCliente());
+					jsonObjectPedidoL.put("p_PEDIDO_MARDIS",idOne);
+					jsonObjectPedidoL.put("P_VENDEDOR",Integer.valueOf(localPedido.getIdVendedor().replace("V","")));
+					codigosNuevos.setUri("E");
+
+					jsonArrayPedidosL.put(jsonObjectPedidoL);
+
 					jsa.put(jsoPedidoItem);
 
 				} catch (JSONException e) {
@@ -468,6 +511,7 @@ public class LogicaEnviaPendientes implements Callback {
 
 			}
 		}
+		daoCodigosNuevos.update(codigosNuevos);
 		return jsa;
 	}
 
@@ -547,7 +591,7 @@ public class LogicaEnviaPendientes implements Callback {
 
 		// RECIBO ERRORES
 		String resultado = (String) msg.obj;
-		if (EnvioOpcion.equals("pedidos")) {
+		if (EnvioOpcion.equals("servidor")) {
 			switch (msg.arg1) {
 				// recibo 0/1
 				case 1:
@@ -568,6 +612,7 @@ public class LogicaEnviaPendientes implements Callback {
 						}
 
 						eliminaPedidos();
+
 					} else {
 						// Muestro toast
 						pantallaManagerEnviaPendientes.seteaTxtResultadoEnvio(a.getString(R.string.seProdujoUnErrorAlSubirLosPedidos));
@@ -585,7 +630,56 @@ public class LogicaEnviaPendientes implements Callback {
 					pantallaManagerEnviaPendientes.seteaProgressBarVisible(false);
 					pantallaManagerEnviaPendientes.seteaBtnCerrarEnvioPendientesVisible(true);
 					break;
+
 			}
+
+			return false;
+		}
+		if (EnvioOpcion.equals("pedidos")) {
+			switch (msg.arg1) {
+				// recibo 0/1
+				case 1:
+
+					// Si esta Ok, muestro aviso
+					if (resultado.equals("true")) {
+						// Recorre la lista de pedidos y elimina el pedido y los items
+						pantallaManagerEnviaPendientes.seteaValorchkEnviarPendientes(true);
+						pantallaManagerEnviaPendientes.seteaTxtResultadoEnvio(a.getString(R.string.seCrearonLosPedidosExitosamente));
+						pantallaManagerEnviaPendientes.seteaimgSincronizarResultadoVisible(true);
+						pantallaManagerEnviaPendientes.seteaProgressBarVisible(false);
+
+						if (desdeCargaDePedidos) {
+							pantallaManagerEnviaPendientes.cerrarDialogoSincronizacion();
+							pantallaManagerEnviaPendientes.cerrarActivity();
+						} else {
+							pantallaManagerEnviaPendientes.seteaBtnCerrarEnvioPendientesVisible(true);
+						}
+
+						//eliminaPedidos();
+						EnvioOpcion="servidor";
+						Handler hp = new Handler(this);
+						ThreadEnvioIndustrial teI = new ThreadEnvioIndustrial(hp, jsonArrayPedidosL.toString());
+						Thread tI = new Thread(teI);
+						tI.start();
+					} else {
+						// Muestro toast
+						pantallaManagerEnviaPendientes.seteaTxtResultadoEnvio(a.getString(R.string.seProdujoUnErrorAlSubirLosPedidos));
+						pantallaManagerEnviaPendientes.seteaimgSincronizarResultadoVisible(true);
+						pantallaManagerEnviaPendientes.seteaProgressBarVisible(false);
+						pantallaManagerEnviaPendientes.seteaBtnCerrarEnvioPendientesVisible(true);
+					}
+					break;
+
+				// hubo error de comunicaciones
+				case 2:
+
+					pantallaManagerEnviaPendientes.seteaTxtResultadoEnvio(a.getString(R.string.seProdujoUnErrorDeComunicacion) + "( " + resultado + ")");
+					pantallaManagerEnviaPendientes.seteaimgSincronizarResultadoVisible(true);
+					pantallaManagerEnviaPendientes.seteaProgressBarVisible(false);
+					pantallaManagerEnviaPendientes.seteaBtnCerrarEnvioPendientesVisible(true);
+					break;
+
+						}
 
 			return false;
 		}
@@ -639,7 +733,7 @@ public class LogicaEnviaPendientes implements Callback {
 					if (resultado.equals("true")) {
 						// Recorre la lista de pedidos y elimina el pedido y los items
 						pantallaManagerEnviaPendientes.seteaValorchkEnviarPagosPendientes(true);
-						pantallaManagerEnviaPendientes.seteaTxtResultadoEnvio("Inventario Enviado");
+						pantallaManagerEnviaPendientes.seteaTxtResultadoEnvio("Devoluciones Enviadas");
 						pantallaManagerEnviaPendientes.seteaimgSincronizarResultadoVisible(true);
 						pantallaManagerEnviaPendientes.seteaProgressBarVisible(false);
 
@@ -734,6 +828,10 @@ public class LogicaEnviaPendientes implements Callback {
 			daoPedidoItem.deleteAll("");
 		}
 	}
+
+
+
+
 
 	private void eliminaPagos()
 	{

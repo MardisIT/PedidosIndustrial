@@ -171,8 +171,10 @@ public List<ConfiguracionDB> getAll(String where) {
         return lista;
         }
 
-
-
+        @Override
+        public ConfiguracionDB CodigosActual() {
+                return null;
+        }
 
 
         public void deleteAll() {

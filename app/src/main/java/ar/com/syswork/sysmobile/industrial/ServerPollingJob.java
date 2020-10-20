@@ -2,11 +2,46 @@ package ar.com.syswork.sysmobile.industrial;
 
 
 
-/*import com.evernote.android.job.Job;
-import com.evernote.android.job.JobManager;
-import com.evernote.android.job.JobRequest;*/
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.location.LocationManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.BatteryManager;
+import android.os.Build;
+import android.provider.Settings;
+import android.telephony.SubscriptionInfo;
+import android.telephony.SubscriptionManager;
+import android.telephony.TelephonyManager;
 
-public class ServerPollingJob {}/*extends Job {
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+
+import com.evernote.android.job.Job;
+import com.evernote.android.job.JobManager;
+import com.evernote.android.job.JobRequest;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+
+import ar.com.syswork.sysmobile.R;
+import ar.com.syswork.sysmobile.Tracking.GPSTracker;
+import ar.com.syswork.sysmobile.Tracking.JavaRestClient;
+import ar.com.syswork.sysmobile.Tracking.Tracking;
+import ar.com.syswork.sysmobile.Tracking.User;
+import ar.com.syswork.sysmobile.daos.DaoCliente;
+import ar.com.syswork.sysmobile.daos.DaoConfiguracion;
+import ar.com.syswork.sysmobile.daos.DaoToken;
+import ar.com.syswork.sysmobile.daos.DataManager;
+import ar.com.syswork.sysmobile.entities.Token;
+import ar.com.syswork.sysmobile.shared.AppSysMobile;
+
+public class ServerPollingJob  extends Job {
 
     private static final long FIFTEEN_MINUTES_PERIOD = 900000;
     private static final long ONE_HOUR_PERIOD = 3600000;
@@ -45,7 +80,7 @@ public class ServerPollingJob {}/*extends Job {
 
         if (AppSysMobile.getInstance().getString(R.string.never_value_tracking).equals("true")) {
             try{
-                JavaRestClient tarea = new JavaRestClient();
+                JavaRestClient tarea = new JavaRestClient(a);
                 ValidToken();
                 String deviceId = obterImeid(AppSysMobile.getActividad());
                 GPSTracker _track =new  GPSTracker(AppSysMobile.getInstance().getApplicationContext());
@@ -64,20 +99,20 @@ public class ServerPollingJob {}/*extends Job {
 
     }
 
+
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP_MR1)
-    @SuppressLint("MissingPermission")
     public String  obterImeid(Activity a) {
         final String androidIdName = Settings.Secure.ANDROID_ID;
 
         TelephonyManager tm = (TelephonyManager) a.getSystemService(Context.TELEPHONY_SERVICE);
         TelephonyManager mTelephony = (TelephonyManager) a.getSystemService(Context.TELEPHONY_SERVICE);
         String simSerialNo="";
-        String  myIMEI = mTelephony.getDeviceId();
+        @SuppressLint("MissingPermission") String  myIMEI = mTelephony.getDeviceId();
 
         if (myIMEI == null) {
             SubscriptionManager subsManager = (SubscriptionManager) a.getSystemService(Context.TELEPHONY_SUBSCRIPTION_SERVICE);
 
-            List<SubscriptionInfo> subsList = subsManager.getActiveSubscriptionInfoList();
+            @SuppressLint("MissingPermission") List<SubscriptionInfo> subsList = subsManager.getActiveSubscriptionInfoList();
 
             if (subsList!=null) {
                 for (SubscriptionInfo subsInfo : subsList) {
@@ -120,7 +155,7 @@ public class ServerPollingJob {}/*extends Job {
         app = (AppSysMobile) a.getApplication();
         dm = app.getDataManager();
         daoToken=dm.getDaoToken();
-        JavaRestClient tarea = new JavaRestClient();
+        JavaRestClient tarea = new JavaRestClient(a);
         String date="";
         for (Token a:daoToken.getAll("")
         ) {
@@ -136,12 +171,12 @@ public class ServerPollingJob {}/*extends Job {
             Date ExpToke=calendar.getTime();
             if(dateNow.compareTo(ExpToke)>0 ){
                 User _user =new User();
-                tarea.getToken2(_user,a.getApplicationContext());
+                tarea.getToken2(_user, (Activity) a.getApplicationContext());
             }
 
         }catch (Exception e){
             User _user =new User();
-            tarea.getToken2(_user,a.getApplicationContext());
+            tarea.getToken2(_user, (Activity) a.getApplicationContext());
 
         }
     }
@@ -163,4 +198,4 @@ public class ServerPollingJob {}/*extends Job {
 
 
 
-}*/
+}

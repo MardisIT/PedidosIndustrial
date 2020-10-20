@@ -160,8 +160,10 @@ public class Daoreporteitem implements DaoInterface<reporteitem>  {
         return lista;
     }
 
-
-
+    @Override
+    public reporteitem CodigosActual() {
+        return null;
+    }
 
 
     public void deleteAll() {

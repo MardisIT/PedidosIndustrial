@@ -22,6 +22,7 @@ import android.widget.Toast;
 import java.util.List;
 
 import ar.com.syswork.sysmobile.R;
+import ar.com.syswork.sysmobile.daos.DaoCodigosNuevos;
 import ar.com.syswork.sysmobile.daos.DaoConfiguracion;
 import ar.com.syswork.sysmobile.daos.DaoCuenta;
 import ar.com.syswork.sysmobile.daos.DaoVendedor;
@@ -30,6 +31,8 @@ import ar.com.syswork.sysmobile.entities.Capania;
 import ar.com.syswork.sysmobile.entities.ConfiguracionDB;
 import ar.com.syswork.sysmobile.entities.CuentaSession;
 import ar.com.syswork.sysmobile.entities.Token;
+import ar.com.syswork.sysmobile.pconsultagenerica.detalle.envioclientenuevo;
+import ar.com.syswork.sysmobile.pconsultagenerica.detalle.obtenerCodigos;
 import ar.com.syswork.sysmobile.shared.AppSysMobile;
 
 public class PantallaManagerSincronizacion {
@@ -48,6 +51,7 @@ public class PantallaManagerSincronizacion {
 	private CheckBox chkDesVolumen;
 	private CheckBox chkDesPrecioEscala;
 	private CheckBox chkDesCartera;
+	private CheckBox chkDesCodigosNuevos;
 
 
 
@@ -65,6 +69,8 @@ public class PantallaManagerSincronizacion {
 	private TextView txtResultadodesvolumen;
 	private TextView txtResultadodesprecioescala;
 	private TextView txtResultadoCartera;
+	private  TextView txtResultadoCodigosNuevos;
+
 
 	private ProgressBar prgEstadoConexion;
 	private TextView txtEstadoConexion;
@@ -81,6 +87,7 @@ public class PantallaManagerSincronizacion {
 	private DataManager dm;
 	private DaoCuenta daoCuenta;
 	private DaoConfiguracion daoConfiguracion;
+	private DaoCodigosNuevos daoCodigosNuevos;
 	final CuentaSession objcuentaSession= new CuentaSession();
 	public PantallaManagerSincronizacion(final ActivitySincronizar a, ListenerSincronizacion listenerSincronizacion)
 	{
@@ -97,6 +104,15 @@ public class PantallaManagerSincronizacion {
 		app = (AppSysMobile) a.getApplication();
 		dm = app.getDataManager();
 		daoCuenta=dm.getDaoCuenta();
+		daoCodigosNuevos=dm.getDaoCodigosNuevos();
+		if(daoCodigosNuevos.getAll("uri=''").size()==0)
+		{
+			obtenerCodigos fetchJsonTask = new obtenerCodigos(a);
+			fetchJsonTask.execute("", "");
+		}
+
+
+
 		daoConfiguracion=dm.getDaoConfiguracion();
 		List<Capania> listOBJ= daoCuenta.getAll("");
 		ArrayAdapter<Capania> adaptador;
@@ -197,6 +213,8 @@ public class PantallaManagerSincronizacion {
 		chkDesVolumen= (CheckBox) dialog.findViewById(R.id.chkdesvolumen);
 		chkDesPrecioEscala= (CheckBox) dialog.findViewById(R.id.chkdesprecioescala);
 		chkDesCartera= (CheckBox) dialog.findViewById(R.id.chkcartera);
+		chkDesCodigosNuevos= (CheckBox) dialog.findViewById(R.id.chkcodigos);
+
 
 		txtResultadoVendedores = (TextView ) dialog.findViewById(R.id.txtResultadoVendedores);
 		txtResultadoRubros = (TextView ) dialog.findViewById(R.id.txtResultadoRubros);
@@ -209,6 +227,8 @@ public class PantallaManagerSincronizacion {
 		txtResultadodesprecioescala = (TextView) dialog.findViewById(R.id.txtResultadoPrecioescala);
 		txtResultadodesvolumen = (TextView) dialog.findViewById(R.id.txtResultadoDesvolumen);
 		txtResultadoCartera= (TextView) dialog.findViewById(R.id.txtResultadoCartera);
+		txtResultadoCodigosNuevos= (TextView) dialog.findViewById(R.id.txtResultadocodigos);
+
 		
 		imgSincronizar = (ImageView ) dialog.findViewById(R.id.imgSincronizar);
 		progresBar1 = (ProgressBar ) dialog.findViewById(R.id.progressBar1);
@@ -260,6 +280,7 @@ public class PantallaManagerSincronizacion {
 		seteaValordesvolumen(false);
 		seteaValorpresioescala(false);
 		seteaValorCartera(false);
+		seteaValorCodigos(false);
 
 		seteatxtResultadoVendedores("");
 		seteatxtResultadoRubros("");
@@ -272,6 +293,8 @@ public class PantallaManagerSincronizacion {
 		seteatxtResultadodesvolumen("");
 		seteatxtResultadoprecioescala("");
 		seteatxtResultadoCartera("");
+		seteatxtResultadoCodigos("");
+
 
 		seteaImgSincronizarVisible(false);
 		seteaProgressBarVisible(true);
@@ -328,6 +351,9 @@ public class PantallaManagerSincronizacion {
 	public void seteaValorCartera(boolean valor) {
 		chkDesCartera.setChecked(valor);
 	}
+	public void seteaValorCodigos(boolean valor) {
+		chkDesCodigosNuevos.setChecked(valor);
+	}
 
 
 	public void seteaValorChkRubros(boolean valor)
@@ -382,6 +408,10 @@ public class PantallaManagerSincronizacion {
 	public void seteatxtResultadoCartera(String valor)
 	{
 		txtResultadoCartera.setText(valor);
+	}
+	public void seteatxtResultadoCodigos(String valor)
+	{
+		txtResultadoCodigosNuevos.setText(valor);
 	}
 
 	public void seteaImgSincronizarVisible(boolean visible)

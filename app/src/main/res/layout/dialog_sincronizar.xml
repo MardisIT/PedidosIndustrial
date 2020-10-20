@@ -55,6 +55,17 @@
         android:clickable="false"
         android:focusable="false"
         android:text="CARTERA" />
+    <CheckBox
+        android:id="@+id/chkcodigos"
+        android:visibility="invisible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/chkcartera"
+        android:layout_below="@+id/chkcartera"
+        android:layout_marginTop="20dp"
+        android:clickable="false"
+        android:focusable="false"
+        android:text="Códigos Pedidos" />
 
     <CheckBox
         android:id="@+id/chkCuenta"
@@ -175,6 +186,16 @@
         android:layout_below="@+id/chkcartera"
         android:text="@string/filler"
         android:textAppearance="?android:attr/textAppearanceSmall" />
+    <TextView
+        android:id="@+id/txtResultadocodigos"
+        android:visibility="invisible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="40dp"
+        android:layout_below="@+id/chkcodigos"
+        android:text="@string/filler"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
 
 
     <TextView
@@ -244,7 +265,7 @@
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/txtResultadoPrecioescala"
+        android:layout_below="@+id/chkcartera"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
         android:text="@string/cerrar"

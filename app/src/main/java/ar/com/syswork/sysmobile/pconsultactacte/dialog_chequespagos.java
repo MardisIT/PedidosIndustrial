@@ -4,7 +4,7 @@ import android.os.Bundle;
 
 import android.widget.ListView;
 
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;;
 
 import java.util.ArrayList;
 import java.util.List;

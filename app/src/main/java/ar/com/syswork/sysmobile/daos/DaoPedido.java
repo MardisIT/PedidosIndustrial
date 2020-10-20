@@ -210,7 +210,12 @@ public class DaoPedido implements DaoInterface<Pedido>{
 		
 		return lista;
 	}
-	
+
+	@Override
+	public Pedido CodigosActual() {
+		return null;
+	}
+
 	public int getCount()
 	{
 		return 	getCount("");

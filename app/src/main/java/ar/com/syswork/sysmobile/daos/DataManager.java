@@ -45,6 +45,7 @@ public class DataManager {
 	//reporte ventas fabian
 	private  static  Daoreportecabecera daoreportecabecera;
 	private  static  Daoreporteitem daoreporteitem;
+	private static  DaoCodigosNuevos daoCodigosNuevos;
 
 
 	public DataManager(Context c)
@@ -84,6 +85,8 @@ public class DataManager {
 			//reporte ventas fabian
 			setDaoreportecabecera(new Daoreportecabecera(db));
 			setDaoreporteitem(new Daoreporteitem(db));
+			setDaoCodigosNuevos(new DaoCodigosNuevos(db));
+
 
 
 		}
@@ -285,11 +288,18 @@ public class DataManager {
 	public  void setDaoreportecabecera (Daoreportecabecera daoreportecabecera){
 		DataManager.daoreportecabecera=daoreportecabecera;
 	}
+	public  void setDaoCodigosNuevos (DaoCodigosNuevos daoCodigosNuevos){
+		DataManager.daoCodigosNuevos=daoCodigosNuevos;
+	}
+
 	public  void setDaoreporteitem (Daoreporteitem daoreporteitem){
 		DataManager.daoreporteitem=daoreporteitem;
 	}
 	public Daoreporteitem getDaoreporteitem() {
 		return DataManager.daoreporteitem;
+	}
+	public DaoCodigosNuevos getDaoCodigosNuevos() {
+		return DataManager.daoCodigosNuevos;
 	}
 	public Daoreportecabecera getDaoreportecabecera() {
 		return DataManager.daoreportecabecera;

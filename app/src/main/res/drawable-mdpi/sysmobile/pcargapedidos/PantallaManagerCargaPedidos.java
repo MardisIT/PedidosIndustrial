@@ -212,7 +212,7 @@ public class PantallaManagerCargaPedidos {
 	}
 
 	public void setDatosCliente(Cliente cliente) {
-		txtCliente.setText(cliente.getRazonSocial());
+		txtCliente.setText(cliente.getCodigo()+"-"+ cliente.getRazonSocial());
 	}
 	
 	public void setCantidadItems(int cant)

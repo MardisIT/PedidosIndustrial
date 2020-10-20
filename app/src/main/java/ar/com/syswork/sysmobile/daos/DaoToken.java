@@ -101,6 +101,11 @@ public class DaoToken implements DaoInterface<Token>{
         return lista;
     }
 
+    @Override
+    public Token CodigosActual() {
+        return null;
+    }
+
 
     public void deleteAll() {
         db.execSQL("DELETE FROM Token");

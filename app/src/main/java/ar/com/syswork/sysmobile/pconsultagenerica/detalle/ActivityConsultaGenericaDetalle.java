@@ -20,7 +20,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;;
 import android.telephony.SubscriptionInfo;
 import android.telephony.SubscriptionManager;
 import android.telephony.TelephonyManager;
@@ -225,10 +225,10 @@ public void guardarcliente(){
 		cliente.setImeI_ID(obterImeid(this));
 
 		cliente.setEstadoenvio("P");
-		if(!edruta.getText().toString().equals("")&&!ednombres.getText().toString().equals("")&&!edapellidos.getText().toString().equals("")
+			if(!edruta.getText().toString().equals("")&&!ednombres.getText().toString().equals("")&&!edapellidos.getText().toString().equals("")
 				&&!edcodigol1.getText().toString().equals("")&&!edcodigol2.getText().toString().equals("")&&!ednombrelocal.getText().toString().equals("")
 				&&!edcedula.getText().toString().equals("")&&!edlatitude.getText().toString().equals("")&&!edlongitud.getText().toString().equals("")
-				&&!eddireccion.getText().toString().equals("")&&!edlocalidad.getText().toString().equals("")&&!edlongitud.getText().toString().equals("")) {
+				&&!eddireccion.getText().toString().equals("")&&!edreferencia.getText().toString().equals("")&&!edacelular.getText().toString().equals("")&&!edlocalidad.getText().toString().equals("")&&!edlongitud.getText().toString().equals("")) {
 
 
 			Cliente _auxC = daoCliente.getByKey(cliente.getCodigo());

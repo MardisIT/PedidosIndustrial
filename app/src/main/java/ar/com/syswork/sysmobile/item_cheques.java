@@ -3,7 +3,7 @@ package ar.com.syswork.sysmobile;
 import android.os.Bundle;
 
 
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;;
 
 public class item_cheques extends AppCompatActivity {
 

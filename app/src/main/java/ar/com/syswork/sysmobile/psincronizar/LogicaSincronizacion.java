@@ -64,6 +64,7 @@ public class LogicaSincronizacion implements Callback{
 	private String jSondesprecioescala;
 
 	private String jSonCartera;
+	private String jSoncodigosnuevos;
 
 
 
@@ -298,7 +299,15 @@ public class LogicaSincronizacion implements Callback{
 				executor.execute(ts);
 			}
 
-			
+			if (listaRegistros.get(pos).getTabla().equals("codigos"))
+			{
+				pantallaManagerSincronizacion.seteatxtResultadoCodigos(strConectando);
+				ts = new ThreadSincronizacion(h,AppSysMobile.WS_CODIGOS,0);
+
+				Log.d("SW","Lanza Thread CARTERA");
+
+				executor.execute(ts);
+			}
 			
 			if (listaRegistros.get(pos).getTabla().equals("wsSysMobileArticulos"))
 			{
@@ -430,6 +439,12 @@ public class LogicaSincronizacion implements Callback{
 							jSonCartera=resultado;
 							pantallaManagerSincronizacion.seteatxtResultadoprecioescala(strDescargaExitosa);
 							pantallaManagerSincronizacion.seteaValorCartera(true);
+							break;
+
+						case AppSysMobile.WS_CODIGOS:
+							jSoncodigosnuevos=resultado;
+							pantallaManagerSincronizacion.seteatxtResultadoCodigos(strDescargaExitosa);
+							pantallaManagerSincronizacion.seteaValorCodigos(true);
 							break;
 
 

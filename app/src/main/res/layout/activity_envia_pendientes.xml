@@ -52,7 +52,7 @@
         android:layout_below="@+id/btnEnviarPendientesPagos"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="14dp"
-        android:text="ENVIAR PENDIENTES INVENTARIO" />
+        android:text="ENVIAR PENDIENTES DEVOLUCIONES" />
     <Button
         android:id="@+id/btnEnviarPendientesvisitas"
         android:layout_width="wrap_content"

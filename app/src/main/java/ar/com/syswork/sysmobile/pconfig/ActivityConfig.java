@@ -11,7 +11,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;;
 
 import ar.com.syswork.sysmobile.R;
 import ar.com.syswork.sysmobile.shared.AppSysMobile;

@@ -97,7 +97,12 @@ public class DaoDeposito implements DaoInterface<Deposito>{
 
 		return lista;
 	}
-	
+
+	@Override
+	public Deposito CodigosActual() {
+		return null;
+	}
+
 	public void deleteAll() {
 		db.execSQL("DELETE FROM Depositos");
 	}

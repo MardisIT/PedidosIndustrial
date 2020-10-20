@@ -214,7 +214,12 @@ public class DaoCliente implements DaoInterface<Cliente>{
 		return lista;
 	}
 
-	
+	@Override
+	public Cliente CodigosActual() {
+		return null;
+	}
+
+
 	public List<Cliente> getAllWithLimit(String where,int limitDesde, String order) {
 		
 		ArrayList<Cliente> lista = new ArrayList<Cliente>();

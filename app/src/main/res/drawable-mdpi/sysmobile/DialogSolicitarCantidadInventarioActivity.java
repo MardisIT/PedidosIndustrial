@@ -1,7 +1,7 @@
 package ar.com.syswork.sysmobile;
 
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import androidx.appcompat.app.ActionBarActivity;
 
 public class DialogSolicitarCantidadInventarioActivity extends ActionBarActivity {
 

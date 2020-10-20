@@ -26,6 +26,7 @@ public class ProcesaJson implements Callback{
 	private String jSonDesvolumen;
 	private String jSondesprecioescala;
 	private  String jSoncartera;
+	private  String jSoncodigos;
 
 	public String getjSonCuenta() {
 		return jSonCuenta;
@@ -109,7 +110,11 @@ public class ProcesaJson implements Callback{
 			tp = new ThreadParser(h, AppSysMobile.WS_CARTERA, a, jSoncartera, 1);
 			executor.execute(tp);
 		}
-
+		if(jSoncodigos!=null) {
+			pantallaManagerSincronizacion.seteatxtResultadoCodigos(strProcesando);
+			tp = new ThreadParser(h, AppSysMobile.WS_CODIGOS, a, jSoncodigos, 1);
+			executor.execute(tp);
+		}
 
 
 		
@@ -219,9 +224,15 @@ public class ProcesaJson implements Callback{
 	public String getjSonCartera() {
 		return jSoncartera;
 	}
+	public String getjSoncodigos() {
+		return jSoncodigos;
+	}
 
 	public void setjSonCartera(String jSoncartera) {
 		this.jSoncartera = jSoncartera;
+	}
+	public void setjSoncodigosnuevos(String jSoncodigos) {
+		this.jSoncodigos = jSoncodigos;
 	}
 
 	public void setalJsonClientes(ArrayList<String> alJsonClientes) {

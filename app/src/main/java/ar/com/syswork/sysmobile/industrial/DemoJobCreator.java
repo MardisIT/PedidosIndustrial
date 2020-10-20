@@ -4,13 +4,15 @@ import android.content.Context;
 
 //import androidx.annotation.NonNull;
 
-//import com.evernote.android.job.Job;
-//import com.evernote.android.job.JobCreator;
-//import com.evernote.android.job.JobManager;
+import androidx.annotation.NonNull;
 
-//import javax.annotation.Nullable;
+import com.evernote.android.job.Job;
+import com.evernote.android.job.JobCreator;
+import com.evernote.android.job.JobManager;
 
-public class DemoJobCreator{}/* implements JobCreator {
+import javax.annotation.Nullable;
+
+public class DemoJobCreator implements JobCreator {
 
     @Override
     @Nullable
@@ -28,4 +30,4 @@ public class DemoJobCreator{}/* implements JobCreator {
             // manager.addJobCreator(new DemoJobCreator());
         }
     }
-}*/
+}

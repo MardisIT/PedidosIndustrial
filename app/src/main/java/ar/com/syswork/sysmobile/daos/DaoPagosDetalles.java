@@ -232,4 +232,9 @@ public class DaoPagosDetalles implements DaoInterface<PagosDetalles>{
         }
         return lista;
     }
+
+    @Override
+    public PagosDetalles CodigosActual() {
+        return null;
+    }
 }

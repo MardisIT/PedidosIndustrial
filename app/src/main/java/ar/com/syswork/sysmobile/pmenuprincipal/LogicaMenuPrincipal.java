@@ -114,7 +114,7 @@ public class LogicaMenuPrincipal {
 
 
 		itemMP = new ItemMenuPrincipal();
-		itemMP.setTitulo("Inventario Productos");
+		itemMP.setTitulo("Devoluciones Productos");
 		itemMP.setCantidad(0);
 		itemMP.setImagen(R.drawable.icono_pedido_pendientes);
 		itemMP.setAccion(AppSysMobile.OPC_MENU_PRINCIPAL_INVENTARIO);

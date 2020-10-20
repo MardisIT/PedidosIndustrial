@@ -141,8 +141,10 @@ public class DaoPRECIO_ESCALA implements DaoInterface<PRECIO_ESCALA>  {
         return lista;
     }
 
-
-
+    @Override
+    public PRECIO_ESCALA CodigosActual() {
+        return null;
+    }
 
 
     public void deleteAll() {

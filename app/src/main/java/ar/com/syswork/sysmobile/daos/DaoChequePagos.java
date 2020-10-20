@@ -202,4 +202,9 @@ public class DaoChequePagos implements DaoInterface<ChequePagos>{
         }
         return lista;
     }
+
+    @Override
+    public ChequePagos CodigosActual() {
+        return null;
+    }
 }

@@ -4,7 +4,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.support.annotation.RequiresApi;
+import androidx.annotation.RequiresApi;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
@@ -14,14 +14,13 @@ import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import ar.com.syswork.sysmobile.R;
-import ar.com.syswork.sysmobile.entities.Pedido;
 import ar.com.syswork.sysmobile.entities.PedidoItem;
 import ar.com.syswork.sysmobile.shared.AppSysMobile;
 import ar.com.syswork.sysmobile.util.AlertManager;
 import ar.com.syswork.sysmobile.util.IAlertResult;
 
 
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;;
 
 public class ActivityCargaPedidos extends AppCompatActivity implements IAlertResult
 {

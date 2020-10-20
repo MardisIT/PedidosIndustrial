@@ -76,6 +76,8 @@ public class ThreadEnvioinvnetario implements Runnable {
 
     private void enviaMensaje(String mensaje, int tipoRespuesta) {
         Message message = new Message();
+        if(mensaje==null)
+            mensaje="0";
         message.arg1 = tipoRespuesta;
         message.obj = mensaje;
         h.sendMessage(message);

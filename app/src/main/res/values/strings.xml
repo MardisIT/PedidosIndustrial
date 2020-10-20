@@ -109,6 +109,7 @@
     <string name="seCrearonLosPagosExitosamente">Se Crearon los pagos Existosamente</string>
     <string name="seProdujoUnErrorAlSubirLosPedidos">Se produjo un error al subir los Pedidos</string>
     <string name="seProdujoUnErrorDeComunicacion">Se produjo un error de comunicacion</string>
+    <string name="seProdujoUnErrorDeComunicacionindustrial">Se produjo un error de comunicacion</string>
     <string name="obteniendoDatos">Obteniendo Datos..</string>
     <string name="ultimosQuinceDias">Ult. 15 dias</string>
     <string name="ultimosTreintaDias">Ult. 30 dias</string>
@@ -170,14 +171,14 @@
     <string name="title_activity_dialogo_reporte">dialogo_reporte</string>
     <string name="title_activity_item_reporte">item_reporte</string>
     <string name="title_activity_item_forma_pago">item_forma_pago</string>
-    <string name="title_activity_inventario">Lista de Invetarios</string>
+    <string name="title_activity_inventario">Lista de Devoluciones</string>
     <string name="title_activity_item_lista_inventario">item_lista_inventario</string>
     <string name="title_activity_lista_inventario">ListaInventarioActivity</string>
-    <string name="title_activity_carga_inventario">Ingresar Inventario</string>
+    <string name="title_activity_carga_inventario">Ingresar Devoluciones</string>
     <string name="title_activity_dialog_solicitar_cantidad_inventario">
         DialogSolicitarCantidadInventarioActivity
     </string>
-    <string name="title_activity_item_carga_inventario">Inventario</string>
+    <string name="title_activity_item_carga_inventario">Devoluciones</string>
     <string name="title_activity_visita">visita</string>
     <string name="pause">1</string>
     <string name="resume">2</string>

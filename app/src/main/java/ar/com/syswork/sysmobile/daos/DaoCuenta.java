@@ -127,8 +127,10 @@ public class DaoCuenta implements DaoInterface<Capania> {
         return lista;
     }
 
-
-
+    @Override
+    public Capania CodigosActual() {
+        return null;
+    }
 
 
     public void deleteAll() {

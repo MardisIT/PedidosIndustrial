@@ -5,7 +5,7 @@ package ar.com.syswork.sysmobile.entities;
  */
 
 public class CodigosNuevos {
-    public String ID;
+    public int ID;
     public String idAccount;
     public int code;
     public String estado;
@@ -16,15 +16,7 @@ public class CodigosNuevos {
     public CodigosNuevos() {
     }
 
-    public CodigosNuevos(String ID, String idAccount, int code, String estado, String uri, String imei_id, String codeunico) {
-        this.ID = ID;
-        this.idAccount = idAccount;
-        this.code = code;
-        this.estado = estado;
-        this.uri = uri;
-        this.imei_id = imei_id;
-        this.codeunico = codeunico;
-    }
+
 
     public String getCodeunico() {
 
@@ -35,11 +27,22 @@ public class CodigosNuevos {
         this.codeunico = codeunico;
     }
 
-    public String getID() {
+
+    public int getID() {
         return ID;
     }
 
-    public void setID(String ID) {
+    public CodigosNuevos(int ID, String idAccount, int code, String estado, String uri, String imei_id, String codeunico) {
+        this.ID = ID;
+        this.idAccount = idAccount;
+        this.code = code;
+        this.estado = estado;
+        this.uri = uri;
+        this.imei_id = imei_id;
+        this.codeunico = codeunico;
+    }
+
+    public void setID(int ID) {
         this.ID = ID;
     }
 

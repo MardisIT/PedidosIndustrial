@@ -216,6 +216,11 @@ public class Daoinventariodetalles implements DaoInterface<inventariodetalles>{
         return lista;
     }
 
+    @Override
+    public inventariodetalles CodigosActual() {
+        return null;
+    }
+
     public int getCount()
     {
         return 	getCount("");

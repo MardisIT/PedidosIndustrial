@@ -134,8 +134,10 @@ public class DaoDESCUENTO_VOLUMEN implements DaoInterface<DESCUENTO_VOLUMEN>  {
         return lista;
     }
 
-
-
+    @Override
+    public DESCUENTO_VOLUMEN CodigosActual() {
+        return null;
+    }
 
 
     public void deleteAll() {
