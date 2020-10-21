@@ -71,6 +71,7 @@ public class ActivitySplash extends Activity {
 		daoCodigosNuevos=dm.getDaoCodigosNuevos();
 		if(daoCodigosNuevos.getAll("uri=''").size()==0)
 		{
+
 			obtenerCodigos fetchJsonTask = new obtenerCodigos(ActivitySplash.this);
 			fetchJsonTask.execute("", "");
 		}
