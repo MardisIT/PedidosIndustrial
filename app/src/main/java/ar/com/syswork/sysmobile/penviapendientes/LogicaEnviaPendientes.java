@@ -615,7 +615,7 @@ public class LogicaEnviaPendientes implements Callback {
 
 					} else {
 						// Muestro toast
-						pantallaManagerEnviaPendientes.seteaTxtResultadoEnvio(a.getString(R.string.seProdujoUnErrorAlSubirLosPedidos));
+						pantallaManagerEnviaPendientes.seteaTxtResultadoEnvio(a.getString(R.string.seProdujoUnErrorAlSubirLosPedidos)+"Servidor Industrial");
 						pantallaManagerEnviaPendientes.seteaimgSincronizarResultadoVisible(true);
 						pantallaManagerEnviaPendientes.seteaProgressBarVisible(false);
 						pantallaManagerEnviaPendientes.seteaBtnCerrarEnvioPendientesVisible(true);
