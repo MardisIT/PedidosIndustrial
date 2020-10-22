@@ -56,6 +56,8 @@ import ar.com.syswork.sysmobile.entities.PRECIO_ESCALA;
 import ar.com.syswork.sysmobile.entities.Rubro;
 import ar.com.syswork.sysmobile.entities.Vendedor;
 import ar.com.syswork.sysmobile.industrial.rutasupervisor;
+import ar.com.syswork.sysmobile.pconsultagenerica.detalle.obtenerCodigos;
+import ar.com.syswork.sysmobile.psplash.ActivitySplash;
 import ar.com.syswork.sysmobile.shared.AppSysMobile;
 
 public class ThreadParser implements Runnable{
@@ -539,10 +541,18 @@ private DaoCodigosNuevos daoCodigosNuevos;
 			daoCliente.deleteAll();
 
 		daoConfiguracion.deleteAll();
+		daoCodigosNuevos.deleteAll();
 		daoreporteitem.deleteAll();
 		daoreportecabecera.deleteAll();
 		cliente = new Cliente();
 
+		daoCodigosNuevos=dataManager.getDaoCodigosNuevos();
+		if(daoCodigosNuevos.getAll("uri=''").size()==0)
+		{
+
+			obtenerCodigos fetchJsonTask = new obtenerCodigos(a);
+			fetchJsonTask.execute("", "");
+		}
 		
 		// msgJson viene comprimido, lo descomprimo y continuo
 		/*try {

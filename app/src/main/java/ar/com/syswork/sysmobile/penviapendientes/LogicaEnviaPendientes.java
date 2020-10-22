@@ -403,7 +403,8 @@ public class LogicaEnviaPendientes implements Callback {
 		JSONObject jsonPedido;
 
 		Pedido pedido;
-
+		jsonArrayPedidosL=null;
+		jsonArrayPedidosL=new JSONArray();
 		if (idPedidoEnviar == -1)
 			listaPedidos = daoPedido.getAll(" transferido = 0");
 		else
@@ -446,7 +447,7 @@ public class LogicaEnviaPendientes implements Callback {
 		PedidoItem pedidoItem;
 		JSONObject jsoPedidoItem;
 		JSONArray jsa = null;
-		jsonArrayPedidosL=null;
+
 		JSONObject jsonObjectPedidoL;
 		Calendar cal = Calendar.getInstance();
 		Date date = cal.getTime();
@@ -459,9 +460,10 @@ public class LogicaEnviaPendientes implements Callback {
 		Pedido localPedido=daoPedido.getById((int)idPedido);
 		CodigosNuevos codigosNuevos= new CodigosNuevos();
 		codigosNuevos= daoCodigosNuevos.CodigosActual();
+
 		if (listaItemsPedidos.size() > 0) {
 			jsa = new JSONArray();
-			jsonArrayPedidosL=new JSONArray();
+
 			Iterator<PedidoItem> i = listaItemsPedidos.iterator();
 			UUID idOne = UUID.randomUUID();
 			while (i.hasNext()) {
@@ -487,7 +489,7 @@ public class LogicaEnviaPendientes implements Callback {
 
 					//armar json para envio servidor industrial
 					jsonObjectPedidoL.put("P_PEDIDO",codigosNuevos.getCodeunico());
-					jsonObjectPedidoL.put("P_ORDEN", codigosNuevos.getCodeunico()+""+pedidoItem.getIdPedidoItem());
+					jsonObjectPedidoL.put("P_ORDEN", pedidoItem.getIdPedidoItem());
 					jsonObjectPedidoL.put("P_FECHA",Integer.valueOf(fecha));
 					jsonObjectPedidoL.put("P_PRODUCTO",pedidoItem.getIdArticulo());
 					jsonObjectPedidoL.put("P_PRECIO",pedidoItem.getImporteUnitario());
