@@ -56,6 +56,7 @@
     <string name="agregar_pedido">Agregar Pedido</string>
     <string name="cantidad_de_items">Items:</string>
     <string name="importe_total_pedido">Importe Total:</string>
+    <string name="importe_total_inventario">Total Cantidad:</string>
     <string name="cantidad">Cantidad:  </string>
     <string name="cod_prod">Cod.:</string>
     <string name="cod_prod_minusculas">cod. producto</string>

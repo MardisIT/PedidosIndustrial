@@ -248,14 +248,22 @@ public class LogicaCargaPedidos implements IAlertResult
 				articulo= daoArticulo.getByKey(getCodigoProductoActual().toString().trim());
 			}
 
-		
+
+
 		String valor = pantallaManagerCargaPedidos.getCantidadIntroducida();
 		String formaPago=pantallaManagerCargaPedidos.getFormadePagoIntroducida();
 		String unidadmedida=pantallaManagerCargaPedidos.getUnidadesIntroducida();
 
+
 		if (valor.equals("")){
 			utilDialogos.muestraToastGenerico(a, debeInformarLaCantidad , false);
 			return false;
+		}else{
+			if(articulo.getPrecio10() < Double.valueOf(valor))
+			{
+				utilDialogos.muestraToastGenerico(a, "Cantidad mayor a existencia..!!!" , false);
+				return false;
+			}
 		}
 
 		/*
@@ -314,7 +322,7 @@ public class LogicaCargaPedidos implements IAlertResult
 		pedidoItem.setIdPedido(-1);
 
 		pedidoItem.setIdArticulo(articulo.getIdArticulo());
-		pedidoItem.setAuxDescripcionArticulo(articulo.getDescripcion());
+		pedidoItem.setAuxDescripcionArticulo( articulo.getDescripcion());
 		pedidoItem.setCantidad(cantidadingresada);
 		pedidoItem.setFormaPago(formaPago);
 		pedidoItem.setUnidcajas(unidadmedida);
@@ -956,7 +964,7 @@ public void enviotrking(){
 			Iterator<PedidoItem> i = lstTemp.iterator();
 			while (i.hasNext()) {
 				pedidoItem = i.next();
-				pedidoItem.setAuxDescripcionArticulo(daoArticulo.getByKey(pedidoItem.getIdArticulo()).getDescripcion());
+				pedidoItem.setAuxDescripcionArticulo( daoArticulo.getByKey(pedidoItem.getIdArticulo()).getDescripcion());
 				listaPedidoItems.add(pedidoItem);
 			}
 

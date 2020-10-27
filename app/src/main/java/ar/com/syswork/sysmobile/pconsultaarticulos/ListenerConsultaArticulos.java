@@ -39,16 +39,23 @@ public class ListenerConsultaArticulos  implements OnClickListener, OnItemClickL
 	public void onItemClick(AdapterView<?> adapter, View v, int posicion, long arg3) {
 		AdapterConsultaArticulos lAdapter = (AdapterConsultaArticulos) adapter.getAdapter();
 		Articulo articulo = lAdapter.getItem(posicion);
-		
-		switch (origenDeLaConsulta)
-		{
-			case AppSysMobile.DESDE_MENU_PRINCIPAL:
-				pantallaManagerConsultaArticulos.muestraDetalleArticulo(articulo);
-				break;
-			case AppSysMobile.DESDE_CARGA_DE_PEDIDOS:
-				this.logicaConsultaArticulos.seteaCodigoArticuloCargaPedidos(articulo.getIdArticulo());
-				break;
-		}
+
+
+			switch (origenDeLaConsulta) {
+				case AppSysMobile.DESDE_MENU_PRINCIPAL:
+					pantallaManagerConsultaArticulos.muestraDetalleArticulo(articulo);
+					break;
+				case AppSysMobile.DESDE_CARGA_DE_PEDIDOS:
+					if(articulo.getPrecio10()>0) {
+						this.logicaConsultaArticulos.seteaCodigoArticuloCargaPedidos(articulo.getIdArticulo());
+					break;
+					}else{
+						pantallaManagerConsultaArticulos.muestraAlertaError("Error","No existe Stock del Producto");
+						return;
+					}
+			}
+
+
 
 	}
 	

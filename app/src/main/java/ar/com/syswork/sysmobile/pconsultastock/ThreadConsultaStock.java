@@ -34,8 +34,8 @@ public class ThreadConsultaStock implements Runnable{
 		
 		String parametrosAdicionales="";
 		
-		parametrosAdicionales = "/" ;
-		try {
+		parametrosAdicionales = "?CodigoProducto=" ;
+			try {
 			parametrosAdicionales = parametrosAdicionales  + URLEncoder.encode(idArticulo , "UTF-8").replace("+", "%20");
 		} catch (UnsupportedEncodingException e1) {
 			// TODO Auto-generated catch block

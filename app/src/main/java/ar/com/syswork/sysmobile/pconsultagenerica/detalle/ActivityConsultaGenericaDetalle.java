@@ -148,7 +148,11 @@ public class ActivityConsultaGenericaDetalle extends AppCompatActivity {
 			}
 
 		}
-		
+
+		if(!edcodigol1.getText().toString().equals("")){
+			edcodigol1.setEnabled(false);
+			edcodigol2.setEnabled(false);
+		}
 		adapter.notifyDataSetChanged();
 		
 		// Seteo la Imagen del detalle

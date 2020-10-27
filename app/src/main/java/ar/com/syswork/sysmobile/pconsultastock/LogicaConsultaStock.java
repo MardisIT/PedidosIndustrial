@@ -124,50 +124,51 @@ public class LogicaConsultaStock implements Callback{
 	public  ArrayList<ItemConsultaStock> parseaStock(String jsonStock)
 	{
 		JSONArray arrayJson;
-		JSONObject jsObject;
+		JSONObject jsObject = null;
 		Deposito deposito;
 		
 		ItemConsultaStock itemConsultaStock = null;
 		ArrayList<ItemConsultaStock> listaConsultaStock = new ArrayList<ItemConsultaStock>();
 
-		try
-		{
-			arrayJson = new JSONArray(jsonStock);
-			for (int x = 0; x < arrayJson.length() ;x++)
-			{
-				jsObject = arrayJson.getJSONObject(x);
-				
-				itemConsultaStock = new ItemConsultaStock();
-				itemConsultaStock.setIdDeposito(jsObject.getString("idDeposito"));
-				if (itemConsultaStock.getIdDeposito().length()<=4)
-				{
-					deposito = daoDeposito.getByKey(itemConsultaStock.getIdDeposito());
-					if (deposito!=null)
-						itemConsultaStock.setDescripcion(deposito.getDescripcion());
-					else
-						itemConsultaStock.setDescripcion(pantallaManagerConsultaStock.getActivity().getString(R.string.deposito_no_actualizado));
-				}
-				else
-				{
-					if (itemConsultaStock.getIdDeposito().equals("@REAL"))
-						itemConsultaStock.setDescripcion(pantallaManagerConsultaStock.getActivity().getString(R.string.stockActual));
-					if (itemConsultaStock.getIdDeposito().equals("@COMPROMETIDO"))
-						itemConsultaStock.setDescripcion(pantallaManagerConsultaStock.getActivity().getString(R.string.stockComprometido));
-					if (itemConsultaStock.getIdDeposito().equals("@SUGERIDO"))
-						itemConsultaStock.setDescripcion(pantallaManagerConsultaStock.getActivity().getString(R.string.stockSugerido));
-					
-				}
-				
-				itemConsultaStock.setCantidad(jsObject.getDouble("stock"));
-				
-				listaConsultaStock.add(itemConsultaStock);
-			}
-		}
-		catch(JSONException e)
-		{
+		//arrayJson = new JSONArray(jsonStock);
+		//for (int x = 0; x < arrayJson.length() ;x++)
+		//{
+
+		try {
+			jsObject = new JSONObject(jsonStock);
+		} catch (JSONException e) {
 			e.printStackTrace();
-		}		
-		
+		}
+
+		itemConsultaStock = new ItemConsultaStock();
+		itemConsultaStock.setIdDeposito("0001");
+		if (itemConsultaStock.getIdDeposito().length()<=4)
+		{
+			deposito = daoDeposito.getByKey(itemConsultaStock.getIdDeposito());
+			if (deposito!=null)
+				itemConsultaStock.setDescripcion(deposito.getDescripcion());
+			else
+				itemConsultaStock.setDescripcion(pantallaManagerConsultaStock.getActivity().getString(R.string.deposito_no_actualizado));
+		}
+		else
+		{
+			if (itemConsultaStock.getIdDeposito().equals("@REAL"))
+				itemConsultaStock.setDescripcion(pantallaManagerConsultaStock.getActivity().getString(R.string.stockActual));
+			if (itemConsultaStock.getIdDeposito().equals("@COMPROMETIDO"))
+				itemConsultaStock.setDescripcion(pantallaManagerConsultaStock.getActivity().getString(R.string.stockComprometido));
+			if (itemConsultaStock.getIdDeposito().equals("@SUGERIDO"))
+				itemConsultaStock.setDescripcion(pantallaManagerConsultaStock.getActivity().getString(R.string.stockSugerido));
+
+		}
+
+		try {
+			itemConsultaStock.setCantidad(jsObject.getDouble("precio10"));
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+
+		listaConsultaStock.add(itemConsultaStock);
+
 		return listaConsultaStock;
 		
 	}

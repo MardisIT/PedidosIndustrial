@@ -93,7 +93,8 @@ public class AppSysMobile extends Application {
 	public final static String WS_ACCESO_ARTICULOS = "/getArticulos";
 	public final static String WS_CONSULTA_CTA_CTE = "/getCtaCte";
 	public final static String WS_ACCESO_DEPOSITOS = "/getDepositos";
-	public final static String WS_CONSULTA_STOCK = "/getStock";
+	public final static String WS_CONSULTA_STOCK = "/GETObtenerProductoXCodigo";
+	//http://dyvenpro.azurewebsites.net/api/Order/GETObtenerProductoXCodigo?
 	public final static String WS_CONSULTA_CANTIDAD_REGISTOS = "/getRegistros";
 
 

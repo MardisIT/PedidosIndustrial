@@ -931,10 +931,10 @@ public class LogicaEnviaPendientes implements Callback {
 				jsonCliente.put("Referencia", cliente.getReference());
 				jsonCliente.put("Nombres", cliente.getNombre());
 				jsonCliente.put("Apellidos", cliente.getApellido());
-				jsonCliente.put("Mail", cliente.getMail());
+				jsonCliente.put("Mail", cliente.getMail().equals("")?"NA":cliente.getMail().equals(""));
 				jsonCliente.put("Cédula", cliente.getCedula());
 				jsonCliente.put("Celular", cliente.getCelular());
-				jsonCliente.put("Telefono", cliente.getTelefono());
+				jsonCliente.put("Telefono", cliente.getTelefono().equals("")?cliente.getCelular():cliente.getTelefono().equals(""));
 				jsonCliente.put("Latitud", cliente.getLatitudeBranch());
 				jsonCliente.put("Longitud", cliente.getLenghtBranch());
 				jsonCliente.put("Provincia", "GUAYAS");

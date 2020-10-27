@@ -49,7 +49,8 @@ public class envioclientenuevo extends AsyncTask<String, Void, String> {
 
         try {
             JsonObject postData = new JsonObject();
-            URL url = new URL("http://dyvenpro.azurewebsites.net/api/Branch/LoadTask");
+          //  URL url = new URL("http://dyvenpro.azurewebsites.net/api/Branch/LoadTask");
+            URL url = new URL("http://dyvenpro.azurewebsites.net/api/Branch/POSTGuardarLocalesNuevoAPPPedido");
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestProperty("Content-Type", "application/json");
             urlConnection.setRequestProperty("Authorization", "Bearer " + params[1]);

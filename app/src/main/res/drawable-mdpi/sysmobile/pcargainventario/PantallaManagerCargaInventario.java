@@ -80,7 +80,7 @@ public class PantallaManagerCargaInventario {
         edtCodigoProducto = (EditText) a.findViewById(R.id.edtCodProducto);
 
         strCantidadItems = this.a.getString(R.string.cantidad_de_items);
-        strImporteInventario = this.a.getString(R.string.importe_total_pedido);
+        strImporteInventario = this.a.getString(R.string.importe_total_inventario);
         strIncluirEnReparto = this.a.getString(R.string.incluirEnReparto);
 
         TextView tmpTextView;
@@ -192,7 +192,7 @@ public class PantallaManagerCargaInventario {
 
     public void setImporteTotalInventario(double importe)
     {
-        txtImporteInventario.setText(strImporteInventario + " $ " + importe);
+        txtImporteInventario.setText(strImporteInventario  + importe);
     }
 
     public String getCodigoIntroducido()

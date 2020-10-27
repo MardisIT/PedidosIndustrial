@@ -539,11 +539,8 @@ private DaoCodigosNuevos daoCodigosNuevos;
 
 		if (this.pagina == 1)
 			daoCliente.deleteAll();
-
-		daoConfiguracion.deleteAll();
 		daoCodigosNuevos.deleteAll();
-		daoreporteitem.deleteAll();
-		daoreportecabecera.deleteAll();
+
 		cliente = new Cliente();
 
 		daoCodigosNuevos=dataManager.getDaoCodigosNuevos();
@@ -648,10 +645,24 @@ private DaoCodigosNuevos daoCodigosNuevos;
 			configuracionDB.setId_cuenta(objcuentaSession.getCu_idAccount());
 			configuracionDB.setId_campania(objcuentaSession.getCu_idcampania());
 
+			String fechaactual="";
+			for (ConfiguracionDB da : daoConfiguracion.getAll("")
+			) {
+				fechaactual=da.getFechaCarga();
+			}
+
+			if(!fechaactual.equals(formattedDate)){
+				daoreporteitem.deleteAll();
+				daoreportecabecera.deleteAll();
+			}
+			daoConfiguracion.deleteAll();
 			daoConfiguracion.save(configuracionDB);
 			JavaRestClient tarea = new JavaRestClient(a);
 			_trackingBussiness.SetLocationMerch(a,configuracionDB);
 			tarea.SetRouteBranches(_route);
+
+
+
 
 
 

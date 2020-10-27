@@ -7,14 +7,19 @@ import android.os.Build;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
+import android.util.Log;
 import android.view.Menu;
 
 import androidx.annotation.RequiresApi;
+
+import com.evernote.android.job.JobManager;
+import com.evernote.android.job.JobManagerCreateException;
 
 import ar.com.syswork.sysmobile.R;
 import ar.com.syswork.sysmobile.daos.DaoCodigosNuevos;
 import ar.com.syswork.sysmobile.daos.DaoVendedor;
 import ar.com.syswork.sysmobile.daos.DataManager;
+import ar.com.syswork.sysmobile.industrial.DemoJobCreator;
 import ar.com.syswork.sysmobile.pconsultagenerica.detalle.obtenerCodigos;
 import ar.com.syswork.sysmobile.shared.AppSysMobile;
 
@@ -67,7 +72,13 @@ public class ActivitySplash extends Activity {
 	private void lanzarActivity(){
 		DaoVendedor daoVendedor = dm.getDaoVendedor();
 		Intent i ;
-
+		try {
+			JobManager
+					.create(this)
+					.addJobCreator(new DemoJobCreator());
+		} catch (JobManagerCreateException e) {
+			Log.d("",e.getMessage());
+		}
 		daoCodigosNuevos=dm.getDaoCodigosNuevos();
 		if(daoCodigosNuevos.getAll("uri=''").size()==0)
 		{

@@ -107,7 +107,7 @@ public class PantallaManagerConsultaArticulos {
 		listaClaves.add(item);
 		item = new ItemClaveValor("Precio 9",Double.toString(articulo.getPrecio9()));
 		listaClaves.add(item);
-		item = new ItemClaveValor("Precio 10",Double.toString(articulo.getPrecio10()));
+		item = new ItemClaveValor("Stock",Double.toString(articulo.getPrecio10()));
 		listaClaves.add(item);
 
 		ConsultaClaveValorGenerica consultaClaveValorGenerica = new ConsultaClaveValorGenerica(a, listaClaves);

@@ -160,7 +160,7 @@
             android:layout_alignParentTop="true"
             android:layout_marginRight="12dp"
             android:gravity="right"
-            android:text="@string/importe_total_pedido"
+            android:text="@string/importe_total_inventario"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="#FFFFFF" />
 
