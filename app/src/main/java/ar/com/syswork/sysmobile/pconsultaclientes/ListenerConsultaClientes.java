@@ -55,10 +55,10 @@ public class ListenerConsultaClientes implements OnClickListener, OnItemClickLis
 				break;
 			case AppSysMobile.DESDE_CARGA_INVENTARIO:
 				pantallaManagerConsultaClientes.llamarCargaInventario(cliente);
-
 				break;
             case AppSysMobile.DESDE_CARGA_VISITAS:
                 pantallaManagerConsultaClientes.llamarCargaVisitas(cliente);
+                break;
 			case AppSysMobile.DESDE_NUEVO_CLIENTE:
 				pantallaManagerConsultaClientes.muestraDetalleClienteNuevo();
 

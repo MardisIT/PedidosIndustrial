@@ -175,6 +175,7 @@ public class visita extends Activity
                 });
         dialog.show();
     }
+    @SuppressLint("MissingPermission")
     public void toggleGPSUpdates(View view) {
         if (!checkLocation())
             return;
@@ -196,7 +197,7 @@ public class visita extends Activity
         objnuevo.setLatitud(Double.valueOf((String) latitudeValueGPS.getText()));
         objnuevo.setLongitud(Double.valueOf((String) longitudeValueGPS.getText()));
         objnuevo.setCodcliente(codCliente);
-        objnuevo.setLinkfotoexterior("https://mardisenginefotos.blob.core.windows.net/dispacifvisitas/"+textView1.getText().toString().replace("Nombre: ",""));
+        objnuevo.setLinkfotoexterior("https://mardisenginefotos.blob.core.windows.net/industrialmolineravisitas/"+textView1.getText().toString().replace("Nombre: ",""));
         objnuevo.setFechavisita(fechaHora);
         objnuevo.setCodvendedor(codigoVendedor);
         daoVisitasUio.save(objnuevo);
@@ -230,13 +231,14 @@ public class visita extends Activity
             // Guarda el Directorio Absoluto en una Variable Global
             mDirAbsoluto = file.getAbsolutePath();
             intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
+            startActivityForResult(intent, REQUEST_CODE_CAMARA);
         } catch (IOException e) {
             e.printStackTrace();
             file = null;
             mDirAbsoluto = null;
         }
 
-        startActivityForResult(intent, REQUEST_CODE_CAMARA);
+
     }
     private void UploadImage()
     {
