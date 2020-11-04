@@ -340,7 +340,7 @@ public void guardarcliente(){
 					jsonCliente.put("Provincia", "GUAYAS");
 					jsonCliente.put("Canton", "GUAYAQUIL");
 					jsonCliente.put("Parroquia", "GUAYAQUIL");
-					jsonCliente.put("CLUSTER", "1");
+					jsonCliente.put("CLUSTER", app.getVendedorLogueado().toString());
 					jsonCliente.put("Estado", "Activo");
 					jsonCliente.put("RUTA", cliente.getCuit());
 					jsonCliente.put("IMEI", cliente.getImeI_ID());

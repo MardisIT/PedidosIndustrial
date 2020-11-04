@@ -32,10 +32,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.core.content.FileProvider;
+
+import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -210,35 +216,38 @@ public class visita extends Activity
 
 
     }
+    static final int REQUEST_TAKE_PHOTO = 1;
     public void onClickButton(View view) {
         btnguardarvisita.setVisibility(View.INVISIBLE);
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         File file = null;
 
-        try {
-            // Crea el Nombre de la Fotografía
-            String fechaHora = new SimpleDateFormat("yyyyMMdd_HHmmss",
-                    Locale.getDefault()).format(new Date());
-            String nombre = codCliente + "_" + fechaHora;
-            // Crea el Archivo de la Fotografía
-            file = nombrarArchivo(this, ALBUM, nombre,
-                    EXTENSION_JPEG);
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            File photoFile = null;
 
-            // Obtiene el Nombre y el Directorio Absoluto y los Muestra
-            textView1.setText("Nombre: " + file.getName());
-            textView2.setText("Dir. Absoluto: " + file.getAbsolutePath());
-
-            // Guarda el Directorio Absoluto en una Variable Global
-            mDirAbsoluto = file.getAbsolutePath();
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
+            //intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
             startActivityForResult(intent, REQUEST_CODE_CAMARA);
-        } catch (IOException e) {
-            e.printStackTrace();
-            file = null;
-            mDirAbsoluto = null;
+
         }
 
-
+    }
+    String mCurrentPhotoPath;
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" +codCliente+ timeStamp + "_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".png",         /* suffix */
+                storageDir      /* directory */
+        );
+        textView1.setText("Nombre: " + image.getName());
+        textView2.setText("Dir. Absoluto: " + image.getAbsolutePath());
+        mDirAbsoluto = image.getAbsolutePath();
+        // Save a file: path for use with ACTION_VIEW intents
+        mCurrentPhotoPath = image.getAbsolutePath();
+        return image;
     }
     private void UploadImage()
     {
@@ -285,11 +294,33 @@ public class visita extends Activity
         switch (requestCode) {
             case REQUEST_CODE_CAMARA:
                 if (resultCode == RESULT_OK) {
+                    File oupus=null;
+                    try {
+                         oupus= createImageFile();
+                         if(!oupus.exists())
+                             oupus.createNewFile();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    //Bitmap bitmap = escalarBitmap(mDirAbsoluto,
+                      //      SCALE_FACTOR_IMAGE_VIEW);
+                    Bundle extras = data.getExtras();
+                    Bitmap imageBitmap = (Bitmap) extras.get("data");
+                    imageView.setImageBitmap(imageBitmap);
+                    OutputStream os = null;
+                    try {
+                        os = new BufferedOutputStream(new FileOutputStream(oupus));
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    imageBitmap.compress(Bitmap.CompressFormat.PNG, 0, os);
+                    try {
+                        os.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
 
-                    Bitmap bitmap = escalarBitmap(mDirAbsoluto,
-                            SCALE_FACTOR_IMAGE_VIEW);
-                    imageView.setImageBitmap(bitmap);
-                    imageUri = getImageUri(getApplication(),bitmap);
+
                 }
                 break;
             default:

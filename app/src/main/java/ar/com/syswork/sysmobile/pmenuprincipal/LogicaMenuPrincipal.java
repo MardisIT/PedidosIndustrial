@@ -120,12 +120,12 @@ public class LogicaMenuPrincipal {
 		itemMP.setAccion(AppSysMobile.OPC_MENU_PRINCIPAL_INVENTARIO);
 		listaOpciones.add(itemMP);
 
-		/*itemMP = new ItemMenuPrincipal();
+		itemMP = new ItemMenuPrincipal();
 		itemMP.setTitulo("Registro Visita");
 		itemMP.setCantidad(0);
 		itemMP.setImagen(R.drawable.mapageo);
 		itemMP.setAccion(AppSysMobile.OPC_MENU_PRINCIPAL_VISITAS);
-		listaOpciones.add(itemMP);*/
+		listaOpciones.add(itemMP);
 
 	}
 
