@@ -74,10 +74,12 @@ public class envioclientenuevo extends AsyncTask<String, Void, String> {
             BufferedReader rd = new BufferedReader(new InputStreamReader(
                     urlConnection.getInputStream()));
             String line;
+            String resultaso="";
             while ((line = rd.readLine()) != null) {
                 Log.i("data", line);
+                resultaso= line;
             }
-            return params[0].toString();
+            return params[0].toString()+"Ç"+resultaso;
         } catch (Exception e) {
             e.printStackTrace();
             return "";
@@ -97,15 +99,21 @@ public class envioclientenuevo extends AsyncTask<String, Void, String> {
         try {
             if (jsonString != "") {
                 try {
-                    JSONObject jsonObject = new JSONObject(jsonString);
+                    String[] vector=jsonString.split("Ç");
+                    JSONObject jsonObject = new JSONObject(vector[0]);
+                    JSONObject resultado=new JSONObject(vector[1]);
+
                     JSONObject _ruta = new JSONObject(jsonObject.getString("_route"));
                     String codelocal = _ruta.getString("Codigo_Encuesta");
+                    String codigosecundario=resultado.getString("data");
                     if (codelocal != "") {
                         app = (AppSysMobile) a.getApplicationContext();
                         dm = app.getDataManager();
                         daoCliente = dm.getDaoCliente();
                         Cliente c = daoCliente.getByKey(codelocal);
                         c.setEstadoenvio("S");
+                        if(codigosecundario!=null)
+                            c.setCodigoOpcional(codigosecundario);
                         daoCliente.update(c);
                     }
 

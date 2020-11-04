@@ -486,9 +486,11 @@ public class LogicaEnviaPendientes implements Callback {
 					jsoPedidoItem.put("unidad", pedidoItem.getUnidcajas());
 
 
-
+					Cliente c= daoCliente.getByKey(localPedido.getCodCliente());
 					//armar json para envio servidor industrial
 					jsonObjectPedidoL.put("P_PEDIDO",codigosNuevos.getCodeunico());
+					jsonObjectPedidoL.put("P_NUEVO_CLIENTE",localPedido.getCodCliente().equals(c.getCodigoOpcional())?"":c.getCodigoOpcional());
+
 					jsonObjectPedidoL.put("P_ORDEN", pedidoItem.getIdPedidoItem());
 					jsonObjectPedidoL.put("P_FECHA",Integer.valueOf(fecha));
 					jsonObjectPedidoL.put("P_PRODUCTO",pedidoItem.getIdArticulo());
