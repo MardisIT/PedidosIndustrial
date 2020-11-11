@@ -228,10 +228,7 @@ public class visita extends Activity
     }
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP_MR1)
     public  void  guardarvisita(View view) {
-        if (imageUri==(null)) {
-            Toast.makeText(app, "Tomar fotografía para registrar visita..!!!", Toast.LENGTH_SHORT).show();
-            return;
-        }
+
 
         String fechaHora = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss",
                 Locale.getDefault()).format(new Date());
@@ -246,7 +243,7 @@ public class visita extends Activity
         objnuevo.setFechavisita(fechaHora);
         objnuevo.setCodvendedor(codigoVendedor);
         long idvisita=daoVisitasUio.save(objnuevo);
-        UploadImage();
+       // UploadImage();
         String campaing="";
         for (ConfiguracionDB da : daoConfiguracion.getAll("")
         ) {
