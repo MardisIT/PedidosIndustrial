@@ -22,7 +22,7 @@ private SQLiteStatement statement;
         statement = this.db.compileStatement("INSERT INTO visitasUio (" +
                 "codcliente," +
                 "codvendedor," +
-                "fechavisita,latitud,longitud,linkfotoexterior) VALUES(?,?,?,?,?,?)");
+                "fechavisita,latitud,longitud,linkfotoexterior,observaciones,realizapedido,estado) VALUES(?,?,?,?,?,?,?,?,?)");
         daoCliente = new DaoCliente(db);
 
     }
@@ -40,6 +40,10 @@ private SQLiteStatement statement;
             statement.bindDouble(4, visitasUio.getLatitud());
             statement.bindDouble(5, visitasUio.getLongitud());
             statement.bindString(6, visitasUio.getLinkfotoexterior());
+
+            statement.bindString(7, visitasUio.getObservaciones());
+            statement.bindString(8, visitasUio.getRealizapedido());
+            statement.bindString(9, visitasUio.getEstado());
 
 
 
@@ -63,6 +67,9 @@ private SQLiteStatement statement;
                 + " fechavisita = '" + visitasUio.getFechavisita() + "' ,"
                 + " latitud = '" + visitasUio.getLatitud() + "' ,"
                 + " longitud = '" + visitasUio.getLongitud() + "' "
+                + " observaciones = '" + visitasUio.getObservaciones() + "' "
+                + " realizapedido = '" + visitasUio.getRealizapedido() + "' "
+                + " estado = '" + visitasUio.getEstado() + "' "
                 + " linkfotoexterior = '" + visitasUio.getLinkfotoexterior() + "' " +
                 "WHERE id = " + visitasUio.getId();
         try
@@ -121,7 +128,7 @@ private SQLiteStatement statement;
         String sql;
         VisitasUio visitasUio = null;
 
-        sql = "SELECT id,  codcliente,codvendedor,fechavisita,latitud,longitud,linkfotoexterior FROM VisitasUio WHERE id = " + id;
+        sql = "SELECT id,  codcliente,codvendedor,fechavisita,latitud,longitud,linkfotoexterior,observaciones,realizapedido,estado FROM VisitasUio WHERE id = " + id;
         try
         {
             Cursor c = db.rawQuery(sql,null);
@@ -136,6 +143,11 @@ private SQLiteStatement statement;
                 visitasUio.setLatitud(c.getDouble(4));
                 visitasUio.setLongitud(c.getDouble(5));
                 visitasUio.setLinkfotoexterior(c.getString(6));
+
+                visitasUio.setObservaciones(c.getString(7));
+                visitasUio.setRealizapedido(c.getString(8));
+                visitasUio.setEstado(c.getString(9));
+
                 visitasUio.setCliente(daoCliente.getByKey(c.getString(1)));
 
 
@@ -162,7 +174,7 @@ private SQLiteStatement statement;
         String sql;
         VisitasUio visitasUio = null;
 
-        sql = "SELECT id,  codcliente,codvendedor,fechavisita,latitud,longitud,linkfotoexterior FROM visitasUio";
+        sql = "SELECT id,  codcliente,codvendedor,fechavisita,latitud,longitud,linkfotoexterior,observaciones,realizapedido,estado FROM visitasUio";
         if (!where.equals(""))
         {
             sql = sql + " WHERE " + where;
@@ -184,6 +196,10 @@ private SQLiteStatement statement;
                     visitasUio.setLatitud(c.getDouble(4));
                     visitasUio.setLongitud(c.getDouble(5));
                     visitasUio.setLinkfotoexterior(c.getString(6));
+
+                    visitasUio.setObservaciones(c.getString(7));
+                    visitasUio.setRealizapedido(c.getString(8));
+                    visitasUio.setEstado(c.getString(9));
                     visitasUio.setCliente(daoCliente.getByKey(c.getString(1)));
                     lista.add(visitasUio);
                 }

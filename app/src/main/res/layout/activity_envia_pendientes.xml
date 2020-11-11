@@ -34,7 +34,15 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/imageView1"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="14dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_margin="15dp"
+        android:layout_marginTop="5dp"
+        android:background="@android:drawable/bottom_bar"
+        android:backgroundTint="@color/common_signin_btn_light_text_focused"
+        android:elevation="6dp"
+        android:textColor="@color/common_signin_btn_dark_text_default"
+
         android:text="@string/enviaPendientes" />
     <Button
         android:id="@+id/btnEnviarPendientesPagos"
@@ -51,7 +59,15 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/btnEnviarPendientesPagos"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="14dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_margin="15dp"
+        android:layout_marginTop="5dp"
+        android:background="@android:drawable/bottom_bar"
+        android:backgroundTint="@color/common_signin_btn_light_text_focused"
+        android:elevation="6dp"
+        android:textColor="@color/common_signin_btn_dark_text_default"
+
         android:text="ENVIAR PENDIENTES DEVOLUCIONES" />
     <Button
         android:id="@+id/btnEnviarPendientesvisitas"
@@ -59,8 +75,17 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/btnEnviarPendientesInventario"
         android:layout_centerHorizontal="true"
-        android:visibility="gone"
-        android:layout_marginTop="14dp"
-        android:text="ENVIAR PENDIENTES VISISTAS" />
+        android:visibility="visible"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_margin="15dp"
+        android:layout_marginTop="5dp"
+        android:background="@android:drawable/bottom_bar"
+        android:backgroundTint="@color/common_signin_btn_light_text_focused"
+        android:elevation="6dp"
+        android:textColor="@color/common_signin_btn_dark_text_default"
+
+        android:text="ENVIAR PENDIENTES VISITAS" />
+
 
 </RelativeLayout>

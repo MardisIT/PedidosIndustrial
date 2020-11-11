@@ -102,7 +102,7 @@ public class DaoCliente implements DaoInterface<Cliente>{
 		Cursor c;
 		
 				
-		c = db.rawQuery("SELECT Codigo,CodigoOpcional,RazonSocial,"
+		c = db.rawQuery("SELECT Codigo,CodigoOpcional,razonSocial,"
 				+ "calleNroPisoDpto,Localidad,Cuit,"
 				+ "Iva,ClaseDePrecio,PorcDto,CpteDefault,idVendedor,telefono,email ,LatitudeBranch, LenghtBranch,propietario ,estadoenvio,Referencia,Nombres,Apellidos,Cedula,Celular,Provincia,Canton,Parroquia,IMEI  FROM CLIENTES WHERE codigo = '" + key + "'", null);
 		

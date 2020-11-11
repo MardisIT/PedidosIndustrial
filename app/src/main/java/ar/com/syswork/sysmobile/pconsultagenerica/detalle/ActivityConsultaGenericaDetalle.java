@@ -32,6 +32,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.app.Activity;
 import android.content.Intent;
@@ -110,6 +111,7 @@ public class ActivityConsultaGenericaDetalle extends AppCompatActivity {
 		
 		// Seteo el Adapter
 		ListView lv = (ListView) this.findViewById(R.id.lstDetalleConsulta);
+		LinearLayout _LinearLayout=(LinearLayout) this.findViewById(R.id.lstcliente) ;
 		lv.setAdapter(adapter);
 		lv.setDividerHeight(0);
 
@@ -123,7 +125,7 @@ public class ActivityConsultaGenericaDetalle extends AppCompatActivity {
 		{
 			lista.add(i.next());
 		}
-		if(lista.size()>0){
+		if(lista.size()>0 && lista.size()>13){
 			edcodigol1.setText(lista.get(0).getValorString());
 			edcodigol2.setText(lista.get(1).getValorString());
 			ednombrelocal.setText(lista.get(2).getValorString());
@@ -146,7 +148,12 @@ public class ActivityConsultaGenericaDetalle extends AppCompatActivity {
 			) {
 				edruta.setText(da.getFormaBusqueda());
 			}
+			lv.setVisibility(View.GONE);
+			_LinearLayout.setVisibility(View.VISIBLE);
 
+		}else{
+			lv.setVisibility(View.VISIBLE);
+			_LinearLayout.setVisibility(View.GONE);
 		}
 
 		if(!edcodigol1.getText().toString().equals("")){

@@ -52,7 +52,7 @@ public class AdapterListaInventario    extends ArrayAdapter<Inventario>
 
         Inventario inventario = getItem(position);
 
-        envoltorio.txtRazonSocialCliente.setText(inventario.getCliente().getRazonSocial());
+        envoltorio.txtRazonSocialCliente.setText(inventario.getCliente().getCodigo()+"-"+inventario.getCliente().getRazonSocial());
         envoltorio.txtFecha.setText(inventario.getFechainventario());
 
 

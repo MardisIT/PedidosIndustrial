@@ -31,7 +31,8 @@
 <LinearLayout
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
-
+android:id="@+id/lstcliente"
+	android:visibility="gone"
 	android:orientation="vertical">
 	<LinearLayout
 		android:layout_width="match_parent"
@@ -370,17 +371,19 @@
 		</EditText>
 	</LinearLayout>
 </LinearLayout>
+
 		</ScrollView>
+
 
 		<ListView
 			android:visibility="invisible"
-	        android:id="@+id/lstDetalleConsulta"
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-		 >
+			android:id="@+id/lstDetalleConsulta"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			>
+		</ListView>
 
-	
-	    </ListView>
+
 
     </LinearLayout>
 	<LinearLayout

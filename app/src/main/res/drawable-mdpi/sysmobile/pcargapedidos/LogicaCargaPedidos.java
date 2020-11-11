@@ -21,6 +21,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 
 import ar.com.syswork.sysmobile.R;
 import ar.com.syswork.sysmobile.daos.DaoArticulo;
@@ -567,7 +568,7 @@ public  double CalcularDescuentoMix(String codigoProductoActual,String opcion,do
 
 	    Calendar cal = Calendar.getInstance();
 	    Date date = cal.getTime();
-	    SimpleDateFormat df = new SimpleDateFormat("yyyyMMddhhmmss");
+		SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss", Locale.UK);
 	    String fecha = df.format(date);
 		
 	    if (_idPedidoAEliminar>0)

@@ -7,6 +7,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 
 import ar.com.syswork.sysmobile.R;
 
@@ -23,6 +24,10 @@ import android.net.Uri;
 import android.os.Build;
 import androidx.annotation.RequiresApi;
 
+import android.provider.Settings;
+import android.telephony.SubscriptionInfo;
+import android.telephony.SubscriptionManager;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
@@ -31,6 +36,8 @@ import android.widget.Toast;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import ar.com.syswork.sysmobile.Tracking.JavaRestClient;
+import ar.com.syswork.sysmobile.Tracking.SaveStatusBranchTracking;
 import ar.com.syswork.sysmobile.Tracking.TrackingBussiness;
 import ar.com.syswork.sysmobile.daos.DaoArticulo;
 import ar.com.syswork.sysmobile.daos.DaoCliente;
@@ -65,6 +72,7 @@ import ar.com.syswork.sysmobile.util.IAlertResult;
 import ar.com.syswork.sysmobile.util.AlertManager;
 import ar.com.syswork.sysmobile.util.DialogManager;
 import ar.com.syswork.sysmobile.util.Utilidades;
+import ar.com.syswork.sysmobile.visita;
 
 public class LogicaCargaPedidos implements IAlertResult
 {
@@ -691,7 +699,7 @@ public void enviotrking(){
 
 	    Calendar cal = Calendar.getInstance();
 	    Date date = cal.getTime();
-	    SimpleDateFormat df = new SimpleDateFormat("yyyyMMddhhmmss");
+	    SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss", Locale.UK);
 	    String fecha = df.format(date);
 		
 	    if (_idPedidoAEliminar>0)
@@ -778,10 +786,60 @@ public void enviotrking(){
 			utilDialogos.muestraToastGenerico(a, ocurrioUnErrorAlGrabar, false);
 			return;			
 		}
-		
-		
+
+		ActivityCargaPedidos activityCargaPedidos = new ActivityCargaPedidos();
+		String campaing="";
+		for (ConfiguracionDB da : daoConfiguracion.getAll("")
+		) {
+			campaing=da.getId_campania();
+		}
+		Double taskTime=-1.0;
+		Date Dataend = new Date();
+		long differenceInMillis = Dataend.getTime() - activityCargaPedidos.DataStartPedido.getTime();
+		long Time = (differenceInMillis) / 60000;
+		DecimalFormat twoDForm = new DecimalFormat("#.##");
+		taskTime = Double.valueOf(twoDForm.format(Time));
+
+		String start = new SimpleDateFormat("dd/MM/yyyy HH:mm").format(activityCargaPedidos.DataStartPedido);
+		String end = new SimpleDateFormat("dd/MM/yyyy HH:mm").format(Dataend);
+		JavaRestClient Tarea = new JavaRestClient(a);
+		SaveStatusBranchTracking _Reply = new SaveStatusBranchTracking(
+				obterImeid(), campaing, cliente.getCode(), String.valueOf(pedido.getIdPedido()), "P", taskTime, start, end
+		);
+		Tarea.SaveStatusBranchTracking(_Reply);
+		activityCargaPedidos.DataStartPedido=null;
 	}
-	
+	@RequiresApi(api = Build.VERSION_CODES.LOLLIPOP_MR1)
+	public String  obterImeid() {
+		final String androidIdName = Settings.Secure.ANDROID_ID;
+
+		TelephonyManager tm = (TelephonyManager) a.getSystemService(Context.TELEPHONY_SERVICE);
+		TelephonyManager mTelephony = (TelephonyManager) a.getSystemService(Context.TELEPHONY_SERVICE);
+		String simSerialNo="";
+		@SuppressLint("MissingPermission") String  myIMEI = mTelephony.getDeviceId();
+
+		if (myIMEI == null) {
+			SubscriptionManager subsManager = (SubscriptionManager) a.getSystemService(Context.TELEPHONY_SUBSCRIPTION_SERVICE);
+
+			@SuppressLint("MissingPermission") List<SubscriptionInfo> subsList = subsManager.getActiveSubscriptionInfoList();
+
+			if (subsList!=null) {
+				for (SubscriptionInfo subsInfo : subsList) {
+					if (subsInfo != null) {
+						simSerialNo  = subsInfo.getIccId();
+					}
+				}
+
+			}
+
+			myIMEI=simSerialNo;
+		}
+
+
+
+		return myIMEI;
+
+	}
 	public void removerItemListaItems(int posicionItemSeleccionado) {
 		listaPedidoItems.remove(posicionItemSeleccionado);
 		notificarCambiosAdapter();

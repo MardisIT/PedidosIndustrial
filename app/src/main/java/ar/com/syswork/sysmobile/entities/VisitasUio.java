@@ -10,6 +10,10 @@ public class VisitasUio {
     private String Linkfotoexterior;
     private Cliente cliente;
 
+    private String observaciones;
+    private String realizapedido;
+    private String estado;
+
     public Cliente getCliente() {
         return cliente;
     }
@@ -21,7 +25,7 @@ public class VisitasUio {
     public VisitasUio() {
     }
 
-    public VisitasUio(Long id, String codcliente, String codvendedor, String fechavisita, double latitud, double longitud, String linkfotoexterior, Cliente cliente) {
+    public VisitasUio(Long id, String codcliente, String codvendedor, String fechavisita, double latitud, double longitud, String linkfotoexterior, Cliente cliente, String observaciones, String realizapedido, String estado) {
         this.id = id;
         this.codcliente = codcliente;
         this.codvendedor = codvendedor;
@@ -30,6 +34,33 @@ public class VisitasUio {
         Longitud = longitud;
         Linkfotoexterior = linkfotoexterior;
         this.cliente = cliente;
+        this.observaciones = observaciones;
+        this.realizapedido = realizapedido;
+        this.estado = estado;
+    }
+
+    public String getObservaciones() {
+        return observaciones;
+    }
+
+    public void setObservaciones(String observaciones) {
+        this.observaciones = observaciones;
+    }
+
+    public String getRealizapedido() {
+        return realizapedido;
+    }
+
+    public void setRealizapedido(String realizapedido) {
+        this.realizapedido = realizapedido;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
     }
 
     public Long getId() {

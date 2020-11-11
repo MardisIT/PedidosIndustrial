@@ -5,8 +5,10 @@ import java.util.List;
 import android.app.Activity;
 import android.content.Intent;
 import ar.com.syswork.sysmobile.R;
+import ar.com.syswork.sysmobile.daos.DaoInventario;
 import ar.com.syswork.sysmobile.daos.DaoPedido;
 import ar.com.syswork.sysmobile.daos.DaoVendedor;
+import ar.com.syswork.sysmobile.daos.DaoVisitasUio;
 import ar.com.syswork.sysmobile.daos.DataManager;
 import ar.com.syswork.sysmobile.entities.ItemMenuPrincipal;
 import ar.com.syswork.sysmobile.shared.AppSysMobile;
@@ -22,6 +24,8 @@ public class LogicaMenuPrincipal {
 	private DataManager dm;
 	private DaoVendedor daoVendedor;
 	private DaoPedido daoPedido;
+	private DaoVisitasUio daoVisitasUio;
+	private DaoInventario daoInventario;
 	private PantallaManagerMenuPrincipal pantallaManagerMenuPrincipal;
 	private AdapterMenuPrincipal adapter;
 	private boolean forzarLogueo;
@@ -36,6 +40,8 @@ public class LogicaMenuPrincipal {
 		dm = app.getDataManager();
 		daoVendedor = dm.getDaoVendedor();
 		daoPedido = dm.getDaoPedido();
+		daoVisitasUio=dm.getDaoVisitasUio();
+		daoInventario=dm.getDaoInventario();
 	}
 	
 	public void seteaListaOpciones(List<ItemMenuPrincipal> listaOpciones){
@@ -58,13 +64,25 @@ public class LogicaMenuPrincipal {
 		{
 			pantallaManagerMenuPrincipal.muestraAlertaFaltanVendedores();
 			return;
-		} 
-		
+		}
 		itemMP = new ItemMenuPrincipal();
-		itemMP.setTitulo(a.getString(R.string.item_menu_principal_carga_pedidos));
+		itemMP.setTitulo("Visita Cliente");
+		itemMP.setCantidad(0);
+		itemMP.setImagen(R.drawable.mapageo);
+		itemMP.setAccion(AppSysMobile.OPC_MENU_PRINCIPAL_VISITAS);
+		int cantPendienteV = daoVisitasUio.getCount("");
+		itemMP.setCantidad(cantPendienteV);
+
+		listaOpciones.add(itemMP);
+
+		itemMP = new ItemMenuPrincipal();
+		itemMP.setTitulo("Editar "+a.getString(R.string.item_menu_principal_carga_pedidos));
 		itemMP.setCantidad(0);
 		itemMP.setImagen(R.drawable.icono_pedido);
 		itemMP.setAccion(AppSysMobile.OPC_MENU_PRINCIPAL_CARGA_PEDIDOS);
+
+		int cantPendienteE = daoPedido.getCount(" transferido = 0");
+		itemMP.setCantidad(cantPendienteE);
 		listaOpciones.add(itemMP);
 
 		itemMP = new ItemMenuPrincipal();
@@ -118,14 +136,12 @@ public class LogicaMenuPrincipal {
 		itemMP.setCantidad(0);
 		itemMP.setImagen(R.drawable.icono_pedido_pendientes);
 		itemMP.setAccion(AppSysMobile.OPC_MENU_PRINCIPAL_INVENTARIO);
+		int cantPendienteD = daoInventario.getCount("");
+		itemMP.setCantidad(cantPendienteD);
+
 		listaOpciones.add(itemMP);
 
-		itemMP = new ItemMenuPrincipal();
-		itemMP.setTitulo("Registro Visita");
-		itemMP.setCantidad(0);
-		itemMP.setImagen(R.drawable.mapageo);
-		itemMP.setAccion(AppSysMobile.OPC_MENU_PRINCIPAL_VISITAS);
-		listaOpciones.add(itemMP);
+
 
 	}
 

@@ -1,6 +1,7 @@
 package ar.com.syswork.sysmobile.psincronizar;
 
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -510,8 +511,11 @@ private DaoCodigosNuevos daoCodigosNuevos;
 					articulo.setExento(true);
 				else
 					articulo.setExento(false);
-				
-				articulo.setPrecio1(jsObject.getDouble("precio1"));
+				Double preciounitario=0.0;
+					preciounitario=jsObject.getDouble("precio1")*articulo.getIva();
+					DecimalFormat twoDForm = new DecimalFormat("#.####");
+					preciounitario = Double.valueOf(twoDForm.format(preciounitario));
+					articulo.setPrecio1(preciounitario);
 				articulo.setPrecio2(jsObject.getDouble("precio2"));
 				articulo.setPrecio3(jsObject.getDouble("precio3"));
 				articulo.setPrecio4(jsObject.getDouble("precio4"));
@@ -519,7 +523,7 @@ private DaoCodigosNuevos daoCodigosNuevos;
 				articulo.setPrecio6(jsObject.getDouble("precio6"));
 				articulo.setPrecio7(jsObject.getDouble("precio7"));
 				articulo.setPrecio8(jsObject.getDouble("precio8"));
-				articulo.setPrecio9(jsObject.getDouble("precio9"));
+				articulo.setPrecio9(jsObject.getDouble("precio1"));
 				articulo.setPrecio10(jsObject.getDouble("precio10"));
 
 				daoArticulo.save(articulo);

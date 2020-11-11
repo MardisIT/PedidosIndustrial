@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -17,21 +18,28 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.media.ExifInterface;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.provider.Settings;
 
+import android.telephony.SubscriptionInfo;
+import android.telephony.SubscriptionManager;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.core.content.FileProvider;
 
 import java.io.BufferedOutputStream;
@@ -42,13 +50,19 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
+import ar.com.syswork.sysmobile.Tracking.JavaRestClient;
+import ar.com.syswork.sysmobile.Tracking.SaveStatusBranchTracking;
 import ar.com.syswork.sysmobile.daos.DaoCliente;
+import ar.com.syswork.sysmobile.daos.DaoConfiguracion;
 import ar.com.syswork.sysmobile.daos.DaoVisitasUio;
 import ar.com.syswork.sysmobile.daos.DataManager;
+import ar.com.syswork.sysmobile.entities.ConfiguracionDB;
 import ar.com.syswork.sysmobile.entities.VisitasUio;
 import ar.com.syswork.sysmobile.shared.AppSysMobile;
 
@@ -60,10 +74,16 @@ public class visita extends Activity
     private static ImageView imageView;
     private static TextView textView1;
     private static TextView textView2;
+    private  static  TextView textobservaciones;
+    private  static RadioButton radsi;
+    Activity a;
+    private  static RadioButton radno;
+
     private static TextView longitudeValueGPS, latitudeValueGPS;
     private  static  Button btnguardarvisita;
 
     private Uri imageUri;
+    private DaoConfiguracion daoConfiguracion;
 
 
 
@@ -80,14 +100,19 @@ public class visita extends Activity
 
     private DaoVisitasUio daoVisitasUio;
     private String codigoVendedor;
+    public static Date DataStart;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_visita);
+         DataStart = new Date();
         app = (AppSysMobile) this.getApplication();
         dataManager = app.getDataManager();
         daoVisitasUio = dataManager.getDaoVisitasUio();
+        this.a=(Activity)this;
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
         if (extras != null) {
@@ -95,6 +120,7 @@ public class visita extends Activity
                     codCliente = extras.getString("cliente");
 
         }
+        daoConfiguracion=dataManager.getDaoConfiguracion();
         codigoVendedor = app.getVendedorLogueado();
         if (savedInstanceState == null) {
             getFragmentManager().beginTransaction()
@@ -119,6 +145,10 @@ public class visita extends Activity
             imageView = (ImageView) rootView.findViewById(R.id.image_view);
             textView1 = (TextView) rootView.findViewById(R.id.text_view_1);
             textView2 = (TextView) rootView.findViewById(R.id.text_view_2);
+            textobservaciones = (TextView) rootView.findViewById(R.id.edtobservacion);
+            radsi=(RadioButton) rootView.findViewById(R.id.radsi);
+            radno=(RadioButton) rootView.findViewById(R.id.radno);
+
             btnguardarvisita = (Button) rootView.findViewById(R.id.btnguardarvisita);
 
             longitudeValueGPS = (TextView) rootView.findViewById(R.id.longitudeValueGPS);
@@ -196,39 +226,129 @@ public class visita extends Activity
             button.setText(R.string.pause);
         }
     }
-    public  void  guardarvisita(View view){
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP_MR1)
+    public  void  guardarvisita(View view) {
+        if (imageUri==(null)) {
+            Toast.makeText(app, "Tomar fotografía para registrar visita..!!!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         String fechaHora = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss",
                 Locale.getDefault()).format(new Date());
-        VisitasUio objnuevo= new VisitasUio();
+        VisitasUio objnuevo = new VisitasUio();
         objnuevo.setLatitud(Double.valueOf((String) latitudeValueGPS.getText()));
         objnuevo.setLongitud(Double.valueOf((String) longitudeValueGPS.getText()));
         objnuevo.setCodcliente(codCliente);
-        objnuevo.setLinkfotoexterior("https://mardisenginefotos.blob.core.windows.net/industrialmolineravisitas/"+textView1.getText().toString().replace("Nombre: ",""));
+        objnuevo.setObservaciones(textobservaciones.getText().toString());
+        objnuevo.setRealizapedido(radsi.isChecked() ? "si" : "no");
+        objnuevo.setEstado("");
+        objnuevo.setLinkfotoexterior("https://mardisenginefotos.blob.core.windows.net/industrialmolineravisitas/" + textView1.getText().toString().replace("Nombre: ", ""));
         objnuevo.setFechavisita(fechaHora);
         objnuevo.setCodvendedor(codigoVendedor);
-        daoVisitasUio.save(objnuevo);
+        long idvisita=daoVisitasUio.save(objnuevo);
         UploadImage();
+        String campaing="";
+        for (ConfiguracionDB da : daoConfiguracion.getAll("")
+        ) {
+            campaing=da.getId_campania();
+        }
+        Double taskTime=-1.0;
+        Date Dataend = new Date();
+        long differenceInMillis = Dataend.getTime() - DataStart.getTime();
+        long Time = (differenceInMillis) / 60000;
+        DecimalFormat twoDForm = new DecimalFormat("#.##");
+        taskTime = Double.valueOf(twoDForm.format(Time));
 
-        Intent i = null;
-        i = new Intent(this,ar.com.syswork.sysmobile.plistavisitas.VisitaActivity.class);
+        String start = new SimpleDateFormat("dd/MM/yyyy HH:mm").format(DataStart);
+        String end = new SimpleDateFormat("dd/MM/yyyy HH:mm").format(Dataend);
+
+
+
+        if (radsi.isChecked()) {
+            Intent i = new Intent(getApplication(),ar.com.syswork.sysmobile.pcargapedidos.ActivityCargaPedidos.class);
+            i.putExtra("cliente", codCliente);
+            startActivity(i);
+            finish();
+        } else{
+            JavaRestClient Tarea = new JavaRestClient(a);
+            SaveStatusBranchTracking _Reply = new SaveStatusBranchTracking(
+                    obterImeid(), campaing, codCliente, String.valueOf(idvisita), "V", taskTime, start, end
+            );
+            Tarea.SaveStatusBranchTracking(_Reply);
+            DataStart=null;
+            Intent i = null;
+        i = new Intent(this, ar.com.syswork.sysmobile.plistavisitas.VisitaActivity.class);
         this.startActivity(i);
         this.finish();
+    }
 
+
+    }
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP_MR1)
+    public String  obterImeid() {
+        final String androidIdName = Settings.Secure.ANDROID_ID;
+
+        TelephonyManager tm = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+        TelephonyManager mTelephony = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+        String simSerialNo="";
+        @SuppressLint("MissingPermission") String  myIMEI = mTelephony.getDeviceId();
+
+        if (myIMEI == null) {
+            SubscriptionManager subsManager = (SubscriptionManager) getSystemService(Context.TELEPHONY_SUBSCRIPTION_SERVICE);
+
+            @SuppressLint("MissingPermission") List<SubscriptionInfo> subsList = subsManager.getActiveSubscriptionInfoList();
+
+            if (subsList!=null) {
+                for (SubscriptionInfo subsInfo : subsList) {
+                    if (subsInfo != null) {
+                        simSerialNo  = subsInfo.getIccId();
+                    }
+                }
+
+            }
+
+            myIMEI=simSerialNo;
+        }
+
+
+
+        return myIMEI;
 
     }
     static final int REQUEST_TAKE_PHOTO = 1;
     public void onClickButton(View view) {
-        btnguardarvisita.setVisibility(View.INVISIBLE);
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         File file = null;
 
-        if (intent.resolveActivity(getPackageManager()) != null) {
-            File photoFile = null;
+        try {
+            // Crea el Nombre de la Fotografía
+            String fechaHora = new SimpleDateFormat("yyyyMMdd_HHmmss",
+                    Locale.getDefault()).format(new Date());
+            String nombre = codCliente + "_" + fechaHora;
+            // Crea el Archivo de la Fotografía
+            file = nombrarArchivo(this, ALBUM, nombre,
+                    EXTENSION_JPEG);
 
-            //intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
+            // Obtiene el Nombre y el Directorio Absoluto y los Muestra
+            textView1.setText("Nombre: " + file.getName());
+            textView2.setText("Dir. Absoluto: " + file.getAbsolutePath());
+
+            // Guarda el Directorio Absoluto en una Variable Global
+            mDirAbsoluto = file.getAbsolutePath();
+            Uri photoUri = FileProvider.getUriForFile(
+                    this,
+                    getPackageName() + ".provider",
+                    file.getAbsoluteFile());
+
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
             startActivityForResult(intent, REQUEST_CODE_CAMARA);
-
+        } catch (IOException e) {
+            e.printStackTrace();
+            file = null;
+            mDirAbsoluto = null;
         }
+
+
 
     }
     String mCurrentPhotoPath;
@@ -294,7 +414,7 @@ public class visita extends Activity
         switch (requestCode) {
             case REQUEST_CODE_CAMARA:
                 if (resultCode == RESULT_OK) {
-                    File oupus=null;
+                    /*File oupus=null;
                     try {
                          oupus= createImageFile();
                          if(!oupus.exists())
@@ -318,7 +438,11 @@ public class visita extends Activity
                         os.close();
                     } catch (IOException e) {
                         e.printStackTrace();
-                    }
+                    }*/
+                    Bitmap bitmap = escalarBitmap(mDirAbsoluto,
+                            SCALE_FACTOR_IMAGE_VIEW);
+                    imageView.setImageBitmap(bitmap);
+                    imageUri = getImageUri(getApplication(),bitmap);
 
 
                 }

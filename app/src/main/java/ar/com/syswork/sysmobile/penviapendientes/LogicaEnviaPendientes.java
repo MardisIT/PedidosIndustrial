@@ -31,6 +31,7 @@ import com.google.gson.JsonObject;
 import ar.com.syswork.sysmobile.R;
 import ar.com.syswork.sysmobile.Tracking.JavaRestClient;
 import ar.com.syswork.sysmobile.Tracking.User;
+import ar.com.syswork.sysmobile.daos.DaoArticulo;
 import ar.com.syswork.sysmobile.daos.DaoChequePagos;
 import ar.com.syswork.sysmobile.daos.DaoCliente;
 import ar.com.syswork.sysmobile.daos.DaoCodigosNuevos;
@@ -44,6 +45,7 @@ import ar.com.syswork.sysmobile.daos.DaoToken;
 import ar.com.syswork.sysmobile.daos.DaoVisitasUio;
 import ar.com.syswork.sysmobile.daos.Daoinventariodetalles;
 import ar.com.syswork.sysmobile.daos.DataManager;
+import ar.com.syswork.sysmobile.entities.Articulo;
 import ar.com.syswork.sysmobile.entities.ChequePagos;
 import ar.com.syswork.sysmobile.entities.Cliente;
 import ar.com.syswork.sysmobile.entities.CodigosNuevos;
@@ -74,6 +76,7 @@ public class LogicaEnviaPendientes implements Callback {
 	private DaoPagosDetalles daoPagosDetalles;
 	private DaoChequePagos daoChequePagos;
 	private DaoInventario daoInventario;
+	private DaoArticulo daoArticulo;
 	private Daoinventariodetalles daoinventariodetalles;
 	private DaoConfiguracion daoConfiguracion;
 	private DaoVisitasUio daoVisitasUio;
@@ -106,6 +109,7 @@ public class LogicaEnviaPendientes implements Callback {
 		daoCliente = dm.getDaoCliente();
 		daoConfiguracion=dm.getDaoConfiguracion();
 		daoToken = dm.getDaoToken();
+		daoArticulo=dm.getDaoArticulo();
 		daoCodigosNuevos=dm.getDaoCodigosNuevos();
 		ValidToken();
 		daoPagosDetalles = dm.getDaoPagosDetalles();
@@ -147,6 +151,7 @@ public class LogicaEnviaPendientes implements Callback {
 		}
 
 		pantallaManagerEnviaPendientes.muestraDialogoEnviaPendientes();
+		pantallaManagerEnviaPendientes.ChkEnviarPagosPendientes.setText("Devoluciones Pendientes");
 		pantallaManagerEnviaPendientes.seteaTxtResultadoEnvio(a.getString(R.string.conectando));
 		Handler hp = new Handler(this);
 		ThreadEnvioinvnetario tep = new ThreadEnvioinvnetario(hp, jSonInventario);
@@ -204,6 +209,7 @@ public class LogicaEnviaPendientes implements Callback {
 			return;
 		}
 		pantallaManagerEnviaPendientes.muestraDialogoEnviaPendientes();
+		pantallaManagerEnviaPendientes.ChkEnviarPagosPendientes.setText("Visitas Pendientes");
 		pantallaManagerEnviaPendientes.seteaTxtResultadoEnvio(a.getString(R.string.conectando));
 		Handler h = new Handler(this);
 		ThreadEnvioVisitas te = new ThreadEnvioVisitas(h, jSonVisistas);
@@ -224,7 +230,7 @@ public class LogicaEnviaPendientes implements Callback {
 		else
 			listavVisitasUios = daoVisitasUio.getAll(" id = " + idVisitasEnviar);
 		if (listavVisitasUios.size() > 0) {
-
+			jsonArrayVisitas = new JSONArray();
 			Iterator<VisitasUio> i = listavVisitasUios.iterator();
 
 			while (i.hasNext()) {
@@ -234,13 +240,15 @@ public class LogicaEnviaPendientes implements Callback {
 				try {
 
 
-					jsonVisitas.put("id", visitasUio.getId());
+					//jsonVisitas.put("id", visitasUio.getId());
 					jsonVisitas.put("codcliente", visitasUio.getCodcliente());
 					jsonVisitas.put("codvendedor", visitasUio.getCodvendedor());
 					jsonVisitas.put("fechavisita", visitasUio.getFechavisita());
 					jsonVisitas.put("Latitud", visitasUio.getLatitud());
 					jsonVisitas.put("Longitud", visitasUio.getLongitud());
 					jsonVisitas.put("Linkfotoexterior", visitasUio.getLinkfotoexterior());
+					jsonVisitas.put("Compro", visitasUio.getRealizapedido());
+					jsonVisitas.put("Observacion", visitasUio.getObservaciones());
 
 					jsonArrayVisitas.put(jsonVisitas);
 				} catch (JSONException e) {
@@ -487,6 +495,7 @@ public class LogicaEnviaPendientes implements Callback {
 
 
 					Cliente c= daoCliente.getByKey(localPedido.getCodCliente());
+					Articulo art=daoArticulo.getByKey(pedidoItem.getIdArticulo());
 					//armar json para envio servidor industrial
 					jsonObjectPedidoL.put("P_PEDIDO",codigosNuevos.getCodeunico());
 					jsonObjectPedidoL.put("P_NUEVO_CLIENTE",localPedido.getCodCliente().equals(c.getCodigoOpcional())?"":c.getCodigoOpcional());
@@ -494,7 +503,7 @@ public class LogicaEnviaPendientes implements Callback {
 					jsonObjectPedidoL.put("P_ORDEN", pedidoItem.getIdPedidoItem());
 					jsonObjectPedidoL.put("P_FECHA",Integer.valueOf(fecha));
 					jsonObjectPedidoL.put("P_PRODUCTO",pedidoItem.getIdArticulo());
-					jsonObjectPedidoL.put("P_PRECIO",pedidoItem.getImporteUnitario());
+					jsonObjectPedidoL.put("P_PRECIO",art.getPrecio9());
 					jsonObjectPedidoL.put("P_CANTIDAD",pedidoItem.getCantidad());
 					jsonObjectPedidoL.put("P_ESTADO",0);
 					jsonObjectPedidoL.put("P_FILLER","");

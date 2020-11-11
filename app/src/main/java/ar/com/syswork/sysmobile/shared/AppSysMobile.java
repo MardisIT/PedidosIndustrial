@@ -119,7 +119,7 @@ public class AppSysMobile extends Application {
 	public final static String WS_ACCESO_GRABAR_PEDIDOS_INDUSTRIAL = "https://pedido.gnoboa.com:2108/api/PedidoCobertura/AgregarLista";
 	public final static String WS_ACCESO_GRABAR_PAGOS = "http://geomardis6728.cloudapp.net/API/api/PAGOS";
 	public final static String WS_ACCESO_GRABAR_INVENTARIO = "https://dyvenpro.azurewebsites.net/api/Order/inventario";
-	public final static String WS_ACCESO_GRABAR_VISITAS = "http://geomardis6728.cloudapp.net/API/api/visitasUios";
+	public final static String WS_ACCESO_GRABAR_VISITAS = "http://dyvenpro.azurewebsites.net/api/Order/GETGuardarVisitas";
 	public final static String WS_ACCESO_GRABA_PEDIDO = "/setPedido";
 	
 	public final static String INTENT_FILTER_CAMBIOS_LISTA_PEDIDOS = "INTENT_FILTER_CAMBIOS_LISTA_PEDIDOS";

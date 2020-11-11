@@ -175,7 +175,7 @@ public class LogicaConsultaStock implements Callback{
 	 @SuppressLint("NewApi")
 	public String Decompress(String zipText) throws IOException 
 	{
-		    int size = 0;
+		    /*int size = 0;
 		    
 		    byte[] gzipBuff = Base64new.decode(zipText, Base64new.DEFAULT);
 
@@ -190,9 +190,9 @@ public class LogicaConsultaStock implements Callback{
 		        baos.write(tempBuffer, 0, size);
 		    }
 		    byte[] buffer = baos.toByteArray();
-		    baos.close();
+		    baos.close();*/
 
-		    return new String(buffer, "UTF-8");
+		    return zipText;
 	}	
 
 }

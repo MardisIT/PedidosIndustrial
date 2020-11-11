@@ -18,9 +18,10 @@ import ar.com.syswork.sysmobile.entities.PedidoItem;
 import ar.com.syswork.sysmobile.shared.AppSysMobile;
 import ar.com.syswork.sysmobile.util.AlertManager;
 import ar.com.syswork.sysmobile.util.IAlertResult;
+import ar.com.syswork.sysmobile.visita;
 
 
-import androidx.appcompat.app.AppCompatActivity;;
+import androidx.appcompat.app.AppCompatActivity;;import java.util.Date;
 
 public class ActivityCargaPedidos extends AppCompatActivity implements IAlertResult
 {
@@ -48,12 +49,23 @@ public class ActivityCargaPedidos extends AppCompatActivity implements IAlertRes
 	public void setPosicionItemSeleccionadoEn(int posicionItemSeleccionadoEn) {
 		this.posicionItemSeleccionadoEn = posicionItemSeleccionadoEn;
 	}
+	public static Date DataStartPedido;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_carga_pedidos);
-		
+		visita _visita= new visita();
+
+		if(_visita.DataStart==null)
+			DataStartPedido=new Date();
+		else{
+			DataStartPedido=_visita.DataStart;
+		}
+		_visita.DataStart=null;
+
+
+
 		incluirEnReparto = false;
 		
 		String codCliente="";
