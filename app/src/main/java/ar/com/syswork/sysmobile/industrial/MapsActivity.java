@@ -192,13 +192,32 @@ public class MapsActivity extends AppCompatActivity implements
             if(a.getLatitudeBranch()!=null && a.getLenghtBranch()!=null) {
                 UPV = new LatLng(Double.valueOf(a.LatitudeBranch.replace(",",".")), Double.valueOf(a.LenghtBranch.replace(",",".")));
                 mapa.moveCamera(CameraUpdateFactory.newLatLngZoom(UPV, 13));
-                mapa.addMarker(new MarkerOptions()
-                        .position(UPV)
-                        .title(a.getCodigo())
-                        .snippet(a.getName())
-                        .icon(BitmapDescriptorFactory
-                                .defaultMarker(BitmapDescriptorFactory.HUE_RED))
-                        .anchor(0.5f, 0.5f));
+
+                if(a.getCpteDefault().toString().equals("E"))
+                    mapa.addMarker(new MarkerOptions()
+                            .position(UPV)
+                            .title(a.getCodigo())
+                            .snippet(a.getName())
+                            .icon(BitmapDescriptorFactory
+                                    .defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
+                            .anchor(0.5f, 0.5f));
+                else if(a.getCpteDefault().toString().equals("V"))
+                    mapa.addMarker(new MarkerOptions()
+                            .position(UPV)
+                            .title(a.getCodigo())
+                            .snippet(a.getName())
+                            .icon(BitmapDescriptorFactory
+                                    .defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))
+                            .anchor(0.5f, 0.5f));
+                else
+                    mapa.addMarker(new MarkerOptions()
+                            .position(UPV)
+                            .title(a.getCodigo())
+                            .snippet(a.getName())
+                            .icon(BitmapDescriptorFactory
+                                    .defaultMarker(BitmapDescriptorFactory.HUE_RED))
+                            .anchor(0.5f, 0.5f));
+
 
             }
         }

@@ -220,6 +220,8 @@ public class DaoCliente implements DaoInterface<Cliente>{
 	}
 
 
+
+
 	public List<Cliente> getAllWithLimit(String where,int limitDesde, String order) {
 		
 		ArrayList<Cliente> lista = new ArrayList<Cliente>();
@@ -289,7 +291,14 @@ public class DaoCliente implements DaoInterface<Cliente>{
 		
 		return lista;
 	}
-	
+
+	public  void ActualizarEstadoCliente(Cliente cliente)
+	{
+		String sql;
+		sql="UPDATE CLIENTES SET CpteDefault = '" + cliente.getCpteDefault() + "' where Codigo='"+cliente.getCodigo()+"'";
+		db.execSQL(sql);
+
+	}
 	//consulta localidades
 		public List<Cliente> getAllLocalidades()
 		{

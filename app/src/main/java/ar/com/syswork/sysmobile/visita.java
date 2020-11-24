@@ -35,11 +35,16 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.LinearLayoutCompat;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
 
 import java.io.BufferedOutputStream;
@@ -62,12 +67,13 @@ import ar.com.syswork.sysmobile.daos.DaoCliente;
 import ar.com.syswork.sysmobile.daos.DaoConfiguracion;
 import ar.com.syswork.sysmobile.daos.DaoVisitasUio;
 import ar.com.syswork.sysmobile.daos.DataManager;
+import ar.com.syswork.sysmobile.entities.Cliente;
 import ar.com.syswork.sysmobile.entities.ConfiguracionDB;
 import ar.com.syswork.sysmobile.entities.VisitasUio;
 import ar.com.syswork.sysmobile.shared.AppSysMobile;
 
 
-public class visita extends Activity
+public class visita extends AppCompatActivity
 {
     private String mDirAbsoluto = null;
 
@@ -95,6 +101,9 @@ public class visita extends Activity
     double longitudeGPS, latitudeGPS;
     private static  String codCliente = "";
     private AppSysMobile app;
+    public String opcionpedido;
+    public String opcionpedidono;
+
 
     private DataManager dataManager;
 
@@ -103,14 +112,88 @@ public class visita extends Activity
     public static Date DataStart;
 
 
+    private DaoCliente daoCliente;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_visita);
+        setContentView(R.layout.activity_fragment_main);
          DataStart = new Date();
         app = (AppSysMobile) this.getApplication();
         dataManager = app.getDataManager();
+        daoCliente = dataManager.getDaoCliente();
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        longitudeValueGPS = (TextView) findViewById(R.id.longitudeValueGPS);
+        latitudeValueGPS = (TextView) findViewById(R.id.latitudeValueGPS);
+        imageView = (ImageView) findViewById(R.id.image_view);
+        textView1 = (TextView) findViewById(R.id.text_view_1);
+        textView2 = (TextView) findViewById(R.id.text_view_2);
+        textobservaciones = (TextView) findViewById(R.id.edtobservacion);
+        radsi=(RadioButton) findViewById(R.id.radsi);
+        radno=(RadioButton) findViewById(R.id.radno);
+
+        final RadioButton radCerrado=(RadioButton) findViewById(R.id.radCerrado);
+        final RadioButton radtienestock=(RadioButton) findViewById(R.id.radtienestock);
+        final RadioButton radnodinero=(RadioButton) findViewById(R.id.radnodinero);
+        final RadioButton radnopersona=(RadioButton) findViewById(R.id.radnopersona);
+        final RadioButton radnoexiste=(RadioButton) findViewById(R.id.radnoexiste);
+        final RadioButton radotros=(RadioButton) findViewById(R.id.radotros);
+
+
+
+        btnguardarvisita = (Button) findViewById(R.id.btnguardarvisita);
+
+
+        tomarGPSinicial();
+        RadioGroup radioGroupC = (RadioGroup)findViewById(R.id.radioGroup);
+        final LinearLayout linearLayoutopcionno = (LinearLayout)findViewById(R.id.opcionno); 
+        RadioGroup radioGroupR = (RadioGroup)findViewById(R.id.radioGroup1);
+        opcionpedido="si";
+        opcionpedidono="";
+        radioGroupC.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                // Ahora i es el id del elemento seleccionado. Nota: es el id, no el índice
+                // compara usando
+                    if(radsi.getId()==i) {
+                        linearLayoutopcionno.setVisibility(View.GONE);
+                        opcionpedido = "si";
+                    }
+                    if(radno.getId()==i) {
+                        linearLayoutopcionno.setVisibility(View.VISIBLE);
+                        opcionpedido = "no";
+                    }
+            }
+        });
+
+
+        radioGroupR.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                // Ahora i es el id del elemento seleccionado. Nota: es el id, no el índice
+                // compara usando
+                if(radCerrado.getId()==i) {
+                    opcionpedidono = "cerrado";
+                }
+                if(radtienestock.getId()==i) {
+                    opcionpedidono = "tienestock";
+                }
+                if(radnodinero.getId()==i) {
+                    opcionpedidono = "nodinero";
+                }
+                if(radnopersona.getId()==i) {
+                    opcionpedidono = "nopersona";
+                }
+                if(radnoexiste.getId()==i) {
+                    opcionpedidono = "noexiste";
+                }
+                if(radotros.getId()==i) {
+                    opcionpedidono = "otros";
+                }
+            }
+        });
+
+
         daoVisitasUio = dataManager.getDaoVisitasUio();
         this.a=(Activity)this;
         Intent intent = getIntent();
@@ -122,41 +205,18 @@ public class visita extends Activity
         }
         daoConfiguracion=dataManager.getDaoConfiguracion();
         codigoVendedor = app.getVendedorLogueado();
-        if (savedInstanceState == null) {
-            getFragmentManager().beginTransaction()
-                    .add(R.id.container, new PlaceholderFragment()).commit();
-        }
+
 
     }
 
     /**
      * A placeholder fragment containing a simple view.
      */
-    public static class PlaceholderFragment extends Fragment {
 
-        public PlaceholderFragment() {
-        }
 
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.activity_fragment_main, container,
-                    false);
-            imageView = (ImageView) rootView.findViewById(R.id.image_view);
-            textView1 = (TextView) rootView.findViewById(R.id.text_view_1);
-            textView2 = (TextView) rootView.findViewById(R.id.text_view_2);
-            textobservaciones = (TextView) rootView.findViewById(R.id.edtobservacion);
-            radsi=(RadioButton) rootView.findViewById(R.id.radsi);
-            radno=(RadioButton) rootView.findViewById(R.id.radno);
 
-            btnguardarvisita = (Button) rootView.findViewById(R.id.btnguardarvisita);
 
-            longitudeValueGPS = (TextView) rootView.findViewById(R.id.longitudeValueGPS);
-            latitudeValueGPS = (TextView) rootView.findViewById(R.id.latitudeValueGPS);
-            locationManager = (LocationManager) rootView.getContext().getSystemService(Context.LOCATION_SERVICE);
-            return rootView;
-        }
-    }
+
     private final LocationListener locationListenerGPS = new LocationListener() {
         public void onLocationChanged(Location location) {
             longitudeGPS = location.getLongitude();
@@ -212,10 +272,25 @@ public class visita extends Activity
         dialog.show();
     }
     @SuppressLint("MissingPermission")
+    public  void  tomarGPSinicial(){
+        if (!checkLocation())
+            return;
+        locationManager.removeUpdates(locationListenerGPS);
+        Location loc = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        if(loc!= null) {
+            longitudeValueGPS.setText(loc.getLongitude() + "");
+            latitudeValueGPS.setText(loc.getLatitude() + "");
+            Toast.makeText(getApplication(), "GPS Provider update", Toast.LENGTH_SHORT).show();
+            btnguardarvisita.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @SuppressLint("MissingPermission")
     public void toggleGPSUpdates(View view) {
         if (!checkLocation())
             return;
         Button button = (Button) view;
+        tomarGPSinicial();
         if (button.getText().equals(getResources().getString(R.string.pause))) {
             locationManager.removeUpdates(locationListenerGPS);
             button.setText(R.string.resume);
@@ -229,6 +304,20 @@ public class visita extends Activity
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP_MR1)
     public  void  guardarvisita(View view) {
 
+        if(opcionpedido.equals("no"))
+        {
+            if(opcionpedidono.equals("")) {
+                Toast.makeText(a, "Seleccione motivo no realiza pedido!!!", Toast.LENGTH_SHORT).show();
+                return;
+            }else {
+                if(opcionpedidono.equals("otros") && textobservaciones.getText().toString().equals("")){
+                    Toast.makeText(a, "Ingrese motivo otro no realiza pedido en observaciones!!!!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+            }
+
+        }
+
 
         String fechaHora = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss",
                 Locale.getDefault()).format(new Date());
@@ -237,8 +326,8 @@ public class visita extends Activity
         objnuevo.setLongitud(Double.valueOf((String) longitudeValueGPS.getText()));
         objnuevo.setCodcliente(codCliente);
         objnuevo.setObservaciones(textobservaciones.getText().toString());
-        objnuevo.setRealizapedido(radsi.isChecked() ? "si" : "no");
-        objnuevo.setEstado("");
+        objnuevo.setRealizapedido(opcionpedido);
+        objnuevo.setEstado(opcionpedidono);
         objnuevo.setLinkfotoexterior("https://mardisenginefotos.blob.core.windows.net/industrialmolineravisitas/" + textView1.getText().toString().replace("Nombre: ", ""));
         objnuevo.setFechavisita(fechaHora);
         objnuevo.setCodvendedor(codigoVendedor);
@@ -267,6 +356,11 @@ public class visita extends Activity
             startActivity(i);
             finish();
         } else{
+            Cliente cliente= daoCliente.getByKey(codCliente) ;
+            cliente.setCpteDefault("V");
+            daoCliente.update(cliente);
+
+
             JavaRestClient Tarea = new JavaRestClient(a);
             SaveStatusBranchTracking _Reply = new SaveStatusBranchTracking(
                     obterImeid(), campaing, codCliente, String.valueOf(idvisita), "V", taskTime, start, end

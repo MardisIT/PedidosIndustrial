@@ -3,10 +3,15 @@ package ar.com.syswork.sysmobile.psplash;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.Menu;
 
@@ -29,7 +34,7 @@ public class ActivitySplash extends Activity {
 	private DataManager dm;
 	private AppSysMobile app;
 	DaoCodigosNuevos daoCodigosNuevos;
-	
+	private static LocationManager locationManager;
 	@RequiresApi(api = Build.VERSION_CODES.LOLLIPOP_MR1)
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +44,8 @@ public class ActivitySplash extends Activity {
 		
 		//Instancio el DataManager
 		dm = new DataManager(this);
-		
+		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+		checkLocation();
 		//Lo Seteo a la Aplicacion
 		app = (AppSysMobile) getApplication();
 		app.setDataManager(dm);
@@ -101,6 +107,37 @@ public class ActivitySplash extends Activity {
 		finish();
 		
 	}
+
+
+	private boolean checkLocation() {
+		if (!isLocationEnabled())
+			showAlert();
+		return isLocationEnabled();
+	}
+	private boolean isLocationEnabled() {
+		return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
+				locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+	}
+	private void showAlert() {
+		final AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+		dialog.setTitle("Enable Location")
+				.setMessage("Su ubicación esta desactivada.\npor favor active su ubicación " +
+						"usa esta app")
+				.setPositiveButton("Configuración de ubicación", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface paramDialogInterface, int paramInt) {
+						Intent myIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+						startActivity(myIntent);
+					}
+				})
+				.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface paramDialogInterface, int paramInt) {
+					}
+				});
+		dialog.show();
+	}
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.

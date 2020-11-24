@@ -239,7 +239,7 @@ public void guardarcliente(){
 			if(!edruta.getText().toString().equals("")&&!ednombres.getText().toString().equals("")&&!edapellidos.getText().toString().equals("")
 				&&!edcodigol1.getText().toString().equals("")&&!edcodigol2.getText().toString().equals("")&&!ednombrelocal.getText().toString().equals("")
 				&&!edcedula.getText().toString().equals("")&&!edlatitude.getText().toString().equals("")&&!edlongitud.getText().toString().equals("")
-				&&!eddireccion.getText().toString().equals("")&&!edreferencia.getText().toString().equals("")&&!edacelular.getText().toString().equals("")&&!edlocalidad.getText().toString().equals("")&&!edlongitud.getText().toString().equals("")) {
+				&&!eddireccion.getText().toString().equals("")&&!edreferencia.getText().toString().equals("")&&!edacelular.getText().toString().equals("")) {
 
 
 			Cliente _auxC = daoCliente.getByKey(cliente.getCodigo());
@@ -461,10 +461,8 @@ public void guardarcliente(){
 	public void toggleGPSUpdates() {
 		if (!checkLocation())
 			return;
-
-
-			locationManager.requestLocationUpdates(
-					LocationManager.GPS_PROVIDER, 2 * 20 * 1000, 10, locationListenerGPS);
+		locationManager.requestLocationUpdates(
+		LocationManager.GPS_PROVIDER, 2 * 20 * 1000, 10, locationListenerGPS);
 
 
 	}

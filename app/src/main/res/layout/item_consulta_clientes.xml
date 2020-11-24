@@ -5,13 +5,12 @@
 
     <ImageView
         android:id="@+id/imagen_cliente_consulta"
-        android:layout_width="37dp"
-        android:layout_height="39dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="5dp"
-        android:contentDescription="@string/vacio"
+        android:padding="5dp"
+
         android:src="@drawable/icono_cliente_item" />
 
     <TextView

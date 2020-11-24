@@ -787,6 +787,11 @@ public void enviotrking(){
 			return;			
 		}
 
+
+		Cliente clienteM= daoCliente.getByKey(cliente.getCodigo()) ;
+
+		clienteM.setCpteDefault("E");
+		daoCliente.update(clienteM);
 		ActivityCargaPedidos activityCargaPedidos = new ActivityCargaPedidos();
 		String campaing="";
 		for (ConfiguracionDB da : daoConfiguracion.getAll("")

@@ -180,7 +180,7 @@
         DialogSolicitarCantidadInventarioActivity
     </string>
     <string name="title_activity_item_carga_inventario">Devoluciones</string>
-    <string name="title_activity_visita">visita</string>
+    <string name="title_activity_visita">Registro Visita Cliente</string>
     <string name="pause">1</string>
     <string name="resume">2</string>
     <string name="title_activity_fragment_main">fragment_main</string>
