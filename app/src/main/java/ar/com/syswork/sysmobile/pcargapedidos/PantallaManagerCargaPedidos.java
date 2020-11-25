@@ -136,7 +136,7 @@ public class PantallaManagerCargaPedidos {
 		txtCodArticulo = (TextView) dialog.findViewById(R.id.txtCodArticulo);
 		txtDescArticulo = (TextView) dialog.findViewById(R.id.txtDescArticulo);
 		cmbformapago=(Spinner)dialog.findViewById(R.id.cmbformapago);
-		cmbformapago.setEnabled(false);
+		//cmbformapago.setEnabled(false);
 		cmbunidades=(Spinner)dialog.findViewById(R.id.cmbunidad);
 		ArrayAdapter<String> adaptador;
 		adaptador = new ArrayAdapter<String>(a, R.layout.support_simple_spinner_dropdown_item, formapago);

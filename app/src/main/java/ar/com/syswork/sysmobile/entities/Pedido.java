@@ -13,7 +13,16 @@ public class Pedido {
 	private long gpsY;
 	private boolean facturar;
 	private boolean incluirEnReparto;
-	
+	public String codpedidomardis;
+
+	public String getCodpedidomardis() {
+		return codpedidomardis;
+	}
+
+	public void setCodpedidomardis(String codpedidomardis) {
+		this.codpedidomardis = codpedidomardis;
+	}
+
 	private Cliente cliente;
 	
 	

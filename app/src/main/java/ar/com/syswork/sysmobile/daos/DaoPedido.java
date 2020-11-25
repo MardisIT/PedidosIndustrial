@@ -20,7 +20,9 @@ public class DaoPedido implements DaoInterface<Pedido>{
 	public DaoPedido(SQLiteDatabase db)
 	{
 		this.db=db;		
-		statement = this.db.compileStatement("INSERT INTO pedidos (codCliente,fecha,idVendedor,totalNeto,totalFinal,transferido,gpsX,gpsY,facturar,incluirEnReparto) VALUES(?,?,?,?,?,?,?,?,?,?)");
+		statement = this.db.compileStatement("INSERT INTO pedidos (codCliente,fecha,idVendedor," +
+				"totalNeto,totalFinal,transferido,gpsX,gpsY,facturar," +
+				"incluirEnReparto,codpedidomardis) VALUES(?,?,?,?,?,?,?,?,?,?,?)");
 		daoCliente = new DaoCliente(db);
 	}
 
@@ -41,7 +43,8 @@ public class DaoPedido implements DaoInterface<Pedido>{
 			statement.bindLong(8,pedido.getGpsY());
 			statement.bindLong(9,pedido.isFacturar()?1:0);
 			statement.bindLong(9,pedido.isIncluirEnReparto()?1:0);
-			
+			statement.bindString(10,pedido.getCodpedidomardis());
+
 			Log.d("SW","pedido.getGpsY()_: " + pedido.getGpsY());
 			Log.d("SW","pedido.getGpsX()_: " + pedido.getGpsX());
 			
@@ -125,7 +128,7 @@ public class DaoPedido implements DaoInterface<Pedido>{
 		String sql;
 		Pedido pedido = null;
 
-		sql = "SELECT _id,codCliente,fecha,idVendedor,totalNeto,totalFinal,transferido,facturar,incluirEnReparto FROM pedidos WHERE _id = " + id;
+		sql = "SELECT _id,codCliente,fecha,idVendedor,totalNeto,totalFinal,transferido,facturar,incluirEnReparto,codpedidomardis FROM pedidos WHERE _id = " + id;
 		try
 			{
 				Cursor c = db.rawQuery(sql,null);
@@ -143,6 +146,7 @@ public class DaoPedido implements DaoInterface<Pedido>{
 					pedido.setFacturar((c.getInt(7)==1)?true:false);
 					pedido.setIncluirEnReparto((c.getInt(8)==1)?true:false);
 					pedido.setCliente(daoCliente.getByKey(c.getString(1)));
+					pedido.setCodpedidomardis(c.getString(8));
 				}
 				
 				if(!c.isClosed())
@@ -166,7 +170,7 @@ public class DaoPedido implements DaoInterface<Pedido>{
 		String sql;
 		Pedido pedido = null;
 		
-		sql = "SELECT _id,codCliente,fecha,idVendedor,totalNeto,totalFinal,transferido,facturar,incluirEnReparto FROM pedidos";
+		sql = "SELECT _id,codCliente,fecha,idVendedor,totalNeto,totalFinal,transferido,facturar,incluirEnReparto,codpedidomardis FROM pedidos";
 		if (!where.equals(""))
 		{
 			sql = sql + " WHERE " + where; 
@@ -191,6 +195,7 @@ public class DaoPedido implements DaoInterface<Pedido>{
 						pedido.setFacturar((c.getInt(7)==1)?true:false);
 						pedido.setIncluirEnReparto((c.getInt(7)==1)?true:false);
 						pedido.setCliente(daoCliente.getByKey(c.getString(1)));
+						pedido.setCodpedidomardis(c.getString(8));
 						lista.add(pedido);
 					}
 					

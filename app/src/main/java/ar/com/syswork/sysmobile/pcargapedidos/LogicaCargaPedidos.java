@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.UUID;
 
 import ar.com.syswork.sysmobile.R;
 
@@ -723,7 +724,10 @@ public void enviotrking(){
 		pedido.setTransferido(false);
 		pedido.setFacturar(facturar);
 		pedido.setIncluirEnReparto(incluirEnReparto);
-		
+		UUID idOne = UUID.randomUUID();
+		pedido.setCodpedidomardis(idOne.toString());
+
+
 		idPedido = daoPedido.save(pedido);
 
 		int idReporteEncabezado=0;
@@ -1102,4 +1106,8 @@ public void enviotrking(){
 		return solicitaClaseDePrecio;
 		
 	}
+
+
+
+
 }

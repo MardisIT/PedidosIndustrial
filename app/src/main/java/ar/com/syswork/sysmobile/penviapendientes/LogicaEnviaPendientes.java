@@ -82,8 +82,11 @@ public class LogicaEnviaPendientes implements Callback {
 	private DaoVisitasUio daoVisitasUio;
 	public static String EnvioOpcion = "";
 
+	public UUID URI=null;
+
 	private Activity a;
 	private JSONArray jsonArrayPedidosL;
+	private JSONArray jsonArrayDevolucionesL;
 	private PantallaManagerEnviaPendientes pantallaManagerEnviaPendientes;
 
 	private boolean desdeCargaDePedidos = false;
@@ -196,10 +199,7 @@ public class LogicaEnviaPendientes implements Callback {
 			Thread tI = new Thread(teI);
 			tI.start();
 
-			Handler h = new Handler(this);
-			ThreadEnvio te = new ThreadEnvio(h, jSonPedidos);
-			Thread t = new Thread(te);
-			t.start();
+
 
 
 
@@ -312,7 +312,9 @@ public class LogicaEnviaPendientes implements Callback {
 		inventariodetalles _Inventariodetalles;
 		JSONObject jsoDetalleItem;
 		JSONArray jsa = null;
-
+		jsonArrayDevolucionesL=null;
+		jsonArrayDevolucionesL=new JSONArray();
+		JSONObject jsonObjectDevolucionesL;
 		List<inventariodetalles> listaItemsInventariodetalles = daoinventariodetalles.getAll(" idinventario = " + idInvnetario);
 		if (listaItemsInventariodetalles.size() > 0) {
 			jsa = new JSONArray();
@@ -320,7 +322,7 @@ public class LogicaEnviaPendientes implements Callback {
 			while (i.hasNext()) {
 				_Inventariodetalles = i.next();
 				jsoDetalleItem = new JSONObject();
-
+				jsonObjectDevolucionesL= new JSONObject();
 				try {
 
 					jsoDetalleItem.put("id", 0);
@@ -329,6 +331,12 @@ public class LogicaEnviaPendientes implements Callback {
 					jsoDetalleItem.put("valor", _Inventariodetalles.getValor());
 					jsoDetalleItem.put("unidad", _Inventariodetalles.getUnidad());
 					jsa.put(jsoDetalleItem);
+
+
+
+
+
+
 
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
@@ -412,6 +420,8 @@ public class LogicaEnviaPendientes implements Callback {
 	}
 
 
+
+
 	private String obtieneJsonPedidos() {
 		String jSonPedidos = "";
 		JSONArray jsonArrayPedidos = null;
@@ -446,6 +456,7 @@ public class LogicaEnviaPendientes implements Callback {
 					jsonPedido.put("totalFinal", pedido.getTotalFinal());
 					jsonPedido.put("facturar", pedido.isFacturar());
 					jsonPedido.put("incluirEnReparto", pedido.isIncluirEnReparto());
+					jsonPedido.put("p_PEDIDO_MARDIS",pedido.getCodpedidomardis());
 					jsonPedido.put("pedidosItems", obtieneJsonDetalleDePedido(pedido.getIdPedido()));
 
 					jsonArrayPedidos.put(jsonPedido);
@@ -515,7 +526,7 @@ public class LogicaEnviaPendientes implements Callback {
 					jsonObjectPedidoL.put("P_ESTADO",0);
 					jsonObjectPedidoL.put("P_FILLER","");
 					jsonObjectPedidoL.put("p_CLIENTE",!localPedido.getCodCliente().equals(c.getCodigoOpcional())?c.getCodigoOpcional():localPedido.getCodCliente());
-					jsonObjectPedidoL.put("p_PEDIDO_MARDIS",idOne);
+					jsonObjectPedidoL.put("p_PEDIDO_MARDIS",localPedido.getCodpedidomardis());
 					jsonObjectPedidoL.put("P_VENDEDOR",Integer.valueOf(localPedido.getIdVendedor().replace("V","")));
 					codigosNuevos.setUri("E");
 
@@ -630,6 +641,7 @@ public class LogicaEnviaPendientes implements Callback {
 						} else {
 							pantallaManagerEnviaPendientes.seteaBtnCerrarEnvioPendientesVisible(true);
 						}
+						EnvioOpcion="pedidos";
 						String jSonPedidos = obtieneJsonPedidos();
 						Handler h = new Handler(this);
 						ThreadEnvio te = new ThreadEnvio(h, jSonPedidos);
