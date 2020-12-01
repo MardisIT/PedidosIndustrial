@@ -6,6 +6,15 @@ public class Inventario {
     private String codvendedor;
     private String fechainventario;
     private Cliente cliente;
+    private  String codigomardis;
+
+    public String getCodigomardis() {
+        return codigomardis;
+    }
+
+    public void setCodigomardis(String codigomardis) {
+        this.codigomardis = codigomardis;
+    }
 
     public Cliente getCliente() {
         return cliente;

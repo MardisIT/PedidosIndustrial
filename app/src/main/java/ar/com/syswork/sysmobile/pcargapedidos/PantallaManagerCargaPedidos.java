@@ -136,7 +136,7 @@ public class PantallaManagerCargaPedidos {
 		txtCodArticulo = (TextView) dialog.findViewById(R.id.txtCodArticulo);
 		txtDescArticulo = (TextView) dialog.findViewById(R.id.txtDescArticulo);
 		cmbformapago=(Spinner)dialog.findViewById(R.id.cmbformapago);
-		//cmbformapago.setEnabled(false);
+		cmbformapago.setEnabled(false);
 		cmbunidades=(Spinner)dialog.findViewById(R.id.cmbunidad);
 		ArrayAdapter<String> adaptador;
 		adaptador = new ArrayAdapter<String>(a, R.layout.support_simple_spinner_dropdown_item, formapago);
@@ -294,7 +294,21 @@ public class PantallaManagerCargaPedidos {
 		am.ShowAlert();
 		
 	}
-	
+
+	public void muestraAlertaStockpedido(String msg,LogicaCargaPedidos logicaCargaPedidos) {
+
+		AlertManager am = new AlertManager(this.a ,logicaCargaPedidos ,3);
+
+		am.setTitle("Aviso Bodega Central");
+		am.setMessage(msg);
+		am.setPositiveButton(strSi);
+		am.setNegativeButton(strNo);
+		am.ShowAlert();
+
+	}
+
+
+
 	public void muestraAlertaIncluirEnReparto() 
 	{
 		AlertManager am = new AlertManager(this.a ,(IAlertResult) this.a ,999);

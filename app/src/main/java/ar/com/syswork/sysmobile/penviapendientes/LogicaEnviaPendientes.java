@@ -145,8 +145,8 @@ public class LogicaEnviaPendientes implements Callback {
 	public void enviarInventarioPendientes() {
 
 		//String jSonPedidos = obtieneJsonPedidos();
-		String jSonInventario = obtieneJsonInventario();
-		EnvioOpcion = "inventario";
+		String jSonInventario = obtieneJsonInventario("I");
+		EnvioOpcion = "devoluciones";
 
 		if (jSonInventario.equals("")) {
 			pantallaManagerEnviaPendientes.mostrarMensajeNoHayRegistrosInventario();
@@ -156,8 +156,9 @@ public class LogicaEnviaPendientes implements Callback {
 		pantallaManagerEnviaPendientes.muestraDialogoEnviaPendientes();
 		pantallaManagerEnviaPendientes.ChkEnviarPagosPendientes.setText("Devoluciones Pendientes");
 		pantallaManagerEnviaPendientes.seteaTxtResultadoEnvio(a.getString(R.string.conectando));
+
 		Handler hp = new Handler(this);
-		ThreadEnvioinvnetario tep = new ThreadEnvioinvnetario(hp, jSonInventario);
+		ThredDevolucionesIndustrial tep = new ThredDevolucionesIndustrial(hp, jsonArrayDevolucionesL.toString());
 		Thread t1 = new Thread(tep);
 		t1.start();
 	}
@@ -269,12 +270,13 @@ public class LogicaEnviaPendientes implements Callback {
 		return jSonVisitas;
 	}
 
-	private String obtieneJsonInventario() {
+	private String obtieneJsonInventario(String op) {
 		String jSonInventario = "";
 		JSONArray jsonArrayInventario = null;
 
 		JSONObject jsonInventario;
-
+		jsonArrayDevolucionesL=null;
+		jsonArrayDevolucionesL=new JSONArray();
 		Inventario inventario;
 		if (idInventarioEnviar == -1)
 			listaInventario = daoInventario.getAll("");
@@ -295,7 +297,11 @@ public class LogicaEnviaPendientes implements Callback {
 					jsonInventario.put("codcliente", inventario.getCodcliente());
 					jsonInventario.put("codvendedor", inventario.getCodvendedor());
 					jsonInventario.put("fechainventario", inventario.getFechainventario());
-					jsonInventario.put("inventariodetalles", obtieneJsonDetalleDeInventario(inventario.getId()) == null ? "" : obtieneJsonDetalleDeInventario(inventario.getId()));
+					jsonInventario.put("uri", inventario.getCodigomardis());
+					if(inventario.getId() != null )
+						jsonInventario.put("inventariodetalles", obtieneJsonDetalleDeInventario(inventario.getId(),op));
+					else
+						jsonInventario.put("inventariodetalles", "");
 					jsonArrayInventario.put(jsonInventario);
 				} catch (JSONException e) {
 					e.printStackTrace();
@@ -307,18 +313,26 @@ public class LogicaEnviaPendientes implements Callback {
 		return jSonInventario;
 	}
 
-	private JSONArray obtieneJsonDetalleDeInventario(long idInvnetario) {
+	private JSONArray obtieneJsonDetalleDeInventario(long idInvnetario,String op) {
 
 		inventariodetalles _Inventariodetalles;
 		JSONObject jsoDetalleItem;
 		JSONArray jsa = null;
-		jsonArrayDevolucionesL=null;
-		jsonArrayDevolucionesL=new JSONArray();
+
 		JSONObject jsonObjectDevolucionesL;
+		Inventario invactual=daoInventario.getById(idInvnetario);
 		List<inventariodetalles> listaItemsInventariodetalles = daoinventariodetalles.getAll(" idinventario = " + idInvnetario);
+		CodigosNuevos codigosNuevos= new CodigosNuevos();
+		codigosNuevos= daoCodigosNuevos.CodigosActual();
+		Calendar cal = Calendar.getInstance();
+		Date date = cal.getTime();
+		SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");
+		SimpleDateFormat df1 = new SimpleDateFormat("yyyyMMddhhmmss");
+		String fecha = df.format(date);
 		if (listaItemsInventariodetalles.size() > 0) {
 			jsa = new JSONArray();
 			Iterator<inventariodetalles> i = listaItemsInventariodetalles.iterator();
+
 			while (i.hasNext()) {
 				_Inventariodetalles = i.next();
 				jsoDetalleItem = new JSONObject();
@@ -332,7 +346,24 @@ public class LogicaEnviaPendientes implements Callback {
 					jsoDetalleItem.put("unidad", _Inventariodetalles.getUnidad());
 					jsa.put(jsoDetalleItem);
 
+					Cliente c= daoCliente.getByKey(invactual.getCodcliente());
+					Articulo art=daoArticulo.getByKey(_Inventariodetalles.getCodproducto());
+					jsonObjectDevolucionesL.put("d_DEVOLUCION",codigosNuevos.getCodeunico());
+					jsonObjectDevolucionesL.put("d_ORDEN",_Inventariodetalles.getId());
+					jsonObjectDevolucionesL.put("d_FECHA",Integer.valueOf(fecha));
+					jsonObjectDevolucionesL.put("d_FACTURA",0000);
+					jsonObjectDevolucionesL.put("d_PRODUCTO",_Inventariodetalles.getCodproducto());
+					jsonObjectDevolucionesL.put("d_CANTIDAD",_Inventariodetalles.getValor());
+					jsonObjectDevolucionesL.put("d_PRECIO",art.getPrecio9());
+					jsonObjectDevolucionesL.put("d_CLIENTE",c.getCodigoOpcional());
+					jsonObjectDevolucionesL.put("d_VENDEDOR",invactual.getCodvendedor());
+					jsonObjectDevolucionesL.put("d_ESTADO",0);
+					jsonObjectDevolucionesL.put("d_PEDIDO_MARDIS",invactual.getCodigomardis());
 
+
+
+
+					jsonArrayDevolucionesL.put(jsonObjectDevolucionesL);
 
 
 
@@ -346,6 +377,8 @@ public class LogicaEnviaPendientes implements Callback {
 
 			}
 		}
+		if(op.equals("I"))
+			daoCodigosNuevos.update(codigosNuevos);
 		return jsa;
 	}
 
@@ -481,7 +514,6 @@ public class LogicaEnviaPendientes implements Callback {
 		SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");
 		SimpleDateFormat df1 = new SimpleDateFormat("yyyyMMddhhmmss");
 		String fecha = df.format(date);
-		String fecha1 = df1.format(date);
 
 		List<PedidoItem> listaItemsPedidos = daoPedidoItem.getAll(" idPedido = " + idPedido);
 		Pedido localPedido=daoPedido.getById((int)idPedido);
@@ -761,6 +793,52 @@ public class LogicaEnviaPendientes implements Callback {
 			}
 			return false;
 		}
+		if (EnvioOpcion.equals("devoluciones")) {
+			switch (msg.arg1) {
+				// recibo 0/1
+				case 1:
+
+					// Si esta Ok, muestro aviso
+					if (resultado.equals("true")) {
+						// Recorre la lista de pedidos y elimina el pedido y los items
+						pantallaManagerEnviaPendientes.seteaValorchkEnviarPagosPendientes(true);
+						pantallaManagerEnviaPendientes.seteaTxtResultadoEnvio("Devoluciones Enviadas");
+						pantallaManagerEnviaPendientes.seteaimgSincronizarResultadoVisible(true);
+						pantallaManagerEnviaPendientes.seteaProgressBarVisible(false);
+
+						if (desdeCargaDePedidos) {
+							pantallaManagerEnviaPendientes.cerrarDialogoSincronizacion();
+							pantallaManagerEnviaPendientes.cerrarActivity();
+						} else {
+							pantallaManagerEnviaPendientes.seteaBtnCerrarEnvioPendientesVisible(true);
+						}
+						EnvioOpcion="inventario";
+						String jSonInventario = obtieneJsonInventario("M");
+						Handler hp = new Handler(this);
+						ThreadEnvioinvnetario tep = new ThreadEnvioinvnetario(hp, jSonInventario);
+						Thread t1 = new Thread(tep);
+						t1.start();
+						//eliminaInvnetario();
+					} else {
+						// Muestro toast
+						pantallaManagerEnviaPendientes.seteaTxtResultadoEnvio("Se produjo un error al enviar las devoluciones");
+						pantallaManagerEnviaPendientes.seteaimgSincronizarResultadoVisible(true);
+						pantallaManagerEnviaPendientes.seteaProgressBarVisible(false);
+						pantallaManagerEnviaPendientes.seteaBtnCerrarEnvioPendientesVisible(true);
+					}
+					break;
+
+				// hubo error de comunicaciones
+				case 2:
+
+					pantallaManagerEnviaPendientes.seteaTxtResultadoEnvio(a.getString(R.string.seProdujoUnErrorDeComunicacion) + "( " + resultado + ")");
+					pantallaManagerEnviaPendientes.seteaimgSincronizarResultadoVisible(true);
+					pantallaManagerEnviaPendientes.seteaProgressBarVisible(false);
+					pantallaManagerEnviaPendientes.seteaBtnCerrarEnvioPendientesVisible(true);
+					break;
+			}
+			return false;
+		}
 		if (EnvioOpcion.equals("inventario")) {
 			switch (msg.arg1) {
 				// recibo 0/1
@@ -784,7 +862,7 @@ public class LogicaEnviaPendientes implements Callback {
 						eliminaInvnetario();
 					} else {
 						// Muestro toast
-						pantallaManagerEnviaPendientes.seteaTxtResultadoEnvio(a.getString(R.string.seProdujoUnErrorAlSubirLosPedidos));
+						pantallaManagerEnviaPendientes.seteaTxtResultadoEnvio("Error al enviar las devoluciones mardis");
 						pantallaManagerEnviaPendientes.seteaimgSincronizarResultadoVisible(true);
 						pantallaManagerEnviaPendientes.seteaProgressBarVisible(false);
 						pantallaManagerEnviaPendientes.seteaBtnCerrarEnvioPendientesVisible(true);
@@ -825,7 +903,7 @@ public class LogicaEnviaPendientes implements Callback {
 						eliminavisitas();
 					} else {
 						// Muestro toast
-						pantallaManagerEnviaPendientes.seteaTxtResultadoEnvio(a.getString(R.string.seProdujoUnErrorAlSubirLosPedidos));
+						pantallaManagerEnviaPendientes.seteaTxtResultadoEnvio("Error al enviar visitas mardis");
 						pantallaManagerEnviaPendientes.seteaimgSincronizarResultadoVisible(true);
 						pantallaManagerEnviaPendientes.seteaProgressBarVisible(false);
 						pantallaManagerEnviaPendientes.seteaBtnCerrarEnvioPendientesVisible(true);

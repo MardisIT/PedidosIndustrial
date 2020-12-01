@@ -121,6 +121,8 @@ public class AppSysMobile extends Application {
 	public final static String WS_ACCESO_GRABAR_INVENTARIO = "https://dyvenpro.azurewebsites.net/api/Order/inventario";
 	public final static String WS_ACCESO_GRABAR_VISITAS = "http://dyvenpro.azurewebsites.net/api/Order/GETGuardarVisitas";
 	public final static String WS_ACCESO_GRABA_PEDIDO = "/setPedido";
+	public final  static  String WS_ACCESO_GRABA_DEVOLUCIONES="https://pedido.gnoboa.com:2108/api/CoberturaDevolucion/AgregarLista";
+
 	
 	public final static String INTENT_FILTER_CAMBIOS_LISTA_PEDIDOS = "INTENT_FILTER_CAMBIOS_LISTA_PEDIDOS";
 	

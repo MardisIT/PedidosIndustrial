@@ -26,7 +26,7 @@ public class DaoInventario implements DaoInterface<Inventario>{
         statement = this.db.compileStatement("INSERT INTO inventario (" +
                 "codcliente," +
                 "codvendedor," +
-                "fechainventario) VALUES(?,?,?)");
+                "fechainventario,codigomardis) VALUES(?,?,?,?)");
         daoCliente = new DaoCliente(db);
         daoChequePagos=new DaoChequePagos(db);
         daoPagosDetalles=new DaoPagosDetalles(db);
@@ -42,6 +42,7 @@ public class DaoInventario implements DaoInterface<Inventario>{
             statement.bindString(1, inventario.getCodcliente());
             statement.bindString(2, inventario.getCodvendedor());
             statement.bindString(3, inventario.getFechainventario());
+            statement.bindString(4, inventario.getCodigomardis());
 
 
             id = statement.executeInsert();
@@ -119,7 +120,7 @@ public class DaoInventario implements DaoInterface<Inventario>{
         String sql;
         Inventario inventario = null;
 
-        sql = "SELECT id,  codcliente,codvendedor,fechainventario FROM inventario WHERE id = " + id;
+        sql = "SELECT id,  codcliente,codvendedor,fechainventario,codigomardis FROM inventario WHERE id = " + id;
         try
         {
             Cursor c = db.rawQuery(sql,null);
@@ -131,6 +132,7 @@ public class DaoInventario implements DaoInterface<Inventario>{
                 inventario.setCodcliente(c.getString(1));
                 inventario.setCodvendedor(c.getString(2));
                 inventario.setFechainventario(c.getString(3));
+                inventario.setCodigomardis(c.getString(4));
                 inventario.setCliente(daoCliente.getByKey(c.getString(2)));
 
 
@@ -157,7 +159,7 @@ public class DaoInventario implements DaoInterface<Inventario>{
         String sql;
         Inventario inventario = null;
 
-        sql = "SELECT id,  codcliente,codvendedor,fechainventario FROM inventario";
+        sql = "SELECT id,  codcliente,codvendedor,fechainventario,codigomardis FROM inventario";
         if (!where.equals(""))
         {
             sql = sql + " WHERE " + where;
@@ -176,6 +178,7 @@ public class DaoInventario implements DaoInterface<Inventario>{
                     inventario.setCodcliente(c.getString(1));
                     inventario.setCodvendedor(c.getString(2));
                     inventario.setFechainventario(c.getString(3));
+                    inventario.setCodigomardis(c.getString(4));
                     inventario.setCliente(daoCliente.getByKey(c.getString(1)));
                     lista.add(inventario);
                 }

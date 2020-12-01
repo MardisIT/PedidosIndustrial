@@ -25,6 +25,8 @@ import android.net.Uri;
 import android.os.Build;
 import androidx.annotation.RequiresApi;
 
+import android.os.Handler;
+import android.os.Message;
 import android.provider.Settings;
 import android.telephony.SubscriptionInfo;
 import android.telephony.SubscriptionManager;
@@ -37,7 +39,11 @@ import android.widget.Toast;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import ar.com.syswork.sysmobile.Tracking.JavaRestClient;
+import ar.com.syswork.sysmobile.Tracking.PostService;
 import ar.com.syswork.sysmobile.Tracking.SaveStatusBranchTracking;
 import ar.com.syswork.sysmobile.Tracking.TrackingBussiness;
 import ar.com.syswork.sysmobile.daos.DaoArticulo;
@@ -59,12 +65,14 @@ import ar.com.syswork.sysmobile.entities.Cliente;
 import ar.com.syswork.sysmobile.entities.ConfiguracionDB;
 import ar.com.syswork.sysmobile.entities.DESCUENTO_FORMAPAGO;
 import ar.com.syswork.sysmobile.entities.DESCUENTO_VOLUMEN;
+import ar.com.syswork.sysmobile.entities.ItemConsultaStock;
 import ar.com.syswork.sysmobile.entities.PRECIO_ESCALA;
 import ar.com.syswork.sysmobile.entities.Pedido;
 import ar.com.syswork.sysmobile.entities.PedidoItem;
 import ar.com.syswork.sysmobile.entities.reportecabecera;
 import ar.com.syswork.sysmobile.entities.reporteitem;
 
+import ar.com.syswork.sysmobile.pconsultastock.ThreadConsultaStock;
 import ar.com.syswork.sysmobile.penviapendientes.ListenerEnviaPendientes;
 import ar.com.syswork.sysmobile.penviapendientes.LogicaEnviaPendientes;
 import ar.com.syswork.sysmobile.penviapendientes.PantallaManagerEnviaPendientes;
@@ -74,8 +82,13 @@ import ar.com.syswork.sysmobile.util.AlertManager;
 import ar.com.syswork.sysmobile.util.DialogManager;
 import ar.com.syswork.sysmobile.util.Utilidades;
 import ar.com.syswork.sysmobile.visita;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
-public class LogicaCargaPedidos implements IAlertResult
+public class LogicaCargaPedidos implements IAlertResult, Handler.Callback
 {
 	private Activity a;
 	private PantallaManagerCargaPedidos pantallaManagerCargaPedidos;
@@ -126,6 +139,7 @@ public class LogicaCargaPedidos implements IAlertResult
 	
 	private boolean reintentarObtenerIntentZxing;
 	private Intent intentScan ;
+	private double cantidadstockactual=-1;
 	//private String targetAppPackage;
     private static final String BS_PACKAGE = "com.google.zxing.client.android";
     
@@ -241,8 +255,70 @@ public class LogicaCargaPedidos implements IAlertResult
 		DecimalFormat twoDForm = new DecimalFormat("#.##");
 		return Double.valueOf(twoDForm.format(d));
 	}
+	public int ValidaCantidadStockBodegaCentral(String codigoProducto)
+	{
+		Handler h = new Handler(this);
+		ThreadConsultaStock tc = new ThreadConsultaStock (h,codigoProducto);
+		Thread t = new Thread(tc);
+		t.start();
+		return 0;
+	}
+
+	@Override
+	public boolean handleMessage(Message msg) {
+		String resultado = (String)  msg.obj;
+		switch(msg.arg1)
+		{
+			case 1:
+				try {
+					procesaResultado(resultado);
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+				break;
+			case 2:
+
+				// Inicializo la lista
+
+				break;
+		}
+
+		return false;
+	}
+	private void procesaResultado(String jsonStock) throws JSONException {
+		JSONObject jsObject = null;
+		ItemConsultaStock itemConsultaStock = new ItemConsultaStock();
+		cantidadstockactual=-1;
+		try {
+			jsObject = new JSONObject(jsonStock);
+		} catch (JSONException e) {
+			e.printStackTrace();
+			//utilDialogos.muestraToastGenerico(a, "No se pudo conectar con el servidor para obtener Stock de Bodega" , false);
+
+			pantallaManagerCargaPedidos.muestraAlertaStockpedido("No se pudo conectar con el servidor para obtener Stock de Bodega \n"+"¿Desea Agregar el producto?",this);
+		}
+		itemConsultaStock.setIdDeposito("0001");
+
+		if(jsObject!=null)
+		{
+			itemConsultaStock.setCantidad(jsObject.getDouble("precio10"));
+			cantidadstockactual=itemConsultaStock.getCantidad();
+			utilDialogos.muestraToastGenerico(a, "Cantidad en Stock en Bodega: "+ itemConsultaStock.getCantidad() , false);
+			pantallaManagerCargaPedidos.muestraAlertaStockpedido("Cantidad en Stock en Bodega: "+ itemConsultaStock.getCantidad()+"\n ¿Desea Agregar el producto?",this);
+
+		}
+
+
+
+	}
 	public boolean validaCantidadIntroducida() {
+		ValidaCantidadStockBodegaCentral(getCodigoProductoActual());
+		return  true;
+
+	}
+	public boolean validaCantidadIntroducidaConStock(){
 		try{
+
 
 			Articulo articulo ;
 			if(((ActivityCargaPedidos) a).getPosicionItemSeleccionadoEn()!=-1)
@@ -258,91 +334,95 @@ public class LogicaCargaPedidos implements IAlertResult
 			}
 
 
+			String valor = pantallaManagerCargaPedidos.getCantidadIntroducida();
+			String formaPago=pantallaManagerCargaPedidos.getFormadePagoIntroducida();
+			String unidadmedida=pantallaManagerCargaPedidos.getUnidadesIntroducida();
 
-		String valor = pantallaManagerCargaPedidos.getCantidadIntroducida();
-		String formaPago=pantallaManagerCargaPedidos.getFormadePagoIntroducida();
-		String unidadmedida=pantallaManagerCargaPedidos.getUnidadesIntroducida();
 
-
-		if (valor.equals("")){
-			utilDialogos.muestraToastGenerico(a, debeInformarLaCantidad , false);
-			return false;
-		}else{
-			if(articulo.getPrecio10() < Double.valueOf(valor))
-			{
-				utilDialogos.muestraToastGenerico(a, "Cantidad mayor a existencia..!!!" , false);
+			if (valor.equals("")){
+				utilDialogos.muestraToastGenerico(a, debeInformarLaCantidad , false);
 				return false;
+			}else{
+				if(articulo.getPrecio10() < Double.valueOf(valor))
+				{
+					utilDialogos.muestraToastGenerico(a, "Cantidad mayor a existencia..!!!" , false);
+					return false;
+				}
+				if(Double.valueOf(valor)<=0)
+				{
+					utilDialogos.muestraToastGenerico(a, "Cantidad debe ser mayor a 0..!!!" , false);
+					return false;
+				}
 			}
-		}
 
-		/*
-		 *Aqui validar forma de pago
-		 * Efectivo y credito
-		 * */
-
+			/*
+			 *Aqui validar forma de pago
+			 * Efectivo y credito
+			 * */
 
 
 
-		if(articulo.getPrecio2()==0)
-			articulo.setPrecio2(1.0);
+
+			if(articulo.getPrecio2()==0)
+				articulo.setPrecio2(1.0);
 
 			Double totaldescuentoprontopago=0.00;
 			Double preciodelproducto=0.00;
 
 			Double cantidadingresada=0.00;
 
-           String tiponegocio= cliente.getLocalidad();
+			String tiponegocio= cliente.getLocalidad();
 
-		if(unidadmedida.toString().trim().equals("Cajas")){
-			cantidadingresada=roundTwoDecimals( Double.parseDouble(valor));
-		}else{
-			cantidadingresada=roundTwoDecimals(Double.parseDouble(valor)/articulo.getPrecio2());
-		}
+			if(unidadmedida.toString().trim().equals("Cajas")){
+				cantidadingresada=roundTwoDecimals( Double.parseDouble(valor));
+			}else{
+				cantidadingresada=roundTwoDecimals(Double.parseDouble(valor)/articulo.getPrecio2());
+			}
 
-		preciodelproducto=CalculaDescuento(articulo,"E",cantidadingresada,0 );
+			preciodelproducto=CalculaDescuento(articulo,"E",cantidadingresada,0 );
 
-		double valornegociacionespecial=0;
-		//descuento por volumen descuetno negociacion especial
-		valornegociacionespecial=CalculaDescuento(articulo,"NE",cantidadingresada,0);
-
-
-		//calcular descuento pronto pago
-		if(formaPago.equals("Contado"))
-		{
-			totaldescuentoprontopago= CalculaDescuento(articulo,"PP",cantidadingresada,valornegociacionespecial);
-		}
+			double valornegociacionespecial=0;
+			//descuento por volumen descuetno negociacion especial
+			valornegociacionespecial=CalculaDescuento(articulo,"NE",cantidadingresada,0);
 
 
-
-
-
-		/*Descuento avenas*/
-		double valornegociacionespecialavena=0;
-		//valornegociacionespecialavena=CalculaDescuento(articulo,"AV",cantidadingresada,0);
+			//calcular descuento pronto pago
+			if(formaPago.equals("Contado"))
+			{
+				totaldescuentoprontopago= CalculaDescuento(articulo,"PP",cantidadingresada,valornegociacionespecial);
+			}
 
 
 
 
 
-		// Agrego a la lista y cierro
-		PedidoItem pedidoItem = new PedidoItem();
-		
-		pedidoItem.setidPedidoItem(-1);
-		pedidoItem.setIdPedido(-1);
+			/*Descuento avenas*/
+			double valornegociacionespecialavena=0;
+			//valornegociacionespecialavena=CalculaDescuento(articulo,"AV",cantidadingresada,0);
 
-		pedidoItem.setIdArticulo(articulo.getIdArticulo());
-		pedidoItem.setAuxDescripcionArticulo( articulo.getDescripcion());
-		pedidoItem.setCantidad(cantidadingresada);
-		pedidoItem.setFormaPago(formaPago);
-		pedidoItem.setUnidcajas(unidadmedida);
-		pedidoItem.setImporteUnitario(preciodelproducto);
-		if(valornegociacionespecial==0) {
-			pedidoItem.setNespecial(valornegociacionespecialavena);
-		}
-		else{
-			pedidoItem.setNespecial(valornegociacionespecial);
-		}
-		pedidoItem.setPpago(totaldescuentoprontopago);
+
+
+
+
+			// Agrego a la lista y cierro
+			PedidoItem pedidoItem = new PedidoItem();
+
+			pedidoItem.setidPedidoItem(-1);
+			pedidoItem.setIdPedido(-1);
+
+			pedidoItem.setIdArticulo(articulo.getIdArticulo());
+			pedidoItem.setAuxDescripcionArticulo( articulo.getDescripcion());
+			pedidoItem.setCantidad(cantidadingresada);
+			pedidoItem.setFormaPago(formaPago);
+			pedidoItem.setUnidcajas(unidadmedida);
+			pedidoItem.setImporteUnitario(preciodelproducto);
+			if(valornegociacionespecial==0) {
+				pedidoItem.setNespecial(valornegociacionespecialavena);
+			}
+			else{
+				pedidoItem.setNespecial(valornegociacionespecial);
+			}
+			pedidoItem.setPpago(totaldescuentoprontopago);
 			double total=0;
 			if(unidadmedida.toString().trim().equals("Cajas")) {
 				pedidoItem.setCantidad(cantidadingresada);
@@ -352,18 +432,18 @@ public class LogicaCargaPedidos implements IAlertResult
 				total = Utilidades.Redondear(((Integer.valueOf(valor))*preciodelproducto)-totaldescuentoprontopago-valornegociacionespecial-valornegociacionespecialavena,2);
 			}
 
-		total = Utilidades.Redondear(total, 2);
-		pedidoItem.setTotal(total);
+			total = Utilidades.Redondear(total, 2);
+			pedidoItem.setTotal(total);
 
 
-		listaPedidoItems.add(pedidoItem);
-		double cantidadmix = 0;
-		double cantidamixcafe=0;
-		double cantidadmixavena=0;
-		double calcularotrodescuentomix=0;
-		List<PedidoItem> templistap= new ArrayList<>();
-		//List<PedidoItem> templistapcafe= new ArrayList<>();
-		List<PedidoItem> templistaavena= new ArrayList<>();
+			listaPedidoItems.add(pedidoItem);
+			double cantidadmix = 0;
+			double cantidamixcafe=0;
+			double cantidadmixavena=0;
+			double calcularotrodescuentomix=0;
+			List<PedidoItem> templistap= new ArrayList<>();
+			//List<PedidoItem> templistapcafe= new ArrayList<>();
+			List<PedidoItem> templistaavena= new ArrayList<>();
 		/*List<String>listadocafe= new ArrayList<>();
 		listadocafe.add("08021-7");
 		listadocafe.add("08221-7");
@@ -376,69 +456,69 @@ public class LogicaCargaPedidos implements IAlertResult
 		listadocafe.add("08008-6");
 		listadocafe.add("08229-9");*/
 
-		List<String> listadoavenaQ= new ArrayList<>();
-		listadoavenaQ.add("01201-2");
-		listadoavenaQ.add("01211-9");
-		listadoavenaQ.add("01214-6");
-		listadoavenaQ.add("01216-4");
-		listadoavenaQ.add("01302-6");
-		listadoavenaQ.add("01311-4");
+			List<String> listadoavenaQ= new ArrayList<>();
+			listadoavenaQ.add("01201-2");
+			listadoavenaQ.add("01211-9");
+			listadoavenaQ.add("01214-6");
+			listadoavenaQ.add("01216-4");
+			listadoavenaQ.add("01302-6");
+			listadoavenaQ.add("01311-4");
 
 
 
 
 
 
-		for (PedidoItem a :listaPedidoItems) {
-			if(a.getIdArticulo().toString().trim().substring(0,4).equals("0301")){
-				cantidadmix=cantidadmix+a.getCantidad();
-				templistap.add(a);
-			}
-
-			for (String cod:listadoavenaQ) {
-				if(a.getIdArticulo().toString().trim().equals(cod)){
-					cantidadmixavena=cantidadmixavena+a.getCantidad();
-					templistaavena.add(a);
+			for (PedidoItem a :listaPedidoItems) {
+				if(a.getIdArticulo().toString().trim().substring(0,4).equals("0301")){
+					cantidadmix=cantidadmix+a.getCantidad();
+					templistap.add(a);
 				}
-			}
 
-
-
-		}
-		/*descuento mix maizsabrosa*/
-		if(cantidadmix>=5){
-
-			//DESCUENTO_VOLUMEN descuento_volumenmix= daoDESCUENTO_volumen.getByKey("03011-5");
-			for (PedidoItem temp:templistap ) {
-				Articulo articulomix = daoArticulo.getByKey(temp.getIdArticulo().toString().trim());
-				double resultadomix=0;
-				List<DESCUENTO_VOLUMEN> listades= new ArrayList<>();
-				listades = daoDESCUENTO_volumen.getAll("CodigosSKU='"+articulomix.getIdArticulo()+"'");
-				for (DESCUENTO_VOLUMEN descuento_volumenmix:listades
-						) {
-					if(descuento_volumenmix!=null){
-						int unidadesdesde=descuento_volumenmix.getUNIDADES_DESCUENTO();
-						int unidadhasta=descuento_volumenmix.getUNIDADES_HASTA().toString().trim().equals("adelante")?-1:Integer.valueOf(descuento_volumenmix.getUNIDADES_HASTA().toString().trim());
-						if(unidadhasta==-1 && cantidadmix >= unidadesdesde ){
-							resultadomix=Utilidades.Redondear((((temp.getCantidad() *temp.getImporteUnitario())-0)*descuento_volumenmix.getDESCUENTO())/100,2);
-						}
-						if((cantidadmix <= unidadhasta&&unidadhasta!=-1) && cantidadmix>= unidadesdesde ){
-							resultadomix=Utilidades.Redondear(((((temp.getCantidad()*articulomix.getPrecio2())*temp.getImporteUnitario())-0)*descuento_volumenmix.getDESCUENTO())/100,2);
-						}
+				for (String cod:listadoavenaQ) {
+					if(a.getIdArticulo().toString().trim().equals(cod)){
+						cantidadmixavena=cantidadmixavena+a.getCantidad();
+						templistaavena.add(a);
 					}
-					if(temp.getPpago()!=0) {
-						DESCUENTO_FORMAPAGO descuento_formapago = daoDESCUENTO_formapago.getByKey(temp.getIdArticulo().toString().trim());
-						temp.setPpago(Utilidades.Redondear(((((temp.getCantidad()*articulomix.getPrecio2()) * temp.getImporteUnitario()) - resultadomix) * descuento_formapago.getPorcentaje()) / 100, 2));
-					}
-
-					temp.setNespecial(resultadomix);
-					temp.setTotal(Utilidades.Redondear(((temp.getCantidad()*articulomix.getPrecio2())* temp.getImporteUnitario())-resultadomix-temp.getPpago(),2));
-					//listaPedidoItems.add(temp);
 				}
 
 
+
 			}
-		}
+			/*descuento mix maizsabrosa*/
+			if(cantidadmix>=5){
+
+				//DESCUENTO_VOLUMEN descuento_volumenmix= daoDESCUENTO_volumen.getByKey("03011-5");
+				for (PedidoItem temp:templistap ) {
+					Articulo articulomix = daoArticulo.getByKey(temp.getIdArticulo().toString().trim());
+					double resultadomix=0;
+					List<DESCUENTO_VOLUMEN> listades= new ArrayList<>();
+					listades = daoDESCUENTO_volumen.getAll("CodigosSKU='"+articulomix.getIdArticulo()+"'");
+					for (DESCUENTO_VOLUMEN descuento_volumenmix:listades
+					) {
+						if(descuento_volumenmix!=null){
+							int unidadesdesde=descuento_volumenmix.getUNIDADES_DESCUENTO();
+							int unidadhasta=descuento_volumenmix.getUNIDADES_HASTA().toString().trim().equals("adelante")?-1:Integer.valueOf(descuento_volumenmix.getUNIDADES_HASTA().toString().trim());
+							if(unidadhasta==-1 && cantidadmix >= unidadesdesde ){
+								resultadomix=Utilidades.Redondear((((temp.getCantidad() *temp.getImporteUnitario())-0)*descuento_volumenmix.getDESCUENTO())/100,2);
+							}
+							if((cantidadmix <= unidadhasta&&unidadhasta!=-1) && cantidadmix>= unidadesdesde ){
+								resultadomix=Utilidades.Redondear(((((temp.getCantidad()*articulomix.getPrecio2())*temp.getImporteUnitario())-0)*descuento_volumenmix.getDESCUENTO())/100,2);
+							}
+						}
+						if(temp.getPpago()!=0) {
+							DESCUENTO_FORMAPAGO descuento_formapago = daoDESCUENTO_formapago.getByKey(temp.getIdArticulo().toString().trim());
+							temp.setPpago(Utilidades.Redondear(((((temp.getCantidad()*articulomix.getPrecio2()) * temp.getImporteUnitario()) - resultadomix) * descuento_formapago.getPorcentaje()) / 100, 2));
+						}
+
+						temp.setNespecial(resultadomix);
+						temp.setTotal(Utilidades.Redondear(((temp.getCantidad()*articulomix.getPrecio2())* temp.getImporteUnitario())-resultadomix-temp.getPpago(),2));
+						//listaPedidoItems.add(temp);
+					}
+
+
+				}
+			}
 
 ///DESCUENTA MIX CAFE
 		/*if(cantidamixcafe>=5){
@@ -469,57 +549,56 @@ public class LogicaCargaPedidos implements IAlertResult
 		}*/
 
 //validar avena de 500 precio escala
-		if(cantidadmixavena>=5){
-			double valor_articulo=0.0;
-			for (PedidoItem temp:templistaavena ) {
-				Articulo articulomixavena = daoArticulo.getByKey(temp.getIdArticulo().toString().trim());
-				PRECIO_ESCALA precio_escala = daoPRECIO_escala.getByKey(articulomixavena.getIdArticulo().toString().trim());
+			if(cantidadmixavena>=5){
+				double valor_articulo=0.0;
+				for (PedidoItem temp:templistaavena ) {
+					Articulo articulomixavena = daoArticulo.getByKey(temp.getIdArticulo().toString().trim());
+					PRECIO_ESCALA precio_escala = daoPRECIO_escala.getByKey(articulomixavena.getIdArticulo().toString().trim());
 
-				if (precio_escala != null) {
-					if (cantidadmixavena >= precio_escala.getUNIDADES_VALIDAR()) {
-						valor_articulo =Double.valueOf(precio_escala.getPRECIO2());
+					if (precio_escala != null) {
+						if (cantidadmixavena >= precio_escala.getUNIDADES_VALIDAR()) {
+							valor_articulo =Double.valueOf(precio_escala.getPRECIO2());
+						} else {
+							valor_articulo = obtienePrecio(articulo);
+						}
 					} else {
 						valor_articulo = obtienePrecio(articulo);
 					}
-				} else {
-					valor_articulo = obtienePrecio(articulo);
+					temp.setImporteUnitario(valor_articulo);
+					double valornegociacionespecialave=0;
+					//descuento por volumen descuetno negociacion especial
+					valornegociacionespecialave=CalculaDescuento(articulomixavena,"NE",temp.getCantidad(),0);
+
+
+					//calcular descuento pronto pago
+					double valor_contadoavena=0;
+					if(formaPago.equals("Contado"))
+					{
+						DESCUENTO_FORMAPAGO descuento_formapago=daoDESCUENTO_formapago.getByKey(articulomixavena.getIdArticulo().toString().trim());
+						valor_contadoavena=Utilidades.Redondear(((((temp.getCantidad()*articulo.getPrecio2()) *valor_articulo))*descuento_formapago.getPorcentaje())/100,2) ;
+					}
+					temp.setNespecial(valornegociacionespecialave);
+					temp.setPpago(valor_contadoavena);
+					temp.setTotal(Utilidades.Redondear(((temp.getCantidad()*articulomixavena.getPrecio2())* valor_articulo)-valor_contadoavena,2));
+
 				}
-				temp.setImporteUnitario(valor_articulo);
-				double valornegociacionespecialave=0;
-				//descuento por volumen descuetno negociacion especial
-				valornegociacionespecialave=CalculaDescuento(articulomixavena,"NE",temp.getCantidad(),0);
-
-
-				//calcular descuento pronto pago
-				double valor_contadoavena=0;
-				if(formaPago.equals("Contado"))
-				{
-					DESCUENTO_FORMAPAGO descuento_formapago=daoDESCUENTO_formapago.getByKey(articulomixavena.getIdArticulo().toString().trim());
-					valor_contadoavena=Utilidades.Redondear(((((temp.getCantidad()*articulo.getPrecio2()) *valor_articulo))*descuento_formapago.getPorcentaje())/100,2) ;
-				}
-				temp.setNespecial(valornegociacionespecialave);
-				temp.setPpago(valor_contadoavena);
-				temp.setTotal(Utilidades.Redondear(((temp.getCantidad()*articulomixavena.getPrecio2())* valor_articulo)-valor_contadoavena,2));
-
 			}
-		}
 
 
 
-		
-		this.notificarCambiosAdapter();
-		pantallaManagerCargaPedidos.cerrarDialogoSolicitaCantidad();
-		pantallaManagerCargaPedidos.setCodigoIntroducido("");
-		pantallaManagerCargaPedidos.setCantidadItems(listaPedidoItems.size());
-		totalizarPedido();
+
+			this.notificarCambiosAdapter();
+			pantallaManagerCargaPedidos.cerrarDialogoSolicitaCantidad();
+			pantallaManagerCargaPedidos.setCodigoIntroducido("");
+			pantallaManagerCargaPedidos.setCantidadItems(listaPedidoItems.size());
+			totalizarPedido();
 			((ActivityCargaPedidos) a).setPosicionItemSeleccionadoEn(-1);
-		return true;
+			return true;
 		}catch (Exception ex){
 			Log.d("sw",ex.getMessage());
 			((ActivityCargaPedidos) a).setPosicionItemSeleccionadoEn(-1);
 			return  false;
 		}
-
 	}
 
 	public String getCodigoProductoActual() {
@@ -997,6 +1076,25 @@ public void enviotrking(){
 				break;
 			}
 		}
+		if (idAlert == 3)
+		{
+			switch (which)
+			{
+				case AlertManager.BUTTON_POSITIVE :
+					if(cantidadstockactual!=-1) {
+						Articulo at= daoArticulo.getByKey(codigoProductoActual);
+						at.setPrecio10(cantidadstockactual);
+						daoArticulo.update(at);
+						if(cantidadstockactual<=5)
+							Toast.makeText(a, "Stock insuficiente para agregar producto...!!!", Toast.LENGTH_SHORT).show();
+						else
+							validaCantidadIntroducidaConStock();
+					}else{
+						validaCantidadIntroducidaConStock();
+					}
+			}
+		}
+
 	}
 
 	public void enviarPedido(long idPedido)

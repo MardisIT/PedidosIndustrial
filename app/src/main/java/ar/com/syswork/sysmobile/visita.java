@@ -318,13 +318,12 @@ public class visita extends AppCompatActivity
 
         }
 
-
-        String fechaHora = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss",
-                Locale.getDefault()).format(new Date());
+        Cliente cliente = daoCliente.getByKey(codCliente);
+        String fechaHora = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss",Locale.getDefault()).format(new Date());
         VisitasUio objnuevo = new VisitasUio();
         objnuevo.setLatitud(Double.valueOf((String) latitudeValueGPS.getText()));
         objnuevo.setLongitud(Double.valueOf((String) longitudeValueGPS.getText()));
-        objnuevo.setCodcliente(codCliente);
+        objnuevo.setCodcliente(cliente.getCodigoOpcional());
         objnuevo.setObservaciones(textobservaciones.getText().toString());
         objnuevo.setRealizapedido(opcionpedido);
         objnuevo.setEstado(opcionpedidono);
@@ -356,7 +355,7 @@ public class visita extends AppCompatActivity
             startActivity(i);
             finish();
         } else{
-            Cliente cliente= daoCliente.getByKey(codCliente) ;
+
             cliente.setCpteDefault("V");
             daoCliente.update(cliente);
 

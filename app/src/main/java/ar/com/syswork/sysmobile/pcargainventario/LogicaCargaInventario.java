@@ -19,6 +19,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.UUID;
 
 import ar.com.syswork.sysmobile.R;
 import ar.com.syswork.sysmobile.daos.DaoArticulo;
@@ -253,7 +254,8 @@ public class LogicaCargaInventario  implements IAlertResult {
         inventario.setCodcliente(cliente.getCodigo());
         inventario.setFechainventario(fecha);
         inventario.setCodvendedor(codigoVendedor);
-
+        UUID idOne = UUID.randomUUID();
+        inventario.setCodigomardis(idOne.toString());
 
         idInventario = daoInventario.save(inventario);
 

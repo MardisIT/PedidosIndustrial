@@ -104,7 +104,7 @@ public class DaoCliente implements DaoInterface<Cliente>{
 				
 		c = db.rawQuery("SELECT Codigo,CodigoOpcional,razonSocial,"
 				+ "calleNroPisoDpto,Localidad,Cuit,"
-				+ "Iva,ClaseDePrecio,PorcDto,CpteDefault,idVendedor,telefono,email ,LatitudeBranch, LenghtBranch,propietario ,estadoenvio,Referencia,Nombres,Apellidos,Cedula,Celular,Provincia,Canton,Parroquia,IMEI  FROM CLIENTES WHERE codigo = '" + key + "'", null);
+				+ "Iva,ClaseDePrecio,PorcDto,CpteDefault,idVendedor,telefono,email ,LatitudeBranch, LenghtBranch,propietario ,estadoenvio,Referencia,Nombres,Apellidos,Cedula,Celular,Provincia,Canton,Parroquia,IMEI  FROM CLIENTES WHERE CodigoOpcional = '" + key + "'", null);
 		
 		
 		
@@ -147,7 +147,54 @@ public class DaoCliente implements DaoInterface<Cliente>{
 		{
 			c.close();
 		}
-		
+		if(cliente==null)
+		{
+			c = db.rawQuery("SELECT Codigo,CodigoOpcional,razonSocial,"
+					+ "calleNroPisoDpto,Localidad,Cuit,"
+					+ "Iva,ClaseDePrecio,PorcDto,CpteDefault,idVendedor,telefono,email ,LatitudeBranch, LenghtBranch,propietario ,estadoenvio,Referencia,Nombres,Apellidos,Cedula,Celular,Provincia,Canton,Parroquia,IMEI  FROM CLIENTES WHERE Codigo = '" + key + "'", null);
+
+
+
+			if(c.moveToFirst())
+			{
+				cliente = new Cliente();
+
+
+				cliente.setCodigo(c.getString(0));
+				cliente.setCodigoOpcional(c.getString(1));
+				cliente.setRazonSocial(c.getString(2));
+				cliente.setCalleNroPisoDpto(c.getString(3));
+				cliente.setLocalidad(c.getString(4));
+				cliente.setCuit(c.getString(5));
+				cliente.setIva((byte) c.getDouble(6));
+				cliente.setClaseDePrecio((byte) c.getDouble(7));
+				cliente.setPorcDto(c.getDouble(8));
+				cliente.setCpteDefault(c.getString(9));
+				cliente.setIdVendedor(c.getString(10));
+				cliente.setTelefono(c.getString(11));
+				cliente.setMail(c.getString(12));
+				cliente.setLatitudeBranch(c.getString(13));
+				cliente.setLenghtBranch(c.getString(14));
+				cliente.setPropietario(c.getString(15));
+				cliente.setEstadoenvio(c.getString(16));
+
+				cliente.setReference(c.getString(17));
+				cliente.setNombre(c.getString(18));
+				cliente.setApellido(c.getString(19));
+				cliente.setCedula(c.getString(20));
+				cliente.setCelular(c.getString(21));
+				cliente.setProvincia(c.getString(22));
+				cliente.setCanton(c.getString(23));
+				cliente.setParroquia(c.getString(24));
+				cliente.setImeI_ID(c.getString(25));
+
+
+			}
+			if(!c.isClosed())
+			{
+				c.close();
+			}
+		}
 
 		return cliente;
 	}
