@@ -136,7 +136,7 @@ public class LogicaMenuPrincipal {
 		itemMP.setCantidad(0);
 		itemMP.setImagen(R.drawable.icono_pedido_pendientes);
 		itemMP.setAccion(AppSysMobile.OPC_MENU_PRINCIPAL_INVENTARIO);
-		int cantPendienteD = daoInventario.getCount("");
+		int cantPendienteD = daoInventario.getCount(" ");
 		itemMP.setCantidad(cantPendienteD);
 
 		listaOpciones.add(itemMP);

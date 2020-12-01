@@ -37,7 +37,8 @@ public class LogicaListainventario {
     public void cargarListaInventario()
     {
         listaInventario.clear();
-        List<Inventario> tmpLista = dm.getDaoInventario().getAll("");
+        dm.getDaoInventario().deleteAll("enviomardis='E' and envioindustrial='E'");
+        List<Inventario> tmpLista = dm.getDaoInventario().getAll(" enviomardis='F' and envioindustrial='F'");
         Iterator<Inventario> i = tmpLista.iterator();
         while (i.hasNext())
         {

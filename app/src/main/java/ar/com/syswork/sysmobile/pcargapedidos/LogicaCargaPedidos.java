@@ -48,6 +48,7 @@ import ar.com.syswork.sysmobile.Tracking.SaveStatusBranchTracking;
 import ar.com.syswork.sysmobile.Tracking.TrackingBussiness;
 import ar.com.syswork.sysmobile.daos.DaoArticulo;
 import ar.com.syswork.sysmobile.daos.DaoCliente;
+import ar.com.syswork.sysmobile.daos.DaoCodigosNuevos;
 import ar.com.syswork.sysmobile.daos.DaoConfiguracion;
 import ar.com.syswork.sysmobile.daos.DaoCuenta;
 import ar.com.syswork.sysmobile.daos.DaoDESCUENTO_AVENA;
@@ -62,6 +63,7 @@ import ar.com.syswork.sysmobile.daos.DataManager;
 import ar.com.syswork.sysmobile.entities.Articulo;
 import ar.com.syswork.sysmobile.entities.Capania;
 import ar.com.syswork.sysmobile.entities.Cliente;
+import ar.com.syswork.sysmobile.entities.CodigosNuevos;
 import ar.com.syswork.sysmobile.entities.ConfiguracionDB;
 import ar.com.syswork.sysmobile.entities.DESCUENTO_FORMAPAGO;
 import ar.com.syswork.sysmobile.entities.DESCUENTO_VOLUMEN;
@@ -115,7 +117,7 @@ public class LogicaCargaPedidos implements IAlertResult, Handler.Callback
 	private DaoDESCUENTO_AVENA daoDESCUENTO_avena;
 	private DaoCuenta daoCuenta;
 	private DaoConfiguracion daoConfiguracion;
-
+	private DaoCodigosNuevos daoCodigosNuevos;
 	
 	private AdapterCargaPedidos adapterCargaPedidos;
 	
@@ -164,7 +166,7 @@ public class LogicaCargaPedidos implements IAlertResult, Handler.Callback
 		daoreporteitem=dataManager.getDaoreporteitem();
 		daoCuenta=dataManager.getDaoCuenta();
 		daoConfiguracion=dataManager.getDaoConfiguracion();
-
+daoCodigosNuevos=dataManager.getDaoCodigosNuevos();
 		listaPedidoItems = new ArrayList<PedidoItem>();
 
 		
@@ -793,6 +795,8 @@ public void enviotrking(){
 				daoreportecabecera.delete(x);
 			}
 	    }
+		CodigosNuevos codigosNuevos= new CodigosNuevos();
+		codigosNuevos= daoCodigosNuevos.CodigosActual();
 	    
 		Pedido pedido = new Pedido();
 		pedido.setCodCliente(cliente.getCodigo());
@@ -805,6 +809,10 @@ public void enviotrking(){
 		pedido.setIncluirEnReparto(incluirEnReparto);
 		UUID idOne = UUID.randomUUID();
 		pedido.setCodpedidomardis(idOne.toString());
+		pedido.setEnviomardis("F");
+		pedido.setEnvioindustrial("F");
+		pedido.setCodigounico(codigosNuevos.getCodeunico());
+
 
 
 		idPedido = daoPedido.save(pedido);
@@ -869,8 +877,8 @@ public void enviotrking(){
 			utilDialogos.muestraToastGenerico(a, ocurrioUnErrorAlGrabar, false);
 			return;			
 		}
-
-
+		codigosNuevos.setUri("E");
+		daoCodigosNuevos.update(codigosNuevos);
 		Cliente clienteM= daoCliente.getByKey(cliente.getCodigo()) ;
 
 		clienteM.setCpteDefault("E");

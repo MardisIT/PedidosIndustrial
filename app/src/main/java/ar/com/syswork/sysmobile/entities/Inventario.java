@@ -7,6 +7,33 @@ public class Inventario {
     private String fechainventario;
     private Cliente cliente;
     private  String codigomardis;
+    public String enviomardis;
+    public String envioindustrial;
+    public String codigounico;
+
+    public String getEnviomardis() {
+        return enviomardis;
+    }
+
+    public void setEnviomardis(String enviomardis) {
+        this.enviomardis = enviomardis;
+    }
+
+    public String getEnvioindustrial() {
+        return envioindustrial;
+    }
+
+    public void setEnvioindustrial(String envioindustrial) {
+        this.envioindustrial = envioindustrial;
+    }
+
+    public String getCodigounico() {
+        return codigounico;
+    }
+
+    public void setCodigounico(String codigounico) {
+        this.codigounico = codigounico;
+    }
 
     public String getCodigomardis() {
         return codigomardis;

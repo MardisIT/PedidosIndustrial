@@ -24,11 +24,13 @@ import java.util.UUID;
 import ar.com.syswork.sysmobile.R;
 import ar.com.syswork.sysmobile.daos.DaoArticulo;
 import ar.com.syswork.sysmobile.daos.DaoCliente;
+import ar.com.syswork.sysmobile.daos.DaoCodigosNuevos;
 import ar.com.syswork.sysmobile.daos.DaoInventario;
 import ar.com.syswork.sysmobile.daos.Daoinventariodetalles;
 import ar.com.syswork.sysmobile.daos.DataManager;
 import ar.com.syswork.sysmobile.entities.Articulo;
 import ar.com.syswork.sysmobile.entities.Cliente;
+import ar.com.syswork.sysmobile.entities.CodigosNuevos;
 import ar.com.syswork.sysmobile.entities.Inventario;
 import ar.com.syswork.sysmobile.entities.inventariodetalles;
 import ar.com.syswork.sysmobile.shared.AppSysMobile;
@@ -61,6 +63,7 @@ public class LogicaCargaInventario  implements IAlertResult {
 
     private String textoLecturaCodigoDeBarras;
     private String textoMarketNoInstalado;
+    private DaoCodigosNuevos daoCodigosNuevos;
 
     private String elCodigoInformadoNoEsCorrecto;
     private String debeInformarElCodigoDelProducto;
@@ -85,7 +88,7 @@ public class LogicaCargaInventario  implements IAlertResult {
         daoArticulo = dataManager.getDaoArticulo();
         daoInventario = dataManager.getDaoInventario();
         daoinventariodetalles = dataManager.getDaoinventariodetalles();
-
+daoCodigosNuevos=dataManager.getDaoCodigosNuevos();
 
 
 
@@ -249,6 +252,8 @@ public class LogicaCargaInventario  implements IAlertResult {
 
             daoinventariodetalles.deleteByIdinventario(_idinventarioAEliminar);
         }
+        CodigosNuevos codigosNuevos= new CodigosNuevos();
+        codigosNuevos= daoCodigosNuevos.CodigosActual();
 
         Inventario inventario = new Inventario();
         inventario.setCodcliente(cliente.getCodigo());
@@ -256,7 +261,9 @@ public class LogicaCargaInventario  implements IAlertResult {
         inventario.setCodvendedor(codigoVendedor);
         UUID idOne = UUID.randomUUID();
         inventario.setCodigomardis(idOne.toString());
-
+        inventario.setEnviomardis("F");
+        inventario.setEnvioindustrial("F");
+        inventario.setCodigounico(codigosNuevos.getCodeunico());
         idInventario = daoInventario.save(inventario);
 
         inventariodetalles _inventariodetalle = null;
@@ -296,7 +303,8 @@ public class LogicaCargaInventario  implements IAlertResult {
             utilDialogos.muestraToastGenerico(a, ocurrioUnErrorAlGrabar, false);
             return;
         }
-
+        codigosNuevos.setUri("E");
+        daoCodigosNuevos.update(codigosNuevos);
 
     }
 

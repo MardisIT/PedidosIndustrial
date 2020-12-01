@@ -26,7 +26,7 @@ public class DaoInventario implements DaoInterface<Inventario>{
         statement = this.db.compileStatement("INSERT INTO inventario (" +
                 "codcliente," +
                 "codvendedor," +
-                "fechainventario,codigomardis) VALUES(?,?,?,?)");
+                "fechainventario,codigomardis,enviomardis,envioindustrial,codigounico) VALUES(?,?,?,?,?,?,?)");
         daoCliente = new DaoCliente(db);
         daoChequePagos=new DaoChequePagos(db);
         daoPagosDetalles=new DaoPagosDetalles(db);
@@ -43,6 +43,10 @@ public class DaoInventario implements DaoInterface<Inventario>{
             statement.bindString(2, inventario.getCodvendedor());
             statement.bindString(3, inventario.getFechainventario());
             statement.bindString(4, inventario.getCodigomardis());
+
+            statement.bindString(5, inventario.getEnviomardis());
+            statement.bindString(6, inventario.getEnvioindustrial());
+            statement.bindString(7, inventario.getCodigounico());
 
 
             id = statement.executeInsert();
@@ -75,6 +79,36 @@ public class DaoInventario implements DaoInterface<Inventario>{
 
     }
 
+    public void updatecodigoindustrial(String codunico) {
+        String sql;
+
+        sql = "UPDATE inventario SET envioindustrial = 'E' "
+                + " WHERE codigounico = '" + codunico +"'";
+        try
+        {
+            db.execSQL(sql);
+        }
+        catch(SQLiteException e)
+        {
+            e.printStackTrace();
+        }
+
+    }
+    public void updatecodigomardis(String codunico) {
+        String sql;
+
+        sql = "UPDATE inventario SET enviomardis = 'E' "
+                + " WHERE codigounico = '" + codunico +"'";
+        try
+        {
+            db.execSQL(sql);
+        }
+        catch(SQLiteException e)
+        {
+            e.printStackTrace();
+        }
+
+    }
     @Override
     public void delete(Inventario inventario) {
         String sql;
@@ -120,7 +154,7 @@ public class DaoInventario implements DaoInterface<Inventario>{
         String sql;
         Inventario inventario = null;
 
-        sql = "SELECT id,  codcliente,codvendedor,fechainventario,codigomardis FROM inventario WHERE id = " + id;
+        sql = "SELECT id,  codcliente,codvendedor,fechainventario,codigomardis,enviomardis,envioindustrial,codigounico FROM inventario WHERE id = " + id;
         try
         {
             Cursor c = db.rawQuery(sql,null);
@@ -133,6 +167,10 @@ public class DaoInventario implements DaoInterface<Inventario>{
                 inventario.setCodvendedor(c.getString(2));
                 inventario.setFechainventario(c.getString(3));
                 inventario.setCodigomardis(c.getString(4));
+
+                inventario.setEnviomardis(c.getString(5));
+                inventario.setEnvioindustrial(c.getString(6));
+                inventario.setCodigounico(c.getString(7));
                 inventario.setCliente(daoCliente.getByKey(c.getString(2)));
 
 
@@ -159,10 +197,10 @@ public class DaoInventario implements DaoInterface<Inventario>{
         String sql;
         Inventario inventario = null;
 
-        sql = "SELECT id,  codcliente,codvendedor,fechainventario,codigomardis FROM inventario";
+        sql = "SELECT id,  codcliente,codvendedor,fechainventario,codigomardis,enviomardis,envioindustrial,codigounico FROM inventario";
         if (!where.equals(""))
         {
-            sql = sql + " WHERE " + where;
+            sql = sql + " WHERE  " + where;
         }
 
         try
@@ -179,6 +217,10 @@ public class DaoInventario implements DaoInterface<Inventario>{
                     inventario.setCodvendedor(c.getString(2));
                     inventario.setFechainventario(c.getString(3));
                     inventario.setCodigomardis(c.getString(4));
+
+                    inventario.setEnviomardis(c.getString(5));
+                    inventario.setEnvioindustrial(c.getString(6));
+                    inventario.setCodigounico(c.getString(7));
                     inventario.setCliente(daoCliente.getByKey(c.getString(1)));
                     lista.add(inventario);
                 }
@@ -205,19 +247,16 @@ public class DaoInventario implements DaoInterface<Inventario>{
         return null;
     }
 
-    public int getCount()
-    {
-        return 	getCount("");
-    }
+
 
     public int getCount(String where)
     {
         int cant=0;
 
-        String sql = "SELECT count(id) as cant FROM inventario";
+        String sql = "SELECT count(id) as cant FROM inventario WHERE  enviomardis='F' and envioindustrial='F' ";
         if (!where.trim().equals(""))
         {
-            sql = sql + " WHERE " + where;
+            sql = sql + " WHERE  enviomardis='F' and envioindustrial='F'  " + where;
         }
         Cursor c = db.rawQuery(sql,null);
 

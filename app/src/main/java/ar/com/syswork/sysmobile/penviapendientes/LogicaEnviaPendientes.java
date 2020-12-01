@@ -161,13 +161,15 @@ public class LogicaEnviaPendientes implements Callback {
 		ThredDevolucionesIndustrial tep = new ThredDevolucionesIndustrial(hp, jsonArrayDevolucionesL.toString());
 		Thread t1 = new Thread(tep);
 		t1.start();
+
+
+
 	}
 
 	public void enviarPedidosPendientes() {
 
-		String jSonPedidos = obtieneJsonPedidos();
+		String jSonPedidos = obtieneJsonPedidos("I");
 		//String jSonPagos=obtieneJsonPagos();
-		EnvioOpcion = "pedidos";
 		List<Cliente> lstcClientes = new ArrayList<>();
 		lstcClientes = daoCliente.getAll(" estadoenvio = 'X'");
 		String token = "";
@@ -199,6 +201,7 @@ public class LogicaEnviaPendientes implements Callback {
 			ThreadEnvioIndustrial teI = new ThreadEnvioIndustrial(hp, jsonArrayPedidosL.toString());
 			Thread tI = new Thread(teI);
 			tI.start();
+
 
 
 
@@ -278,10 +281,14 @@ public class LogicaEnviaPendientes implements Callback {
 		jsonArrayDevolucionesL=null;
 		jsonArrayDevolucionesL=new JSONArray();
 		Inventario inventario;
-		if (idInventarioEnviar == -1)
-			listaInventario = daoInventario.getAll("");
-		else
-			listaInventario = daoInventario.getAll(" id = " + idInventarioEnviar);
+		if (idInventarioEnviar == -1) {
+			if (op.equals("M"))
+				listaInventario = daoInventario.getAll(" enviomardis='F'");
+			if (op.equals("I"))
+				listaInventario = daoInventario.getAll(" envioindustrial='F'");
+
+		} else
+			listaInventario = daoInventario.getAll(" enviomardis='F' and envioindustrial='F' and id = " + idInventarioEnviar);
 		if (listaInventario.size() > 0) {
 			jsonArrayInventario = new JSONArray();
 			Iterator<Inventario> i = listaInventario.iterator();
@@ -322,8 +329,7 @@ public class LogicaEnviaPendientes implements Callback {
 		JSONObject jsonObjectDevolucionesL;
 		Inventario invactual=daoInventario.getById(idInvnetario);
 		List<inventariodetalles> listaItemsInventariodetalles = daoinventariodetalles.getAll(" idinventario = " + idInvnetario);
-		CodigosNuevos codigosNuevos= new CodigosNuevos();
-		codigosNuevos= daoCodigosNuevos.CodigosActual();
+
 		Calendar cal = Calendar.getInstance();
 		Date date = cal.getTime();
 		SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");
@@ -348,7 +354,7 @@ public class LogicaEnviaPendientes implements Callback {
 
 					Cliente c= daoCliente.getByKey(invactual.getCodcliente());
 					Articulo art=daoArticulo.getByKey(_Inventariodetalles.getCodproducto());
-					jsonObjectDevolucionesL.put("d_DEVOLUCION",codigosNuevos.getCodeunico());
+					jsonObjectDevolucionesL.put("d_DEVOLUCION",invactual.getCodigounico());
 					jsonObjectDevolucionesL.put("d_ORDEN",_Inventariodetalles.getId());
 					jsonObjectDevolucionesL.put("d_FECHA",Integer.valueOf(fecha));
 					jsonObjectDevolucionesL.put("d_FACTURA",0000);
@@ -359,15 +365,7 @@ public class LogicaEnviaPendientes implements Callback {
 					jsonObjectDevolucionesL.put("d_VENDEDOR",invactual.getCodvendedor());
 					jsonObjectDevolucionesL.put("d_ESTADO",0);
 					jsonObjectDevolucionesL.put("d_PEDIDO_MARDIS",invactual.getCodigomardis());
-
-
-
-
 					jsonArrayDevolucionesL.put(jsonObjectDevolucionesL);
-
-
-
-
 
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
@@ -377,8 +375,8 @@ public class LogicaEnviaPendientes implements Callback {
 
 			}
 		}
-		if(op.equals("I"))
-			daoCodigosNuevos.update(codigosNuevos);
+
+
 		return jsa;
 	}
 
@@ -455,7 +453,7 @@ public class LogicaEnviaPendientes implements Callback {
 
 
 
-	private String obtieneJsonPedidos() {
+	private String obtieneJsonPedidos(String op) {
 		String jSonPedidos = "";
 		JSONArray jsonArrayPedidos = null;
 
@@ -464,10 +462,15 @@ public class LogicaEnviaPendientes implements Callback {
 		Pedido pedido;
 		jsonArrayPedidosL=null;
 		jsonArrayPedidosL=new JSONArray();
-		if (idPedidoEnviar == -1)
-			listaPedidos = daoPedido.getAll(" transferido = 0");
+		if (idPedidoEnviar == -1) {
+			if (op.equals("M"))
+				listaPedidos = daoPedido.getAll(" transferido = 0 and enviomardis='F'");
+			if (op.equals("I"))
+				listaPedidos = daoPedido.getAll(" transferido = 0 and envioindustrial='F'");
+
+		}
 		else
-			listaPedidos = daoPedido.getAll(" _id = " + idPedidoEnviar);
+			listaPedidos = daoPedido.getAll(" enviomardis='F' and envioindustrial='F' and _id = " + idPedidoEnviar);
 
 		if (listaPedidos.size() > 0) {
 
@@ -481,16 +484,17 @@ public class LogicaEnviaPendientes implements Callback {
 				try {
 
 
-					jsonPedido.put("id", 0);
-					jsonPedido.put("codCliente", pedido.getCodCliente());
-					jsonPedido.put("idVendedor", pedido.getIdVendedor());
-					jsonPedido.put("fecha", pedido.getFecha());
-					jsonPedido.put("totalNeto", pedido.getTotalNeto());
-					jsonPedido.put("totalFinal", pedido.getTotalFinal());
-					jsonPedido.put("facturar", pedido.isFacturar());
-					jsonPedido.put("incluirEnReparto", pedido.isIncluirEnReparto());
-					jsonPedido.put("p_PEDIDO_MARDIS",pedido.getCodpedidomardis());
-					jsonPedido.put("pedidosItems", obtieneJsonDetalleDePedido(pedido.getIdPedido()));
+						jsonPedido.put("id", 0);
+						jsonPedido.put("codCliente", pedido.getCodCliente());
+						jsonPedido.put("idVendedor", pedido.getIdVendedor());
+						jsonPedido.put("fecha", pedido.getFecha());
+						jsonPedido.put("totalNeto", pedido.getTotalNeto());
+						jsonPedido.put("totalFinal", pedido.getTotalFinal());
+						jsonPedido.put("facturar", pedido.isFacturar());
+						jsonPedido.put("incluirEnReparto", pedido.isIncluirEnReparto());
+						jsonPedido.put("p_PEDIDO_MARDIS", pedido.getCodpedidomardis());
+						jsonPedido.put("pedidosItems", obtieneJsonDetalleDePedido(pedido.getIdPedido()));
+
 
 					jsonArrayPedidos.put(jsonPedido);
 				} catch (JSONException e) {
@@ -517,14 +521,12 @@ public class LogicaEnviaPendientes implements Callback {
 
 		List<PedidoItem> listaItemsPedidos = daoPedidoItem.getAll(" idPedido = " + idPedido);
 		Pedido localPedido=daoPedido.getById((int)idPedido);
-		CodigosNuevos codigosNuevos= new CodigosNuevos();
-		codigosNuevos= daoCodigosNuevos.CodigosActual();
+
 
 		if (listaItemsPedidos.size() > 0) {
 			jsa = new JSONArray();
 
 			Iterator<PedidoItem> i = listaItemsPedidos.iterator();
-			UUID idOne = UUID.randomUUID();
 			while (i.hasNext()) {
 				pedidoItem = i.next();
 				jsoPedidoItem = new JSONObject();
@@ -548,7 +550,7 @@ public class LogicaEnviaPendientes implements Callback {
 					Cliente c= daoCliente.getByKey(localPedido.getCodCliente());
 					Articulo art=daoArticulo.getByKey(pedidoItem.getIdArticulo());
 					//armar json para envio servidor industrial
-					jsonObjectPedidoL.put("P_PEDIDO",codigosNuevos.getCodeunico());
+					jsonObjectPedidoL.put("P_PEDIDO",localPedido.getCodigounico());
 					jsonObjectPedidoL.put("P_NUEVO_CLIENTE",localPedido.getCodCliente().equals(c.getCodigoOpcional())?"":c.getCodigoOpcional());
 					jsonObjectPedidoL.put("P_ORDEN", pedidoItem.getIdPedidoItem());
 					jsonObjectPedidoL.put("P_FECHA",Integer.valueOf(fecha));
@@ -560,7 +562,7 @@ public class LogicaEnviaPendientes implements Callback {
 					jsonObjectPedidoL.put("p_CLIENTE",!localPedido.getCodCliente().equals(c.getCodigoOpcional())?c.getCodigoOpcional():localPedido.getCodCliente());
 					jsonObjectPedidoL.put("p_PEDIDO_MARDIS",localPedido.getCodpedidomardis());
 					jsonObjectPedidoL.put("P_VENDEDOR",Integer.valueOf(localPedido.getIdVendedor().replace("V","")));
-					codigosNuevos.setUri("E");
+
 
 					jsonArrayPedidosL.put(jsonObjectPedidoL);
 
@@ -574,7 +576,7 @@ public class LogicaEnviaPendientes implements Callback {
 
 			}
 		}
-		daoCodigosNuevos.update(codigosNuevos);
+
 		return jsa;
 	}
 
@@ -673,14 +675,31 @@ public class LogicaEnviaPendientes implements Callback {
 						} else {
 							pantallaManagerEnviaPendientes.seteaBtnCerrarEnvioPendientesVisible(true);
 						}
+
+
+
+
+						/*modifica para enviados a industrial*/
+						for (int i = 0; i < jsonArrayPedidosL.length(); i++) {
+							try {
+								JSONObject jsonObject = jsonArrayPedidosL.getJSONObject(i);
+								if (jsonObject.has("P_PEDIDO")) {
+									String codigounico = jsonObject.getString("P_PEDIDO");
+									// Aquí actualizamos estado de pedidos Industrial
+									daoPedido.updatecodigoindustrial(codigounico);
+								}
+							} catch (JSONException e) {
+								e.printStackTrace();
+							}
+						}
+
 						EnvioOpcion="pedidos";
-						String jSonPedidos = obtieneJsonPedidos();
+						String jSonPedidosmardis = obtieneJsonPedidos("M");
 						Handler h = new Handler(this);
-						ThreadEnvio te = new ThreadEnvio(h, jSonPedidos);
+						ThreadEnvio te = new ThreadEnvio(h, jSonPedidosmardis);
 						Thread t = new Thread(te);
 						t.start();
 
-						//eliminaPedidos();
 
 					} else {
 						// Muestro toast
@@ -694,7 +713,7 @@ public class LogicaEnviaPendientes implements Callback {
 				// hubo error de comunicaciones
 				case 2:
 
-					pantallaManagerEnviaPendientes.seteaTxtResultadoEnvio(a.getString(R.string.seProdujoUnErrorDeComunicacion) + "( " + resultado + ")");
+					pantallaManagerEnviaPendientes.seteaTxtResultadoEnvio(a.getString(R.string.seProdujoUnErrorDeComunicacion) + "( " + resultado + ") Servidor industrial");
 					pantallaManagerEnviaPendientes.seteaimgSincronizarResultadoVisible(true);
 					pantallaManagerEnviaPendientes.seteaProgressBarVisible(false);
 					pantallaManagerEnviaPendientes.seteaBtnCerrarEnvioPendientesVisible(true);
@@ -723,8 +742,20 @@ public class LogicaEnviaPendientes implements Callback {
 						} else {
 							pantallaManagerEnviaPendientes.seteaBtnCerrarEnvioPendientesVisible(true);
 						}
-
-						eliminaPedidos();
+						/*modifica para enviados a industrial*/
+						for (int i = 0; i < jsonArrayPedidosL.length(); i++) {
+							try {
+								JSONObject jsonObject = jsonArrayPedidosL.getJSONObject(i);
+								if (jsonObject.has("P_PEDIDO")) {
+									String codigounico = jsonObject.getString("P_PEDIDO");
+									// Aquí actualizamos estado de pedidos Industrial
+									daoPedido.updatecodigomardis(codigounico);
+								}
+							} catch (JSONException e) {
+								e.printStackTrace();
+							}
+						}
+						//eliminaPedidos();
 						//EnvioOpcion="servidor";
 						/*Handler hp = new Handler(this);
 						ThreadEnvioIndustrial teI = new ThreadEnvioIndustrial(hp, jsonArrayPedidosL.toString());
@@ -732,7 +763,7 @@ public class LogicaEnviaPendientes implements Callback {
 						tI.start();*/
 					} else {
 						// Muestro toast
-						pantallaManagerEnviaPendientes.seteaTxtResultadoEnvio(a.getString(R.string.seProdujoUnErrorAlSubirLosPedidos));
+						pantallaManagerEnviaPendientes.seteaTxtResultadoEnvio(a.getString(R.string.seProdujoUnErrorAlSubirLosPedidos)+"mardis");
 						pantallaManagerEnviaPendientes.seteaimgSincronizarResultadoVisible(true);
 						pantallaManagerEnviaPendientes.seteaProgressBarVisible(false);
 						pantallaManagerEnviaPendientes.seteaBtnCerrarEnvioPendientesVisible(true);
@@ -812,12 +843,27 @@ public class LogicaEnviaPendientes implements Callback {
 						} else {
 							pantallaManagerEnviaPendientes.seteaBtnCerrarEnvioPendientesVisible(true);
 						}
+
+						/*modifica para enviados a industrial*/
+						for (int i = 0; i < jsonArrayDevolucionesL.length(); i++) {
+							try {
+								JSONObject jsonObject = jsonArrayDevolucionesL.getJSONObject(i);
+								if (jsonObject.has("d_DEVOLUCION")) {
+									String codigounico = jsonObject.getString("d_DEVOLUCION");
+									// Aquí actualizamos estado de pedidos Industrial
+									daoInventario.updatecodigoindustrial(codigounico);
+								}
+							} catch (JSONException e) {
+								e.printStackTrace();
+							}
+						}
+
 						EnvioOpcion="inventario";
-						String jSonInventario = obtieneJsonInventario("M");
+						String jSonInventariomardis = obtieneJsonInventario("M");
 						Handler hp = new Handler(this);
-						ThreadEnvioinvnetario tep = new ThreadEnvioinvnetario(hp, jSonInventario);
-						Thread t1 = new Thread(tep);
-						t1.start();
+						ThreadEnvioinvnetario tep = new ThreadEnvioinvnetario(hp, jSonInventariomardis);
+						Thread t11 = new Thread(tep);
+						t11.start();
 						//eliminaInvnetario();
 					} else {
 						// Muestro toast
@@ -859,7 +905,20 @@ public class LogicaEnviaPendientes implements Callback {
 							pantallaManagerEnviaPendientes.seteaBtnCerrarEnvioPendientesVisible(true);
 						}
 
-						eliminaInvnetario();
+						/*modifica para enviados a industrial*/
+						for (int i = 0; i < jsonArrayDevolucionesL.length(); i++) {
+							try {
+								JSONObject jsonObject = jsonArrayDevolucionesL.getJSONObject(i);
+								if (jsonObject.has("d_DEVOLUCION")) {
+									String codigounico = jsonObject.getString("d_DEVOLUCION");
+									// Aquí actualizamos estado de pedidos Industrial
+									daoInventario.updatecodigomardis(codigounico);
+								}
+							} catch (JSONException e) {
+								e.printStackTrace();
+							}
+						}
+						//eliminaInvnetario();
 					} else {
 						// Muestro toast
 						pantallaManagerEnviaPendientes.seteaTxtResultadoEnvio("Error al enviar las devoluciones mardis");

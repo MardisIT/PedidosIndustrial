@@ -33,7 +33,8 @@ public class LogicaListaPedidos {
 	public void cargarListaPedidos()
 	{
 		listaPedidos.clear();
-		List<Pedido> tmpLista = dm.getDaoPedido().getAll("");
+		dm.getDaoPedido().deleteAll("enviomardis='E' and envioindustrial='E'");
+		List<Pedido> tmpLista = dm.getDaoPedido().getAll(" enviomardis='F' and envioindustrial='F'");
 		Iterator<Pedido> i = tmpLista.iterator();
 		while (i.hasNext())
 		{
