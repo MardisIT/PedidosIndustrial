@@ -57,13 +57,13 @@ public class ThreadEnvioIndustrial implements Runnable {
             } catch (ClientProtocolException e) {
 
                 respuesta  = "ERROR: Exception ClientProtocolException";
-                tipoRespuesta = 2;
+               // tipoRespuesta = 2;
                 e.printStackTrace();
 
             } catch (IOException e) {
 
                 respuesta  = "ERROR: IOException";
-                tipoRespuesta = 2;
+                //tipoRespuesta = 2;
                 e.printStackTrace();
             } catch (HttpException e) {
                 e.printStackTrace();
