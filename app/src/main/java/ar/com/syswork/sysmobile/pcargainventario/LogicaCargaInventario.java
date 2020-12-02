@@ -265,7 +265,8 @@ daoCodigosNuevos=dataManager.getDaoCodigosNuevos();
         inventario.setEnvioindustrial("F");
         inventario.setCodigounico(codigosNuevos.getCodeunico());
         idInventario = daoInventario.save(inventario);
-
+        codigosNuevos.setUri("E");
+        daoCodigosNuevos.update(codigosNuevos);
         inventariodetalles _inventariodetalle = null;
 
         if (idInventario!=-1)
@@ -303,8 +304,7 @@ daoCodigosNuevos=dataManager.getDaoCodigosNuevos();
             utilDialogos.muestraToastGenerico(a, ocurrioUnErrorAlGrabar, false);
             return;
         }
-        codigosNuevos.setUri("E");
-        daoCodigosNuevos.update(codigosNuevos);
+
 
     }
 

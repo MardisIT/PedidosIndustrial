@@ -816,6 +816,8 @@ public void enviotrking(){
 
 
 		idPedido = daoPedido.save(pedido);
+		codigosNuevos.setUri("E");
+		daoCodigosNuevos.update(codigosNuevos);
 
 		int idReporteEncabezado=0;
 
@@ -877,8 +879,7 @@ public void enviotrking(){
 			utilDialogos.muestraToastGenerico(a, ocurrioUnErrorAlGrabar, false);
 			return;			
 		}
-		codigosNuevos.setUri("E");
-		daoCodigosNuevos.update(codigosNuevos);
+
 		Cliente clienteM= daoCliente.getByKey(cliente.getCodigo()) ;
 
 		clienteM.setCpteDefault("E");
