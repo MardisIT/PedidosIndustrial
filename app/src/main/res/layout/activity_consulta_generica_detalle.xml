@@ -343,6 +343,8 @@ android:id="@+id/lstcliente"
 			android:id="@+id/edcedula"
 			android:layout_height="match_parent"
 			android:layout_width="0dp"
+			android:inputType="number"
+			android:maxLength="10"
 			android:layout_weight="1">
 
 		</EditText>
@@ -366,6 +368,8 @@ android:id="@+id/lstcliente"
 			android:id="@+id/edacelular"
 			android:layout_height="match_parent"
 			android:layout_width="0dp"
+			android:inputType="number"
+			android:maxLength="10"
 			android:layout_weight="1">
 
 		</EditText>

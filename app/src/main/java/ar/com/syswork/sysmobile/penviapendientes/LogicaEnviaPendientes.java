@@ -171,7 +171,7 @@ public class LogicaEnviaPendientes implements Callback {
 		String jSonPedidos = obtieneJsonPedidos("I");
 		//String jSonPagos=obtieneJsonPagos();
 		List<Cliente> lstcClientes = new ArrayList<>();
-		lstcClientes = daoCliente.getAll(" estadoenvio = 'X'");
+		lstcClientes = daoCliente.getAll(" estadoenvio = 'P'");
 		String token = "";
 		for (Token a : daoToken.getAll("")
 		) {
