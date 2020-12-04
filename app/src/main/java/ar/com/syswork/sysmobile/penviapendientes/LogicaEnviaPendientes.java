@@ -482,8 +482,8 @@ public class LogicaEnviaPendientes implements Callback {
 
 				jsonPedido = new JSONObject();
 				try {
-
-
+						Cliente c= daoCliente.getByKey(pedido.getCodCliente());
+					if(c!=null) {
 						jsonPedido.put("id", 0);
 						jsonPedido.put("codCliente", pedido.getCodCliente());
 						jsonPedido.put("idVendedor", pedido.getIdVendedor());
@@ -496,7 +496,8 @@ public class LogicaEnviaPendientes implements Callback {
 						jsonPedido.put("pedidosItems", obtieneJsonDetalleDePedido(pedido.getIdPedido()));
 
 
-					jsonArrayPedidos.put(jsonPedido);
+						jsonArrayPedidos.put(jsonPedido);
+					}
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
