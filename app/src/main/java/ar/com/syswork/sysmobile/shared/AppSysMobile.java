@@ -102,7 +102,7 @@ public class AppSysMobile extends Application {
 	public final static String WS_CONSULTA_DESFORMAPAGO = "/GetDescuentoFormapagos";
 	public final static String WS_CONSULTA_DESVOLUMEN = "/GetDescuentoVolumens";
 	public final static String WS_CONSULTA_DESPRECIOESCALA = "/GetPrecioEscalas";
-	public  final  static  String WS_CONSULTA_CARTERA="/GetCartera";
+	public  final  static  String WS_CONSULTA_CARTERA="http://pedido.gnoboa.com:2108/api/CoberturaCartera/obtener";
 	public  final  static  String WS_CONSULTA_CODIGOS="http://dyvenpro.azurewebsites.net/api/Order/SequeceOrder?";
 
 

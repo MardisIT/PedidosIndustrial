@@ -222,22 +222,22 @@ private DaoCodigosNuevos daoCodigosNuevos;
 				for (int x = 0; x<arrayJson.length() ;x++)
 				{
 					jsObject = arrayJson.getJSONObject(x);
-                    cartera.setID(jsObject.getInt("id"));
+                    cartera.setID(x+1);
 					cartera.setCodcli(jsObject.getString("codcli").trim());
-					cartera.setNombre_cliente(jsObject.getString("nombreCliente").trim());
-					cartera.setFe_fac(jsObject.getString("feFac").trim());
-					cartera.setFe_des(jsObject.getString("feDes").trim());
-					cartera.setTp_d(jsObject.getString("tpD").trim());
+					cartera.setNombre_cliente(jsObject.getString("nombrecliente").trim());
+					cartera.setFe_fac(jsObject.getString("f_FACTURA").trim());
+					cartera.setFe_des(jsObject.getString("f_DESPACHO").trim());
+					cartera.setTp_d(jsObject.getString("tpd").trim());
 					cartera.setLine(jsObject.getString("line").trim());
-					cartera.setNro_docm(jsObject.getString("nroDocm").trim());
-					cartera.setTi_desp(jsObject.getString("tiDesp").trim());
-					cartera.setFe_vecto(jsObject.getString("feVecto").trim());
-					cartera.setCorriente(jsObject.getDouble("corriente"));
-					cartera.setVcdo1_15(jsObject.getDouble("vcdo115"));
-					cartera.setVcdo16_30(jsObject.getDouble("vcdo1630"));
-					cartera.setVcdo31_60(jsObject.getDouble("vcdo3160"));
-					cartera.setVcdo61mayor(jsObject.getDouble("vcdo61mayor"));
-					cartera.setVendedor(jsObject.getString("vendedor").trim());
+					cartera.setNro_docm(jsObject.getString("nrodocumento").trim());
+					cartera.setTi_desp(jsObject.getString("tipodesp").trim());
+					cartera.setFe_vecto(jsObject.getString("f_VENCIMIENTO").trim());
+					cartera.setCorriente(jsObject.getDouble("valor"));
+					cartera.setVcdo1_15(0);
+					cartera.setVcdo16_30(0);
+					cartera.setVcdo31_60(0);
+					cartera.setVcdo61mayor(0);
+					cartera.setVendedor(jsObject.getString("nombrevendedor").trim());
 					cartera.setCodvendedor(jsObject.getString("codvendedor").trim());
 					daoCartera.save(cartera);
 				}

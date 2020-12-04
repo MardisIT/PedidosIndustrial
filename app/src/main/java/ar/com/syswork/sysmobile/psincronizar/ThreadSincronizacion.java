@@ -66,6 +66,7 @@ public class ThreadSincronizacion implements Runnable{
 				break;
 			case AppSysMobile.WS_CARTERA:
 				rutaAcceso =AppSysMobile.WS_CONSULTA_CARTERA;
+				servidor="engine";
 				break;
 			/*case AppSysMobile.WS_CODIGOS:
 				rutaAcceso =AppSysMobile.WS_CONSULTA_CODIGOS+"idvendedor="+ 1+"&iddevice="+AppSysMobile.WS_IMAIL;;

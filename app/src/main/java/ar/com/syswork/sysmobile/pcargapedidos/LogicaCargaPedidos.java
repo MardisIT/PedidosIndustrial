@@ -288,27 +288,32 @@ daoCodigosNuevos=dataManager.getDaoCodigosNuevos();
 		return false;
 	}
 	private void procesaResultado(String jsonStock) throws JSONException {
-		JSONObject jsObject = null;
-		ItemConsultaStock itemConsultaStock = new ItemConsultaStock();
-		cantidadstockactual=-1;
-		try {
-			jsObject = new JSONObject(jsonStock);
-		} catch (JSONException e) {
-			e.printStackTrace();
-			//utilDialogos.muestraToastGenerico(a, "No se pudo conectar con el servidor para obtener Stock de Bodega" , false);
+		if(jsonStock!=null) {
+			JSONObject jsObject = null;
+			ItemConsultaStock itemConsultaStock = new ItemConsultaStock();
+			cantidadstockactual = -1;
+			try {
+				jsObject = new JSONObject(jsonStock);
+			} catch (JSONException e) {
+				e.printStackTrace();
+				//utilDialogos.muestraToastGenerico(a, "No se pudo conectar con el servidor para obtener Stock de Bodega" , false);
 
-			pantallaManagerCargaPedidos.muestraAlertaStockpedido("No se pudo conectar con el servidor para obtener Stock de Bodega \n"+"¿Desea Agregar el producto?",this);
+				pantallaManagerCargaPedidos.muestraAlertaStockpedido("No se pudo conectar con el servidor para obtener Stock de Bodega \n" + "¿Desea Agregar el producto?", this);
+			}
+			itemConsultaStock.setIdDeposito("0001");
+
+			if (jsObject != null) {
+				itemConsultaStock.setCantidad(jsObject.getDouble("precio10"));
+				cantidadstockactual = itemConsultaStock.getCantidad();
+				utilDialogos.muestraToastGenerico(a, "Cantidad en Stock en Bodega: " + itemConsultaStock.getCantidad(), false);
+				pantallaManagerCargaPedidos.muestraAlertaStockpedido("Cantidad en Stock en Bodega: " + itemConsultaStock.getCantidad() + "\n ¿Desea Agregar el producto?", this);
+
+			}
+		}else{
+			pantallaManagerCargaPedidos.muestraAlertaStockpedido("No se pudo conectar con el servidor para obtener Stock de Bodega \n" + "¿Desea Agregar el producto?", this);
+
 		}
-		itemConsultaStock.setIdDeposito("0001");
 
-		if(jsObject!=null)
-		{
-			itemConsultaStock.setCantidad(jsObject.getDouble("precio10"));
-			cantidadstockactual=itemConsultaStock.getCantidad();
-			utilDialogos.muestraToastGenerico(a, "Cantidad en Stock en Bodega: "+ itemConsultaStock.getCantidad() , false);
-			pantallaManagerCargaPedidos.muestraAlertaStockpedido("Cantidad en Stock en Bodega: "+ itemConsultaStock.getCantidad()+"\n ¿Desea Agregar el producto?",this);
-
-		}
 
 
 

@@ -10,6 +10,7 @@ import java.util.List;
 
 import ar.com.syswork.sysmobile.daos.DataManager;
 import ar.com.syswork.sysmobile.entities.Inventario;
+import ar.com.syswork.sysmobile.entities.Pedido;
 import ar.com.syswork.sysmobile.entities.VisitasUio;
 import ar.com.syswork.sysmobile.plistainventario.AdapterListaInventario;
 import ar.com.syswork.sysmobile.plistavisitas.PantallaManagerListavisita;
@@ -31,6 +32,12 @@ public class LogicaListaVisita {
         listavisitasUios = new ArrayList<VisitasUio>();
         adapterListaVisita = new AdapterListaVisita(this.a, listavisitasUios);
         this.pantallaManagerListavisita.getLstConsultainventario().setAdapter(adapterListaVisita);
+        List<Pedido> pedidos = new ArrayList<>();
+        pedidos=dm.getDaoPedido().getAll("enviomardis='E' and envioindustrial='E'");
+        for (Pedido x:pedidos) {
+            dm.getDaoPedidoItem().deleteByIdPedido(x.getIdPedido());
+            dm.getDaoPedido().delete(x);
+        }
     }
 
     public void cargarListaVisitas()

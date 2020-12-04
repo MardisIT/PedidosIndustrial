@@ -110,12 +110,7 @@ public class LogicaMenuPrincipal {
 		itemMP.setAccion(AppSysMobile.OPC_MENU_PRINCIPAL_CONSULTA_CLIENTES);
 		listaOpciones.add(itemMP);
 		
-		/*itemMP = new ItemMenuPrincipal();
-		itemMP.setTitulo(a.getString(R.string.item_menu_principal_consulta_cuenta_corriente));
-		itemMP.setCantidad(0);
-		itemMP.setImagen(R.drawable.icono_cuenta_corriente);
-		itemMP.setAccion(AppSysMobile.OPC_MENU_PRINCIPAL_CUENTA_CORRIENTE);
-		listaOpciones.add(itemMP);*/
+
 
 		/*itemMP = new ItemMenuPrincipal();
 		itemMP.setTitulo("Reporte Pagos");
@@ -141,6 +136,12 @@ public class LogicaMenuPrincipal {
 
 		listaOpciones.add(itemMP);
 
+		itemMP = new ItemMenuPrincipal();
+		itemMP.setTitulo(a.getString(R.string.item_menu_principal_consulta_cuenta_corriente));
+		itemMP.setCantidad(0);
+		itemMP.setImagen(R.drawable.icono_cuenta_corriente);
+		itemMP.setAccion(AppSysMobile.OPC_MENU_PRINCIPAL_CUENTA_CORRIENTE);
+		listaOpciones.add(itemMP);
 
 
 	}

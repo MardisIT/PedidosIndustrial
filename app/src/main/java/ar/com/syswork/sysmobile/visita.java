@@ -57,20 +57,25 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
 import ar.com.syswork.sysmobile.Tracking.JavaRestClient;
 import ar.com.syswork.sysmobile.Tracking.SaveStatusBranchTracking;
+import ar.com.syswork.sysmobile.daos.DaoCartera;
 import ar.com.syswork.sysmobile.daos.DaoCliente;
 import ar.com.syswork.sysmobile.daos.DaoConfiguracion;
 import ar.com.syswork.sysmobile.daos.DaoVisitasUio;
 import ar.com.syswork.sysmobile.daos.DataManager;
+import ar.com.syswork.sysmobile.entities.Cartera;
 import ar.com.syswork.sysmobile.entities.Cliente;
 import ar.com.syswork.sysmobile.entities.ConfiguracionDB;
 import ar.com.syswork.sysmobile.entities.VisitasUio;
+import ar.com.syswork.sysmobile.pcargapedidos.LogicaCargaPedidos;
 import ar.com.syswork.sysmobile.shared.AppSysMobile;
+import ar.com.syswork.sysmobile.util.AlertManager;
 
 
 public class visita extends AppCompatActivity
@@ -90,7 +95,7 @@ public class visita extends AppCompatActivity
 
     private Uri imageUri;
     private DaoConfiguracion daoConfiguracion;
-
+    private DaoCartera daoCartera;
 
 
     private static final int REQUEST_CODE_CAMARA = 1;
@@ -139,9 +144,21 @@ public class visita extends AppCompatActivity
         final RadioButton radnoexiste=(RadioButton) findViewById(R.id.radnoexiste);
         final RadioButton radotros=(RadioButton) findViewById(R.id.radotros);
 
-
+        daoCartera=dataManager.getDaoCartera();
 
         btnguardarvisita = (Button) findViewById(R.id.btnguardarvisita);
+
+        List<Cartera> listac = new ArrayList<>();
+        listac = daoCartera.getAll(" Codcli='" + codCliente + "'");
+        String CuantasPorPagar="";
+        for (Cartera c: listac
+             ) {
+            CuantasPorPagar=CuantasPorPagar+"\n Fecha Vencimiento: "+c.getFe_vecto()
+            +"\n N° Factura: "+ c.getNro_docm()+" Valor: "+c.getCorriente();
+        }
+        if(!CuantasPorPagar.equals(""))
+            muestraAlertaCuentasporpagar(CuantasPorPagar);
+
 
 
         tomarGPSinicial();
@@ -270,6 +287,17 @@ public class visita extends AppCompatActivity
                     }
                 });
         dialog.show();
+    }
+    public void muestraAlertaCuentasporpagar(String msg) {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Facturas Pendientes de Pago");
+        builder.setMessage(msg);
+        builder.setPositiveButton("Aceptar", null);
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
     }
     @SuppressLint("MissingPermission")
     public  void  tomarGPSinicial(){
