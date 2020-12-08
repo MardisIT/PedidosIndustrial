@@ -234,12 +234,16 @@ public void guardarcliente(){
 		cliente.setProvincia("GUAYAS");
 
 		cliente.setImeI_ID(obterImeid(this));
+		if(edcedula.getText().length()<10){
+			Toast.makeText(app, "Número de cédula no puede ser menor a 10 digitos", Toast.LENGTH_SHORT).show();
+			return;
+		}
 
 		cliente.setEstadoenvio("P");
 			if(!edruta.getText().toString().equals("")&&!ednombres.getText().toString().equals("")&&!edapellidos.getText().toString().equals("")
 				&&!edcodigol1.getText().toString().equals("")&&!edcodigol2.getText().toString().equals("")&&!ednombrelocal.getText().toString().equals("")
 				&&!edcedula.getText().toString().equals("")&&!edlatitude.getText().toString().equals("")&&!edlongitud.getText().toString().equals("")
-				&&!eddireccion.getText().toString().equals("")&&!edreferencia.getText().toString().equals("")&&!edacelular.getText().toString().equals("")) {
+				&&!edlocalidad.getText().toString().equals("")&&!eddireccion.getText().toString().equals("")&&!edreferencia.getText().toString().equals("")&&!edacelular.getText().toString().equals("")) {
 
 
 			Cliente _auxC = daoCliente.getByKey(cliente.getCodigo());
@@ -338,10 +342,10 @@ public void guardarcliente(){
 					jsonCliente.put("Referencia", cliente.getReference());
 					jsonCliente.put("Nombres", cliente.getNombre());
 					jsonCliente.put("Apellidos", cliente.getApellido());
-					jsonCliente.put("Mail", cliente.getMail().equals("")?"NA":cliente.getMail().equals(""));
+					jsonCliente.put("Mail", cliente.getMail().equals("")?"NA":cliente.getMail().toString());
 					jsonCliente.put("Cédula", cliente.getCedula());
 					jsonCliente.put("Celular", cliente.getCelular());
-					jsonCliente.put("Telefono", cliente.getTelefono().equals("")?cliente.getCelular():cliente.getTelefono().equals(""));
+					jsonCliente.put("Telefono", cliente.getTelefono().equals("")?cliente.getCelular():cliente.getTelefono().toString());
 					jsonCliente.put("Latitud", cliente.getLatitudeBranch());
 					jsonCliente.put("Longitud", cliente.getLenghtBranch());
 					jsonCliente.put("Provincia", "GUAYAS");

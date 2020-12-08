@@ -67,8 +67,7 @@ public class DaoCliente implements DaoInterface<Cliente>{
 	@Override
 	public void update(Cliente cliente) {
 		
-		String sql = "UPDATE Clientes SET CodigoOpcional='" + cliente.getCodigoOpcional() + "'," 
-				+ "RazonSocial='" + cliente.getRazonSocial() + "',"
+		String sql = "UPDATE Clientes SET CodigoOpcional='" + cliente.getCodigoOpcional() + "',"
 				+ "calleNroPisoDpto='" + cliente.getCalleNroPisoDpto() + "',"
 				+ "Localidad = '" + cliente.getLocalidad() + "',"
 				+ "Cuit= '" + cliente.getCuit() + "',"

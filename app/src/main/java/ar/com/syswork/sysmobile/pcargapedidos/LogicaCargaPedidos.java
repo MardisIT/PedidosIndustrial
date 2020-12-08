@@ -1101,10 +1101,7 @@ public void enviotrking(){
 						Articulo at= daoArticulo.getByKey(codigoProductoActual);
 						at.setPrecio10(cantidadstockactual);
 						daoArticulo.update(at);
-						if(cantidadstockactual<=5)
-							Toast.makeText(a, "Stock insuficiente para agregar producto...!!!", Toast.LENGTH_SHORT).show();
-						else
-							validaCantidadIntroducidaConStock();
+						validaCantidadIntroducidaConStock();
 					}else{
 						validaCantidadIntroducidaConStock();
 					}
