@@ -582,7 +582,7 @@ private DaoCodigosNuevos daoCodigosNuevos;
 				cliente.setLocalidad(jsObject.getString("typeBusiness"));
 				cliente.setCuit(jsObject.getString("rutaaggregate"));
 				cliente.setIva((byte) 0);
-				cliente.setClaseDePrecio((byte) 0);
+				cliente.setClaseDePrecio((byte) 0); //cliente activo credito
 				cliente.setPorcDto(0);
 				cliente.setCpteDefault("");
 				cliente.setIdVendedor(jsObject.getString("imeI_ID"));

@@ -237,7 +237,8 @@ public class ActivityCargaPedidos extends AppCompatActivity implements IAlertRes
 			PedidoItem pedidoItem = logicaCargaPedidos.getAdapterCargaPedidos().getItem(posicionItemSeleccionado);
 				//pantallaManagerCargaPedidos.consultarStock(pedidoItem.getIdArticulo());
 				setPosicionItemSeleccionadoEn(posicionItemSeleccionado);
-				pantallaManagerCargaPedidos.mostrarDialogoSolicitaCantidad(pedidoItem.getIdArticulo(),pedidoItem.getAuxDescripcionArticulo());
+				String iscredito="si";
+				pantallaManagerCargaPedidos.mostrarDialogoSolicitaCantidad(pedidoItem.getIdArticulo(),pedidoItem.getAuxDescripcionArticulo(),iscredito);
 				
 				break;
 		}

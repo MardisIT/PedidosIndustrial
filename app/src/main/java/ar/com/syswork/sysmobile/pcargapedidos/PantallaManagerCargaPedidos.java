@@ -136,7 +136,11 @@ public class PantallaManagerCargaPedidos {
 		txtCodArticulo = (TextView) dialog.findViewById(R.id.txtCodArticulo);
 		txtDescArticulo = (TextView) dialog.findViewById(R.id.txtDescArticulo);
 		cmbformapago=(Spinner)dialog.findViewById(R.id.cmbformapago);
+
+
+		//Validar activar credito
 		cmbformapago.setEnabled(false);
+
 		cmbunidades=(Spinner)dialog.findViewById(R.id.cmbunidad);
 		ArrayAdapter<String> adaptador;
 		adaptador = new ArrayAdapter<String>(a, R.layout.support_simple_spinner_dropdown_item, formapago);
@@ -184,10 +188,13 @@ public class PantallaManagerCargaPedidos {
 		
 	}
 
-	public void mostrarDialogoSolicitaCantidad(String codigoProducto, String descripcionProducto)
+	public void mostrarDialogoSolicitaCantidad(String codigoProducto, String descripcionProducto,String iscredito)
 	{
 		txtCodArticulo.setText(a.getString(R.string.abreviatura_codigo) + " " + codigoProducto);
 		txtDescArticulo.setText(descripcionProducto);
+		//aqui validar si el cliente tiene credio aprobado
+		if(iscredito.equals("si"))
+			cmbformapago.setEnabled(true);
 		dialog.show();
 
 	}

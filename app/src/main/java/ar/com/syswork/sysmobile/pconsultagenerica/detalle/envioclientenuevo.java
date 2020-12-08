@@ -96,7 +96,7 @@ public class envioclientenuevo extends AsyncTask<String, Void, String> {
     @Override
     protected void onPostExecute(String jsonString) {
         super.onPostExecute(jsonString);
-        Toast.makeText(app, "resultado de ejecucion: "+jsonString, Toast.LENGTH_SHORT).show();
+
 
         try {
             if (jsonString != "") {
@@ -121,6 +121,7 @@ public class envioclientenuevo extends AsyncTask<String, Void, String> {
 
                 } catch (JSONException err) {
                     Log.d("Error", err.toString());
+                    Toast.makeText(app, "resultado de ejecucion: "+jsonString, Toast.LENGTH_SHORT).show();
                 }
                 Toast.makeText(app, "Clientes enviados", Toast.LENGTH_SHORT).show();
             }

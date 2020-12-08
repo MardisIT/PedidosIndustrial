@@ -34,6 +34,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -127,6 +129,14 @@ public class visita extends AppCompatActivity
         app = (AppSysMobile) this.getApplication();
         dataManager = app.getDataManager();
         daoCliente = dataManager.getDaoCliente();
+        this.a=(Activity)this;
+        Intent intent = getIntent();
+        Bundle extras = intent.getExtras();
+        if (extras != null) {
+            if (extras.containsKey("cliente"))
+                codCliente = extras.getString("cliente");
+
+        }
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         longitudeValueGPS = (TextView) findViewById(R.id.longitudeValueGPS);
         latitudeValueGPS = (TextView) findViewById(R.id.latitudeValueGPS);
@@ -144,6 +154,8 @@ public class visita extends AppCompatActivity
         final RadioButton radnoexiste=(RadioButton) findViewById(R.id.radnoexiste);
         final RadioButton radotros=(RadioButton) findViewById(R.id.radotros);
 
+
+
         daoCartera=dataManager.getDaoCartera();
 
         btnguardarvisita = (Button) findViewById(R.id.btnguardarvisita);
@@ -151,13 +163,15 @@ public class visita extends AppCompatActivity
         List<Cartera> listac = new ArrayList<>();
         listac = daoCartera.getAll(" Codcli='" + codCliente + "'");
         String CuantasPorPagar="";
+        Double valorpendipa=0.00;
         for (Cartera c: listac
              ) {
-            CuantasPorPagar=CuantasPorPagar+"\n Fecha Vencimiento: "+c.getFe_vecto()
-            +"\n N° Factura: "+ c.getNro_docm()+" Valor: "+c.getCorriente();
+            CuantasPorPagar=CuantasPorPagar+"Fecha Vencimiento: "+c.getFe_vecto().substring(0,4)+"-"+c.getFe_vecto().substring(4,6)+"-"+c.getFe_vecto().substring(6,8)
+           + "\n N° Factura: "+ c.getNro_docm()+" Valor: "+c.getCorriente()+"\n ";
+            valorpendipa=valorpendipa+c.getCorriente();
         }
         if(!CuantasPorPagar.equals(""))
-            muestraAlertaCuentasporpagar(CuantasPorPagar);
+            muestraAlertaCuentasporpagar(CuantasPorPagar,valorpendipa,valorpendipa);
 
 
 
@@ -212,14 +226,7 @@ public class visita extends AppCompatActivity
 
 
         daoVisitasUio = dataManager.getDaoVisitasUio();
-        this.a=(Activity)this;
-        Intent intent = getIntent();
-        Bundle extras = intent.getExtras();
-        if (extras != null) {
-                if (extras.containsKey("cliente"))
-                    codCliente = extras.getString("cliente");
 
-        }
         daoConfiguracion=dataManager.getDaoConfiguracion();
         codigoVendedor = app.getVendedorLogueado();
 
@@ -288,12 +295,24 @@ public class visita extends AppCompatActivity
                 });
         dialog.show();
     }
-    public void muestraAlertaCuentasporpagar(String msg) {
+    public void muestraAlertaCuentasporpagar(String msg,Double valopapagar,Double cupo) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Facturas Pendientes de Pago");
-        builder.setMessage(msg);
-        builder.setPositiveButton("Aceptar", null);
+        builder.setTitle("Cartera Cliente: "+ codCliente);
+        final View customLayout = getLayoutInflater().inflate(R.layout.dialogo_consultactc, null);
+        builder.setView(customLayout);
+        TextView txtvalorsaldo = (TextView) customLayout.findViewById(R.id.txtvalorsaldo);
+        TextView txtvalorcupo = (TextView) customLayout.findViewById(R.id.txtvalorcupo);
+        TextView txtfacturasEditar = (TextView) customLayout.findViewById(R.id.txtfacturasEditar);
+        txtfacturasEditar.setText(msg);
+        txtvalorsaldo.setText(valopapagar.toString());
+        txtvalorcupo.setText(cupo.toString());
+        builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked OK button
+                dialog.cancel();
+            }
+        });
 
         AlertDialog dialog = builder.create();
         dialog.show();

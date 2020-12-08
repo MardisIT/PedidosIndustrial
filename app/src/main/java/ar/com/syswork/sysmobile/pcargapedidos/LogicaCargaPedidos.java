@@ -248,7 +248,8 @@ daoCodigosNuevos=dataManager.getDaoCodigosNuevos();
 
 		// El Articulo esta OK, lo seteo como el articulo actual
 		setCodigoProductoActual(articulo.getIdArticulo());
-		pantallaManagerCargaPedidos.mostrarDialogoSolicitaCantidad(articulo.getIdArticulo(),articulo.getDescripcion());
+		String iscredito="si";
+		pantallaManagerCargaPedidos.mostrarDialogoSolicitaCantidad(articulo.getIdArticulo(),articulo.getDescripcion(),iscredito);
 
 		return true;
 	}
@@ -319,6 +320,7 @@ daoCodigosNuevos=dataManager.getDaoCodigosNuevos();
 
 	}
 	public boolean validaCantidadIntroducida() {
+
 		ValidaCantidadStockBodegaCentral(getCodigoProductoActual());
 		return  true;
 
