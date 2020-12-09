@@ -1,5 +1,6 @@
 package ar.com.syswork.sysmobile.pmenuprincipal;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
@@ -10,7 +11,9 @@ import ar.com.syswork.sysmobile.daos.DaoPedido;
 import ar.com.syswork.sysmobile.daos.DaoVendedor;
 import ar.com.syswork.sysmobile.daos.DaoVisitasUio;
 import ar.com.syswork.sysmobile.daos.DataManager;
+import ar.com.syswork.sysmobile.entities.Inventario;
 import ar.com.syswork.sysmobile.entities.ItemMenuPrincipal;
+import ar.com.syswork.sysmobile.entities.Pedido;
 import ar.com.syswork.sysmobile.shared.AppSysMobile;
 
 
@@ -42,6 +45,20 @@ public class LogicaMenuPrincipal {
 		daoPedido = dm.getDaoPedido();
 		daoVisitasUio=dm.getDaoVisitasUio();
 		daoInventario=dm.getDaoInventario();
+		List<Pedido> pedidos = new ArrayList<>();
+
+		List<Inventario> inventarios = new ArrayList<>();
+		inventarios=dm.getDaoInventario().getAll("enviomardis='E' and envioindustrial='E'");
+		for (Inventario x:inventarios) {
+			dm.getDaoinventariodetalles().deleteByIdinventario(x.getId());
+			dm.getDaoInventario().delete(x);
+		}
+
+		pedidos=dm.getDaoPedido().getAll("enviomardis='E' and envioindustrial='E'");
+		for (Pedido x:pedidos) {
+			dm.getDaoPedidoItem().deleteByIdPedido(x.getIdPedido());
+			dm.getDaoPedido().delete(x);
+		}
 	}
 	
 	public void seteaListaOpciones(List<ItemMenuPrincipal> listaOpciones){

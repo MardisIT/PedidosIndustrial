@@ -485,7 +485,7 @@ public class LogicaEnviaPendientes implements Callback {
 						Cliente c= daoCliente.getByKey(pedido.getCodCliente());
 					if(c!=null) {
 						jsonPedido.put("id", 0);
-						jsonPedido.put("codCliente", pedido.getCodCliente());
+						jsonPedido.put("codCliente", c.getCodigoOpcional());
 						jsonPedido.put("idVendedor", pedido.getIdVendedor());
 						jsonPedido.put("fecha", pedido.getFecha());
 						jsonPedido.put("totalNeto", pedido.getTotalNeto());
@@ -552,7 +552,7 @@ public class LogicaEnviaPendientes implements Callback {
 					Articulo art=daoArticulo.getByKey(pedidoItem.getIdArticulo());
 					//armar json para envio servidor industrial
 					jsonObjectPedidoL.put("P_PEDIDO",localPedido.getCodigounico());
-					jsonObjectPedidoL.put("P_NUEVO_CLIENTE",localPedido.getCodCliente().equals(c.getCodigoOpcional())?"":c.getCodigoOpcional());
+					jsonObjectPedidoL.put("P_NUEVO_CLIENTE",c.getCodigoOpcional());
 					jsonObjectPedidoL.put("P_ORDEN", pedidoItem.getIdPedidoItem());
 					jsonObjectPedidoL.put("P_FECHA",Integer.valueOf(fecha));
 					jsonObjectPedidoL.put("P_PRODUCTO",pedidoItem.getIdArticulo());
@@ -563,6 +563,7 @@ public class LogicaEnviaPendientes implements Callback {
 					jsonObjectPedidoL.put("p_CLIENTE",!localPedido.getCodCliente().equals(c.getCodigoOpcional())?c.getCodigoOpcional():localPedido.getCodCliente());
 					jsonObjectPedidoL.put("p_PEDIDO_MARDIS",localPedido.getCodpedidomardis());
 					jsonObjectPedidoL.put("P_VENDEDOR",Integer.valueOf(localPedido.getIdVendedor().replace("V","")));
+					jsonObjectPedidoL.put("P_VENDEDOR",pedidoItem.getFormaPago());
 
 
 					jsonArrayPedidosL.put(jsonObjectPedidoL);

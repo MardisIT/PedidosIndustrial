@@ -74,6 +74,8 @@ import ar.com.syswork.sysmobile.daos.DataManager;
 import ar.com.syswork.sysmobile.entities.Cartera;
 import ar.com.syswork.sysmobile.entities.Cliente;
 import ar.com.syswork.sysmobile.entities.ConfiguracionDB;
+import ar.com.syswork.sysmobile.entities.Inventario;
+import ar.com.syswork.sysmobile.entities.Pedido;
 import ar.com.syswork.sysmobile.entities.VisitasUio;
 import ar.com.syswork.sysmobile.pcargapedidos.LogicaCargaPedidos;
 import ar.com.syswork.sysmobile.shared.AppSysMobile;
@@ -159,7 +161,20 @@ public class visita extends AppCompatActivity
         daoCartera=dataManager.getDaoCartera();
 
         btnguardarvisita = (Button) findViewById(R.id.btnguardarvisita);
+        List<Pedido> pedidos = new ArrayList<>();
 
+        List<Inventario> inventarios = new ArrayList<>();
+        inventarios=dataManager.getDaoInventario().getAll("enviomardis='E' and envioindustrial='E'");
+        for (Inventario x:inventarios) {
+            dataManager.getDaoinventariodetalles().deleteByIdinventario(x.getId());
+            dataManager.getDaoInventario().delete(x);
+        }
+
+        pedidos=dataManager.getDaoPedido().getAll("enviomardis='E' and envioindustrial='E'");
+        for (Pedido x:pedidos) {
+            dataManager.getDaoPedidoItem().deleteByIdPedido(x.getIdPedido());
+            dataManager.getDaoPedido().delete(x);
+        }
         List<Cartera> listac = new ArrayList<>();
         listac = daoCartera.getAll(" Codcli='" + codCliente + "'");
         String CuantasPorPagar="";
