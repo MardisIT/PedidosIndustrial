@@ -178,6 +178,7 @@ public class visita extends AppCompatActivity
         List<Cartera> listac = new ArrayList<>();
         listac = daoCartera.getAll(" Codcli='" + codCliente + "'");
         String CuantasPorPagar="";
+        Cliente cliente=daoCliente.getByKey(codCliente);
         Double valorpendipa=0.00;
         for (Cartera c: listac
              ) {
@@ -186,7 +187,7 @@ public class visita extends AppCompatActivity
             valorpendipa=valorpendipa+c.getCorriente();
         }
         if(!CuantasPorPagar.equals(""))
-            muestraAlertaCuentasporpagar(CuantasPorPagar,valorpendipa,valorpendipa);
+            muestraAlertaCuentasporpagar(CuantasPorPagar,valorpendipa,Double.valueOf(cliente.getSaldoActual()),cliente.getDiasPlazo());
 
 
 
@@ -310,7 +311,7 @@ public class visita extends AppCompatActivity
                 });
         dialog.show();
     }
-    public void muestraAlertaCuentasporpagar(String msg,Double valopapagar,Double cupo) {
+    public void muestraAlertaCuentasporpagar(String msg,Double valopapagar,Double cupo,String diasplazo) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Cartera Cliente: "+ codCliente);
@@ -318,10 +319,12 @@ public class visita extends AppCompatActivity
         builder.setView(customLayout);
         TextView txtvalorsaldo = (TextView) customLayout.findViewById(R.id.txtvalorsaldo);
         TextView txtvalorcupo = (TextView) customLayout.findViewById(R.id.txtvalorcupo);
+        TextView txtvdiasplazo = (TextView) customLayout.findViewById(R.id.txtdiasplazo);
         TextView txtfacturasEditar = (TextView) customLayout.findViewById(R.id.txtfacturasEditar);
         txtfacturasEditar.setText(msg);
         txtvalorsaldo.setText(valopapagar.toString());
         txtvalorcupo.setText(cupo.toString());
+        txtvdiasplazo.setText(diasplazo);
         builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // User clicked OK button
