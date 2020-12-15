@@ -320,8 +320,20 @@ daoCodigosNuevos=dataManager.getDaoCodigosNuevos();
 
 	}
 	public boolean validaCantidadIntroducida() {
+				Articulo articulo ;
+		if(((ActivityCargaPedidos) a).getPosicionItemSeleccionadoEn()!=-1)
+		{
+			int valorseleccionado=((ActivityCargaPedidos) a).getPosicionItemSeleccionadoEn();
+			PedidoItem seleccion=listaPedidoItems.get(valorseleccionado);
+			articulo=daoArticulo.getByKey(seleccion.getIdArticulo().toString().trim());
+			ValidaCantidadStockBodegaCentral(articulo.getIdArticulo().toString().trim());
+			setCodigoProductoActual(seleccion.getIdArticulo().toString().trim());
+			//listaPedidoItems.remove(seleccion);
 
-		ValidaCantidadStockBodegaCentral(getCodigoProductoActual());
+		}else{
+			ValidaCantidadStockBodegaCentral(getCodigoProductoActual());
+		}
+
 		return  true;
 
 	}
