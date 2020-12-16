@@ -563,7 +563,7 @@ public class LogicaEnviaPendientes implements Callback {
 					jsonObjectPedidoL.put("p_CLIENTE",!localPedido.getCodCliente().equals(c.getCodigoOpcional())?c.getCodigoOpcional():localPedido.getCodCliente());
 					jsonObjectPedidoL.put("p_PEDIDO_MARDIS",localPedido.getCodpedidomardis());
 					jsonObjectPedidoL.put("P_VENDEDOR",Integer.valueOf(localPedido.getIdVendedor().replace("V","")));
-					jsonObjectPedidoL.put("P_VENDEDOR",pedidoItem.getFormaPago());
+					jsonObjectPedidoL.put("P_FORMA_PAGO",pedidoItem.getFormaPago());
 
 
 					jsonArrayPedidosL.put(jsonObjectPedidoL);

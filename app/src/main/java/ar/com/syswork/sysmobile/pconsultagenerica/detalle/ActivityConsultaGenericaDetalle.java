@@ -232,6 +232,8 @@ public void guardarcliente(){
 		cliente.setParroquia("GUAYAQUIL");
 		cliente.setCanton("GUAYAQUIL");
 		cliente.setProvincia("GUAYAS");
+		cliente.setDiasPlazo("0");
+		cliente.setSaldoActual("0");
 
 		cliente.setImeI_ID(obterImeid(this));
 		if(edcedula.getText().length()<10){

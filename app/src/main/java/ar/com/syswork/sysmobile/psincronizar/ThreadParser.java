@@ -581,8 +581,26 @@ private DaoCodigosNuevos daoCodigosNuevos;
 				cliente.setCalleNroPisoDpto(jsObject.getString("mainStreet"));
 				cliente.setLocalidad(jsObject.getString("typeBusiness"));
 				cliente.setCuit(jsObject.getString("rutaaggregate"));
+				if(!jsObject.getString("comment").equals("") && jsObject.getString("comment")!=null&&!jsObject.getString("comment").equals("No registra Informacion")){
+					try {
+						String[] parts = jsObject.getString("comment").split("-");
+						String part1 = parts[0]; // 19
+						String part2 = parts[1]; // 19-A
+						cliente.setSaldoActual(part1);
+						cliente.setDiasPlazo(part2);
+					}catch (Exception ex)
+					{
+						cliente.setSaldoActual("0");
+						cliente.setDiasPlazo("0");
+					}
+				}else{
+					cliente.setSaldoActual("0");
+					cliente.setDiasPlazo("0");
+				}
+
 				cliente.setIva((byte) 0);
 				cliente.setClaseDePrecio((byte) 0); //cliente activo credito
+
 				cliente.setPorcDto(0);
 				cliente.setCpteDefault("");
 				cliente.setIdVendedor(jsObject.getString("imeI_ID"));

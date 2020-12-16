@@ -41,6 +41,24 @@ private String celular;
 private String provincia;
 private String parroquia;
 private	String canton;
+private  String SaldoActual;
+private  String DiasPlazo;
+
+	public String getSaldoActual() {
+		return SaldoActual;
+	}
+
+	public void setSaldoActual(String saldoActual) {
+		SaldoActual = saldoActual;
+	}
+
+	public String getDiasPlazo() {
+		return DiasPlazo;
+	}
+
+	public void setDiasPlazo(String diasPlazo) {
+		DiasPlazo = diasPlazo;
+	}
 
 	public String getCedula() {
 		return cedula;
