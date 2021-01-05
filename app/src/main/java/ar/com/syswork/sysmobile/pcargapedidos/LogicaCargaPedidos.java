@@ -289,17 +289,28 @@ daoCodigosNuevos=dataManager.getDaoCodigosNuevos();
 		return false;
 	}
 	private void procesaResultado(String jsonStock) throws JSONException {
+		cantidadstockactual = -1;
 		if(jsonStock!=null) {
 			JSONObject jsObject = null;
 			ItemConsultaStock itemConsultaStock = new ItemConsultaStock();
-			cantidadstockactual = -1;
+
 			try {
 				jsObject = new JSONObject(jsonStock);
 			} catch (JSONException e) {
 				e.printStackTrace();
-				//utilDialogos.muestraToastGenerico(a, "No se pudo conectar con el servidor para obtener Stock de Bodega" , false);
-
-				pantallaManagerCargaPedidos.muestraAlertaStockpedido("No se pudo conectar con el servidor para obtener Stock de Bodega \n" + "¿Desea Agregar el producto?", this);
+				utilDialogos.muestraToastGenerico(a, "No se pudo conectar con el servidor para obtener Stock de Bodega" , false);
+				if(cantidadstockactual!=-1) {
+					Articulo at= daoArticulo.getByKey(codigoProductoActual);
+					at.setPrecio10(cantidadstockactual);
+					daoArticulo.update(at);
+					if(cantidadstockactual==0)
+						Toast.makeText(a, "Stock insuficiente para agregar producto...!!!", Toast.LENGTH_SHORT).show();
+					else
+						validaCantidadIntroducidaConStock();
+				}else{
+					validaCantidadIntroducidaConStock();
+				}
+				//pantallaManagerCargaPedidos.muestraAlertaStockpedido("No se pudo conectar con el servidor para obtener Stock de Bodega \n" + "¿Desea Agregar el producto?", this);
 			}
 			itemConsultaStock.setIdDeposito("0001");
 
@@ -307,11 +318,34 @@ daoCodigosNuevos=dataManager.getDaoCodigosNuevos();
 				itemConsultaStock.setCantidad(jsObject.getDouble("precio10"));
 				cantidadstockactual = itemConsultaStock.getCantidad();
 				utilDialogos.muestraToastGenerico(a, "Cantidad en Stock en Bodega: " + itemConsultaStock.getCantidad(), false);
-				pantallaManagerCargaPedidos.muestraAlertaStockpedido("Cantidad en Stock en Bodega: " + itemConsultaStock.getCantidad() + "\n ¿Desea Agregar el producto?", this);
-
+				//pantallaManagerCargaPedidos.muestraAlertaStockpedido("Cantidad en Stock en Bodega: " + itemConsultaStock.getCantidad() + "\n ¿Desea Agregar el producto?", this);
+				if(cantidadstockactual!=-1) {
+					Articulo at= daoArticulo.getByKey(codigoProductoActual);
+					at.setPrecio10(cantidadstockactual);
+					daoArticulo.update(at);
+					if(cantidadstockactual==0)
+						Toast.makeText(a, "Stock insuficiente para agregar producto...!!!", Toast.LENGTH_SHORT).show();
+					else
+						validaCantidadIntroducidaConStock();
+				}else{
+					validaCantidadIntroducidaConStock();
+				}
 			}
 		}else{
-			pantallaManagerCargaPedidos.muestraAlertaStockpedido("No se pudo conectar con el servidor para obtener Stock de Bodega \n" + "¿Desea Agregar el producto?", this);
+			utilDialogos.muestraToastGenerico(a, "No se pudo conectar con el servidor para obtener Stock de Bodega" , false);
+
+			if(cantidadstockactual!=-1) {
+				Articulo at= daoArticulo.getByKey(codigoProductoActual);
+				at.setPrecio10(cantidadstockactual);
+				daoArticulo.update(at);
+				if(cantidadstockactual==0)
+					Toast.makeText(a, "Stock insuficiente para agregar producto...!!!", Toast.LENGTH_SHORT).show();
+				else
+					validaCantidadIntroducidaConStock();
+			}else{
+				validaCantidadIntroducidaConStock();
+			}
+			//pantallaManagerCargaPedidos.muestraAlertaStockpedido("No se pudo conectar con el servidor para obtener Stock de Bodega \n" + "¿Desea Agregar el producto?", this);
 
 		}
 
@@ -354,6 +388,14 @@ daoCodigosNuevos=dataManager.getDaoCodigosNuevos();
 				articulo= daoArticulo.getByKey(getCodigoProductoActual().toString().trim());
 			}
 
+			for (PedidoItem p: listaPedidoItems
+				 ) {
+				if(p.getIdArticulo().equals(articulo.getIdArticulo())) {
+					Toast.makeText(a, "Ya se agrego el producto en el pedido por favor modificar cantidad..!!!", Toast.LENGTH_SHORT).show();
+					return false;
+				}
+
+			}
 
 			String valor = pantallaManagerCargaPedidos.getCantidadIntroducida();
 			String formaPago=pantallaManagerCargaPedidos.getFormadePagoIntroducida();
