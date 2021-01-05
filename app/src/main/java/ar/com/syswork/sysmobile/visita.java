@@ -69,6 +69,7 @@ import ar.com.syswork.sysmobile.Tracking.SaveStatusBranchTracking;
 import ar.com.syswork.sysmobile.daos.DaoCartera;
 import ar.com.syswork.sysmobile.daos.DaoCliente;
 import ar.com.syswork.sysmobile.daos.DaoConfiguracion;
+import ar.com.syswork.sysmobile.daos.DaoPedido;
 import ar.com.syswork.sysmobile.daos.DaoVisitasUio;
 import ar.com.syswork.sysmobile.daos.DataManager;
 import ar.com.syswork.sysmobile.entities.Cartera;
@@ -117,6 +118,7 @@ public class visita extends AppCompatActivity
     private DataManager dataManager;
 
     private DaoVisitasUio daoVisitasUio;
+    private DaoPedido daoPedido;
     private String codigoVendedor;
     public static Date DataStart;
 
@@ -131,6 +133,8 @@ public class visita extends AppCompatActivity
         app = (AppSysMobile) this.getApplication();
         dataManager = app.getDataManager();
         daoCliente = dataManager.getDaoCliente();
+        daoPedido=dataManager.getDaoPedido();
+        daoVisitasUio=dataManager.getDaoVisitasUio();
         this.a=(Activity)this;
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
@@ -269,6 +273,12 @@ public class visita extends AppCompatActivity
                     latitudeValueGPS.setText(latitudeGPS + "");
                     Toast.makeText(getApplication(), "GPS Provider update", Toast.LENGTH_SHORT).show();
                     btnguardarvisita.setVisibility(View.VISIBLE);
+                    if(daoVisitasUio.getAll("").size()!=0){
+                        Toast.makeText(a, "Enviar Visitas Pendientes", Toast.LENGTH_SHORT).show();
+                    }
+                    if(daoPedido.getAll("").size()!=0){
+                        Toast.makeText(a, "Enviar Pedidos Pendientes", Toast.LENGTH_SHORT).show();
+                    }
                 }
             });
         }
@@ -347,6 +357,12 @@ public class visita extends AppCompatActivity
             latitudeValueGPS.setText(loc.getLatitude() + "");
             Toast.makeText(getApplication(), "GPS Provider update", Toast.LENGTH_SHORT).show();
             btnguardarvisita.setVisibility(View.VISIBLE);
+            if(daoVisitasUio.getAll("").size()!=0){
+                Toast.makeText(a, "Enviar Visitas Pendientes", Toast.LENGTH_SHORT).show();
+            }
+            if(daoPedido.getAll("").size()!=0){
+                Toast.makeText(a, "Enviar Pedidos Pendientes", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 

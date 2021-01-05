@@ -17,11 +17,14 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.widget.ArrayAdapter;
+import android.widget.Toast;
 
 import ar.com.syswork.sysmobile.R;
 //import ar.com.syswork.sysmobile.Tracking.JavaRestClient;
 import ar.com.syswork.sysmobile.Tracking.JavaRestClient;
 import ar.com.syswork.sysmobile.Tracking.User;
+import ar.com.syswork.sysmobile.daos.DaoPedido;
+import ar.com.syswork.sysmobile.daos.DaoVisitasUio;
 import ar.com.syswork.sysmobile.entities.Token;
 //import ar.com.syswork.sysmobile.Tracking.User;
 import ar.com.syswork.sysmobile.daos.DaoCuenta;
@@ -86,6 +89,10 @@ public class LogicaSincronizacion implements Callback{
 	private DaoVendedor daoVendedor;
 	private DaoCuenta daoCuenta;
 	private DaoToken daoToken;
+
+	private DaoVisitasUio daoVisitasUio;
+	private DaoPedido daoPedido;
+
 	
 	private int cantVendedores;
 	
@@ -112,7 +119,8 @@ public class LogicaSincronizacion implements Callback{
 		daoVendedor = dm.getDaoVendedor();
 		daoCuenta = dm.getDaoCuenta();
 		daoToken=dm.getDaoToken();
-
+		daoVisitasUio=dm.getDaoVisitasUio();
+		daoPedido=dm.getDaoPedido();
 		setCantVendedores(daoVendedor.getCount());
 		ArrayAdapter<Capania> adaptador;
 	}
@@ -125,18 +133,26 @@ public class LogicaSincronizacion implements Callback{
 	}
 	public void sincronizar()
 	{
-		pantallaManagerSincronizacion.seteaBotonSincronizarVisible(false);
-		pantallaManagerSincronizacion.seteaPrgEstadoConexionVisible(true);
-		pantallaManagerSincronizacion.seteaTxtEstadoConexionVisible(true);
-		pantallaManagerSincronizacion.seteaTxtEstadoConexion(strIntentandoConectarAlWebService);
-		
-		tipoLlamada = OBTENER_REGISTROS;
-		Handler h = new Handler(this);
+		if(daoVisitasUio.getAll("").size()==0) {
+			if(daoPedido.getAll("").size()==0) {
+				pantallaManagerSincronizacion.seteaBotonSincronizarVisible(false);
+				pantallaManagerSincronizacion.seteaPrgEstadoConexionVisible(true);
+				pantallaManagerSincronizacion.seteaTxtEstadoConexionVisible(true);
+				pantallaManagerSincronizacion.seteaTxtEstadoConexion(strIntentandoConectarAlWebService);
 
-		ValidToken();
-		ThreadSincronizacion tc = new ThreadSincronizacion(h,AppSysMobile.WS_REGISTROS,0);
-        Thread t = new Thread(tc);
-        t.start();
+				tipoLlamada = OBTENER_REGISTROS;
+				Handler h = new Handler(this);
+
+				ValidToken();
+				ThreadSincronizacion tc = new ThreadSincronizacion(h, AppSysMobile.WS_REGISTROS, 0);
+				Thread t = new Thread(tc);
+				t.start();
+			}else{
+				Toast.makeText(a, "Enviar Pedidos Pendientes para continuar.", Toast.LENGTH_SHORT).show();
+			}
+		}else{
+			Toast.makeText(a, "Enviar Visistas Pendientes para continuar.", Toast.LENGTH_SHORT).show();
+		}
 
 		
 	}

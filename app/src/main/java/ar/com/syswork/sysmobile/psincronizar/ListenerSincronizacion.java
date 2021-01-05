@@ -23,6 +23,7 @@ public class ListenerSincronizacion implements OnClickListener {
 		switch (v.getId())
 		{
 			case R.id.btnSincronizar:
+
 				logicaSincronizacion.sincronizar();
 				break;
 			case R.id.btncargarlocalesCL:
