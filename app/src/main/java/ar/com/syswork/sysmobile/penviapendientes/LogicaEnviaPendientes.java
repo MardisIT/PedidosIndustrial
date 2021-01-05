@@ -250,21 +250,23 @@ public class LogicaEnviaPendientes implements Callback {
 				jsonVisitas = new JSONObject();
 				try {
 
+if(visitasUio.getLongitud()>0 && visitasUio.getLatitud()>0&& visitasUio.getCodcliente()!=null) {
+	//jsonVisitas.put("id", visitasUio.getId());
+	jsonVisitas.put("codcliente", visitasUio.getCodcliente());
+	jsonVisitas.put("codvendedor", visitasUio.getCodvendedor());
+	jsonVisitas.put("fechavisita", visitasUio.getFechavisita());
+	jsonVisitas.put("Latitud", visitasUio.getLatitud());
+	jsonVisitas.put("Longitud", visitasUio.getLongitud());
+	jsonVisitas.put("Linkfotoexterior", visitasUio.getLinkfotoexterior());
+	jsonVisitas.put("Compro", visitasUio.getRealizapedido());
+	jsonVisitas.put("Observacion", visitasUio.getObservaciones());
+	jsonVisitas.put("estado", visitasUio.getEstado() == null ? "" : visitasUio.getEstado());
 
-					//jsonVisitas.put("id", visitasUio.getId());
-					jsonVisitas.put("codcliente", visitasUio.getCodcliente());
-					jsonVisitas.put("codvendedor", visitasUio.getCodvendedor());
-					jsonVisitas.put("fechavisita", visitasUio.getFechavisita());
-					jsonVisitas.put("Latitud", visitasUio.getLatitud());
-					jsonVisitas.put("Longitud", visitasUio.getLongitud());
-					jsonVisitas.put("Linkfotoexterior", visitasUio.getLinkfotoexterior());
-					jsonVisitas.put("Compro", visitasUio.getRealizapedido());
-					jsonVisitas.put("Observacion", visitasUio.getObservaciones());
-					jsonVisitas.put("estado", visitasUio.getEstado()==null?"":visitasUio.getEstado());
-
-					jsonArrayVisitas.put(jsonVisitas);
+	jsonArrayVisitas.put(jsonVisitas);
+}
 				} catch (JSONException e) {
 					e.printStackTrace();
+					Toast.makeText(app, e.getMessage(), Toast.LENGTH_SHORT).show();
 				}
 			}
 
