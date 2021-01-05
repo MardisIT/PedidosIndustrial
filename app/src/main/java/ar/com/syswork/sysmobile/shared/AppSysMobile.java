@@ -73,6 +73,25 @@ public class AppSysMobile extends Application {
 	public final static int WS_RECIBE_ERRORES = 2;
 	
 	private static String rutaWebService;
+	public  static  boolean ServIndustrial;
+	public static  boolean Servnutri;
+
+	public static boolean isServIndustrial() {
+		return AppSysMobile.ServIndustrial;
+	}
+
+	public static void setServIndustrial(boolean servIndustrial) {
+		AppSysMobile.ServIndustrial = servIndustrial;
+	}
+
+	public static boolean isServnutri() {
+		return AppSysMobile.Servnutri;
+	}
+
+	public static void setServnutri(boolean servnutri) {
+		AppSysMobile.Servnutri = servnutri;
+	}
+
 	private static int puertoWebService;
 	private static int timeOutSockets;		// En Segundos
 	private static int registrosPaginacion;
@@ -210,6 +229,10 @@ public class AppSysMobile extends Application {
 		boolean solicitaClaseDePrecio = prefs.getBoolean("solicitaClaseDePrecio", true);
 		String clasesDePrecioHabilitadas = prefs.getString("clasesDePrecioHabilitadas", "1");
 		boolean solicitaIncluirEnReparto = prefs.getBoolean("solicitaIncluirEnReparto", true);
+
+		boolean ServIndustrial = prefs.getBoolean("ServIndustrial", true);
+		boolean Servnutri = prefs.getBoolean("Servnutri", false);
+
 		WS_IMAIL=obterImeid();
 		Editor editor = prefs.edit();
 		
@@ -219,7 +242,9 @@ public class AppSysMobile extends Application {
 		editor.putBoolean("solicitaClaseDePrecio", solicitaClaseDePrecio);
 		editor.putString("clasesDePrecioHabilitadas", clasesDePrecioHabilitadas);
 		editor.putBoolean("solicitaIncluirEnReparto", solicitaIncluirEnReparto);
-		
+		editor.putBoolean("ServIndustrial ",ServIndustrial);
+		editor.putBoolean("Servnutri ",Servnutri);
+
 		editor.commit();
 		//singleton = this;
 		//Actividad=(Activity) this.getApplicationContext();
@@ -242,6 +267,8 @@ public class AppSysMobile extends Application {
 		setSolicitaClaseDePrecio(solicitaClaseDePrecio);
 		setClasesDePrecioHabilitadas(clasesDePrecioHabilitadas);
 		setSolicitaIncluirEnReparto(solicitaIncluirEnReparto);
+		setServIndustrial(ServIndustrial);
+		setServnutri(Servnutri);
 	}
 	public static AppSysMobile getInstance() {
 		return singleton;

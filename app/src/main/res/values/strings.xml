@@ -158,9 +158,12 @@
 
     <string name="solicitaClaseDePrecio">Solicita Clase de Precio</string>
     <string name="solicitaIncluirEnReparto">Solicita incluir en reparto</string>
+    <string name="srvindustrial">Industrial</string>
+    <string name="srvnutri">Nutri</string>
     <string name="incluirEnReparto">Incluir en Reparto?</string>
     <string name="debeSeleccionarLaClaseDePrecio">Debe Seleccionar la clase de Precio</string>
     <string name="clasesDePrecioHabilitadas">Clases de Precio Habilitadas</string>
+    <string name="clasesDeServidor">Servidor Cliente</string>
     <string name="hint_clasesDePrecioHabilitadas">EJ: 1;3;5;7</string>
     <string name="cuenta">Cuenta/Campaña</string>
     <string name="title_activity_dialog_pagos">Reporte Pagos</string>

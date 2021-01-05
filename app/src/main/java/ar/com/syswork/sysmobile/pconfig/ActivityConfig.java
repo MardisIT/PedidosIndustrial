@@ -10,6 +10,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.RadioButton;
 
 import androidx.appcompat.app.AppCompatActivity;;
 
@@ -24,6 +25,8 @@ public class ActivityConfig extends AppCompatActivity implements OnClickListener
 	CheckBox chkSolicitaClaseDePrecio;
 	EditText edtClasesDePrecioHabilitadas;
 	CheckBox chkSolicitaIncluirEnReparto;
+	RadioButton chkServIndustrial;
+	RadioButton chkServnutri;
 
 	Button btnAceptarConfig;
 	
@@ -39,7 +42,8 @@ public class ActivityConfig extends AppCompatActivity implements OnClickListener
 		chkSolicitaClaseDePrecio = (CheckBox) findViewById(R.id.chkSolicitaClaseDePrecio);
 		edtClasesDePrecioHabilitadas = (EditText) findViewById(R.id.edtClasesDePrecioHabilitadas);
 		chkSolicitaIncluirEnReparto = (CheckBox) findViewById(R.id.chkIncluirEnReparto);
-		
+		chkServIndustrial = (RadioButton) findViewById(R.id.chkServIndustrial);
+		chkServnutri = (RadioButton) findViewById(R.id.chkServnutri);
 		btnAceptarConfig = (Button) findViewById(R.id.btnAceptarConfig);
 		btnAceptarConfig.setOnClickListener(this);
 		
@@ -49,6 +53,9 @@ public class ActivityConfig extends AppCompatActivity implements OnClickListener
 		chkSolicitaClaseDePrecio.setChecked(AppSysMobile.getSolicitaClaseDePrecio());
 		edtClasesDePrecioHabilitadas.setText(AppSysMobile.getClasesDePrecioHabilitadas());
 		chkSolicitaIncluirEnReparto.setChecked(AppSysMobile.getSolicitaIncluirEnReparto());
+		chkServIndustrial.setChecked(AppSysMobile.isServIndustrial());
+		chkServnutri.setChecked(AppSysMobile.isServnutri());
+
 	}
 
 	
@@ -77,6 +84,9 @@ public class ActivityConfig extends AppCompatActivity implements OnClickListener
 			editor.putBoolean("solicitaClaseDePrecio", chkSolicitaClaseDePrecio.isChecked());
 			editor.putString("clasesDePrecioHabilitadas", clasesDePrecioHabilitadas);
 			editor.putBoolean("solicitaIncluirEnReparto", chkSolicitaIncluirEnReparto.isChecked());
+			editor.putBoolean("ServIndustrial ",chkServIndustrial.isChecked());
+			editor.putBoolean("Servnutri ",chkServnutri.isChecked());
+
 			
 			editor.commit();
 			
@@ -93,6 +103,8 @@ public class ActivityConfig extends AppCompatActivity implements OnClickListener
 			AppSysMobile.setSolicitaClaseDePrecio(chkSolicitaClaseDePrecio.isChecked());
 			AppSysMobile.setClasesDePrecioHabilitadas(clasesDePrecioHabilitadas);
 			AppSysMobile.setSolicitaIncluirEnReparto(chkSolicitaIncluirEnReparto.isChecked());
+			AppSysMobile.setServIndustrial(chkServIndustrial.isChecked());
+			AppSysMobile.setServnutri(chkServnutri.isChecked());
 			finish();
 		}
 	}
