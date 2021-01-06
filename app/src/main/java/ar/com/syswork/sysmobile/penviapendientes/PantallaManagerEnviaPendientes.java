@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -23,6 +24,7 @@ public class PantallaManagerEnviaPendientes {
 	CheckBox ChkEnviarPagosPendientes;
 	ProgressBar progressBar;
 	ImageView imgSincronizarResultado;
+	EditText editjson;
 	
 
 	public PantallaManagerEnviaPendientes(Activity a, ListenerEnviaPendientes listenerEnviaPendientes) 
@@ -35,6 +37,7 @@ public class PantallaManagerEnviaPendientes {
 
         Button btnEnviarPendientesInventario = (Button) a.findViewById(R.id.btnEnviarPendientesInventario);
 		Button btnEnviarPendientesvisitas = (Button) a.findViewById(R.id.btnEnviarPendientesvisitas);
+		editjson =(EditText)a.findViewById((R.id.editjson));
 		
 		if (btnEnviarPendientes!=null)
 			seteaListener(btnEnviarPendientes);
@@ -44,6 +47,7 @@ public class PantallaManagerEnviaPendientes {
             seteaListener(btnEnviarPendientesInventario);
 		if (btnEnviarPendientesvisitas!=null)
 			seteaListener(btnEnviarPendientesvisitas);
+
 		
 		creaDialogoProgreso();
 	}
@@ -82,7 +86,7 @@ public class PantallaManagerEnviaPendientes {
 		ChkEnviarPagosPendientes= (CheckBox) dialog.findViewById(R.id.chkEnviarPendientesPagos);
 		progressBar = (ProgressBar) dialog.findViewById(R.id.progressBar1);
 		imgSincronizarResultado = (ImageView) dialog.findViewById(R.id.imgSincronizarResultado);
-		
+
 		seteaListener(btnCerrarEnvioPendientes);
 	}
 	

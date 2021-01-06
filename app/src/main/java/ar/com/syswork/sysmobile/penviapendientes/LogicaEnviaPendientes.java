@@ -213,6 +213,7 @@ public class LogicaEnviaPendientes implements Callback {
 	public void enviarVisistasPendientes() {
 
 		String jSonVisistas = obtieneJsonVisitas();
+		//pantallaManagerEnviaPendientes.editjson.setText(jSonVisistas);
 		//String jSonPagos=obtieneJsonPagos();
 		EnvioOpcion = "visitas";
 		if (jSonVisistas.equals("")) {
@@ -222,6 +223,7 @@ public class LogicaEnviaPendientes implements Callback {
 		pantallaManagerEnviaPendientes.muestraDialogoEnviaPendientes();
 		pantallaManagerEnviaPendientes.ChkEnviarPagosPendientes.setText("Visitas Pendientes");
 		pantallaManagerEnviaPendientes.seteaTxtResultadoEnvio(a.getString(R.string.conectando));
+
 		Handler h = new Handler(this);
 		ThreadEnvioVisitas te = new ThreadEnvioVisitas(h, jSonVisistas);
 		Thread t = new Thread(te);
@@ -231,7 +233,7 @@ public class LogicaEnviaPendientes implements Callback {
 	}
 
 
-	private String obtieneJsonVisitas(){
+	private String obtieneJsonVisitas() {
 		String jSonVisitas = "";
 		JSONArray jsonArrayVisitas = null;
 		JSONObject jsonVisitas;
@@ -257,9 +259,9 @@ public class LogicaEnviaPendientes implements Callback {
 						jsonVisitas.put("fechavisita", visitasUio.getFechavisita());
 						jsonVisitas.put("Latitud", visitasUio.getLatitud());
 						jsonVisitas.put("Longitud", visitasUio.getLongitud());
-						jsonVisitas.put("Linkfotoexterior", visitasUio.getLinkfotoexterior());
+						jsonVisitas.put("Linkfotoexterior", "");
 						jsonVisitas.put("Compro", visitasUio.getRealizapedido());
-						jsonVisitas.put("Observacion", visitasUio.getObservaciones());
+						jsonVisitas.put("Observacion", visitasUio.getObservaciones()== null ? "" : visitasUio.getEstado());
 						jsonVisitas.put("estado", visitasUio.getEstado() == null ? "" : visitasUio.getEstado());
 
 						jsonArrayVisitas.put(jsonVisitas);
@@ -272,6 +274,7 @@ public class LogicaEnviaPendientes implements Callback {
 
 			jSonVisitas = jsonArrayVisitas.toString();
 		}
+		Toast.makeText(app, "Se creo el Json", Toast.LENGTH_SHORT).show();
 		return jSonVisitas;
 	}
 
@@ -948,29 +951,30 @@ public class LogicaEnviaPendientes implements Callback {
 			switch (msg.arg1) {
 				// recibo 0/1
 				case 1:
+					if(resultado!=null) {
+						// Si esta Ok, muestro aviso
+						if (resultado.equals("true")) {
+							// Recorre la lista de pedidos y elimina el pedido y los items
+							pantallaManagerEnviaPendientes.seteaValorchkEnviarPagosPendientes(true);
+							pantallaManagerEnviaPendientes.seteaTxtResultadoEnvio("Visita Enviado");
+							pantallaManagerEnviaPendientes.seteaimgSincronizarResultadoVisible(true);
+							pantallaManagerEnviaPendientes.seteaProgressBarVisible(false);
 
-					// Si esta Ok, muestro aviso
-					if (resultado.equals("true")) {
-						// Recorre la lista de pedidos y elimina el pedido y los items
-						pantallaManagerEnviaPendientes.seteaValorchkEnviarPagosPendientes(true);
-						pantallaManagerEnviaPendientes.seteaTxtResultadoEnvio("Visita Enviado");
-						pantallaManagerEnviaPendientes.seteaimgSincronizarResultadoVisible(true);
-						pantallaManagerEnviaPendientes.seteaProgressBarVisible(false);
+							if (desdeCargaDePedidos) {
+								pantallaManagerEnviaPendientes.cerrarDialogoSincronizacion();
+								pantallaManagerEnviaPendientes.cerrarActivity();
+							} else {
+								pantallaManagerEnviaPendientes.seteaBtnCerrarEnvioPendientesVisible(true);
+							}
 
-						if (desdeCargaDePedidos) {
-							pantallaManagerEnviaPendientes.cerrarDialogoSincronizacion();
-							pantallaManagerEnviaPendientes.cerrarActivity();
+							eliminavisitas();
 						} else {
+							// Muestro toast
+							pantallaManagerEnviaPendientes.seteaTxtResultadoEnvio("Error al enviar visitas mardis");
+							pantallaManagerEnviaPendientes.seteaimgSincronizarResultadoVisible(true);
+							pantallaManagerEnviaPendientes.seteaProgressBarVisible(false);
 							pantallaManagerEnviaPendientes.seteaBtnCerrarEnvioPendientesVisible(true);
 						}
-
-						eliminavisitas();
-					} else {
-						// Muestro toast
-						pantallaManagerEnviaPendientes.seteaTxtResultadoEnvio("Error al enviar visitas mardis");
-						pantallaManagerEnviaPendientes.seteaimgSincronizarResultadoVisible(true);
-						pantallaManagerEnviaPendientes.seteaProgressBarVisible(false);
-						pantallaManagerEnviaPendientes.seteaBtnCerrarEnvioPendientesVisible(true);
 					}
 					break;
 

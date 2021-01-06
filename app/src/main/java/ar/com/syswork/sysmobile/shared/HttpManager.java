@@ -28,6 +28,7 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
+import android.widget.Toast;
 
 import ar.com.syswork.sysmobile.newservice.PostService;
 import okhttp3.Interceptor;
@@ -145,6 +146,7 @@ public class HttpManager {
 		
 		// envio el Json
 		StringEntity entity = new StringEntity(JsonData);
+
 	    post.setEntity(entity);
 		int timeoutConnection = 10000;
 	    // ejecutamos el request y creamos el response
