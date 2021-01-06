@@ -250,7 +250,7 @@ public class LogicaEnviaPendientes implements Callback {
 				jsonVisitas = new JSONObject();
 				try {
 
-					if (visitasUio.getLongitud() > 0 && visitasUio.getLatitud() > 0 && visitasUio.getCodcliente() != null) {
+					if (visitasUio.getCodcliente() != null) {
 						//jsonVisitas.put("id", visitasUio.getId());
 						jsonVisitas.put("codcliente", visitasUio.getCodcliente());
 						jsonVisitas.put("codvendedor", visitasUio.getCodvendedor());

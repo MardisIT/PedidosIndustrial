@@ -49,9 +49,11 @@ public class AdapterListaPedidos  extends ArrayAdapter<Pedido>
 		
 		Pedido pedido = getItem(position);
 		if(pedido!=null) {
-			envoltorio.txtRazonSocialCliente.setText(pedido.getCliente().getCodigo() + "-" + pedido.getCliente().getRazonSocial());
-			envoltorio.txtFecha.setText(Utilidades.fechaYYYYMMDDHHMMSStoDD_MM_YYYY(pedido.getFecha()));
-			envoltorio.txtImporte.setText("$ " + Double.toString(Utilidades.Redondear((pedido.getTotalNeto()), 2)));
+			if(pedido.getCliente()!=null) {
+				envoltorio.txtRazonSocialCliente.setText(pedido.getCliente().getCodigo() + "-" + pedido.getCliente().getRazonSocial());
+				envoltorio.txtFecha.setText(Utilidades.fechaYYYYMMDDHHMMSStoDD_MM_YYYY(pedido.getFecha()));
+				envoltorio.txtImporte.setText("$ " + Double.toString(Utilidades.Redondear((pedido.getTotalNeto()), 2)));
+			}
 		}
 
 		return view;
