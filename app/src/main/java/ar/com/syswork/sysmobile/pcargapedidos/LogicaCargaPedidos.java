@@ -166,7 +166,7 @@ public class LogicaCargaPedidos implements IAlertResult, Handler.Callback
 		daoreporteitem=dataManager.getDaoreporteitem();
 		daoCuenta=dataManager.getDaoCuenta();
 		daoConfiguracion=dataManager.getDaoConfiguracion();
-daoCodigosNuevos=dataManager.getDaoCodigosNuevos();
+		daoCodigosNuevos=dataManager.getDaoCodigosNuevos();
 		listaPedidoItems = new ArrayList<PedidoItem>();
 
 		

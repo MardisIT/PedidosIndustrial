@@ -1,16 +1,22 @@
 package ar.com.syswork.sysmobile.pmenuprincipal;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.widget.Toast;
+
 import ar.com.syswork.sysmobile.R;
+import ar.com.syswork.sysmobile.daos.DaoConfiguracion;
 import ar.com.syswork.sysmobile.daos.DaoInventario;
 import ar.com.syswork.sysmobile.daos.DaoPedido;
 import ar.com.syswork.sysmobile.daos.DaoVendedor;
 import ar.com.syswork.sysmobile.daos.DaoVisitasUio;
 import ar.com.syswork.sysmobile.daos.DataManager;
+import ar.com.syswork.sysmobile.entities.ConfiguracionDB;
 import ar.com.syswork.sysmobile.entities.Inventario;
 import ar.com.syswork.sysmobile.entities.ItemMenuPrincipal;
 import ar.com.syswork.sysmobile.entities.Pedido;
@@ -29,6 +35,7 @@ public class LogicaMenuPrincipal {
 	private DaoPedido daoPedido;
 	private DaoVisitasUio daoVisitasUio;
 	private DaoInventario daoInventario;
+	private DaoConfiguracion daoConfiguracion;
 	private PantallaManagerMenuPrincipal pantallaManagerMenuPrincipal;
 	private AdapterMenuPrincipal adapter;
 	private boolean forzarLogueo;
@@ -45,6 +52,7 @@ public class LogicaMenuPrincipal {
 		daoPedido = dm.getDaoPedido();
 		daoVisitasUio=dm.getDaoVisitasUio();
 		daoInventario=dm.getDaoInventario();
+		daoConfiguracion=dm.getDaoConfiguracion();
 		List<Pedido> pedidos = new ArrayList<>();
 
 		List<Inventario> inventarios = new ArrayList<>();
@@ -215,8 +223,18 @@ public class LogicaMenuPrincipal {
 
 				break;
 			case AppSysMobile.OPC_MENU_PRINCIPAL_VISITAS:
+				Calendar c = Calendar.getInstance();
+				SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+				String formattedDate = df.format(c.getTime());
+				for (ConfiguracionDB da : daoConfiguracion.getAll("")
+				) {
+					if(da.getFechaCarga().equals(formattedDate)){
+						i = new Intent(a,ar.com.syswork.sysmobile.plistavisitas.VisitaActivity.class);
+					}else{
+						Toast.makeText(a, "Sincronizar su ruta para poder ingresar pedidos.", Toast.LENGTH_SHORT).show();
+					}
+				}
 
-				i = new Intent(a,ar.com.syswork.sysmobile.plistavisitas.VisitaActivity.class);
 
 				break;
 		}
@@ -230,7 +248,9 @@ public class LogicaMenuPrincipal {
 		}
 		else
 		{
-			a.startActivity(i);
+			if(i!=null) {
+				a.startActivity(i);
+			}
 			
 		}
 	

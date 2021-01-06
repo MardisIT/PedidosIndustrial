@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 
@@ -25,6 +26,7 @@ import ar.com.syswork.sysmobile.Tracking.JavaRestClient;
 import ar.com.syswork.sysmobile.Tracking.User;
 import ar.com.syswork.sysmobile.daos.DaoPedido;
 import ar.com.syswork.sysmobile.daos.DaoVisitasUio;
+import ar.com.syswork.sysmobile.entities.Pedido;
 import ar.com.syswork.sysmobile.entities.Token;
 //import ar.com.syswork.sysmobile.Tracking.User;
 import ar.com.syswork.sysmobile.daos.DaoCuenta;
@@ -133,6 +135,13 @@ public class LogicaSincronizacion implements Callback{
 	}
 	public void sincronizar()
 	{
+		List<Pedido> pedidos = new ArrayList<>();
+		pedidos=dm.getDaoPedido().getAll("enviomardis='E' and envioindustrial='E'");
+		for (Pedido x:pedidos) {
+			dm.getDaoPedidoItem().deleteByIdPedido(x.getIdPedido());
+			dm.getDaoPedido().delete(x);
+		}
+
 		if(daoVisitasUio.getAll("").size()==0) {
 			if(daoPedido.getAll("").size()==0) {
 				pantallaManagerSincronizacion.seteaBotonSincronizarVisible(false);

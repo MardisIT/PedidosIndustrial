@@ -431,10 +431,14 @@ public class visita extends AppCompatActivity
 
 
         if (radsi.isChecked()) {
-            Intent i = new Intent(getApplication(),ar.com.syswork.sysmobile.pcargapedidos.ActivityCargaPedidos.class);
-            i.putExtra("cliente", codCliente);
-            startActivity(i);
-            finish();
+           if(cliente !=null) {
+               Intent i = new Intent(getApplication(), ar.com.syswork.sysmobile.pcargapedidos.ActivityCargaPedidos.class);
+               i.putExtra("cliente", codCliente);
+               startActivity(i);
+               finish();
+           }else{
+               Toast.makeText(a, "No se creo visita el cliente no existe vuelva a seleccionar el cliente.", Toast.LENGTH_SHORT).show();
+           }
         } else{
 
             cliente.setCpteDefault("V");

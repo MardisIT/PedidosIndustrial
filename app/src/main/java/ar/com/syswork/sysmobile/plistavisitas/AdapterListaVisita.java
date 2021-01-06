@@ -48,9 +48,10 @@ public class AdapterListaVisita extends ArrayAdapter<VisitasUio>
         }
 
         VisitasUio visitasUio = getItem(position);
-
-        envoltorio.txtRazonSocialCliente.setText(visitasUio.getCliente().getRazonSocial()+' '+ visitasUio.getCliente().getPropietario());
-        envoltorio.txtFecha.setText(visitasUio.getFechavisita());
+        if(visitasUio.getCliente()!=null) {
+            envoltorio.txtRazonSocialCliente.setText(visitasUio.getCliente().getRazonSocial() + ' ' + visitasUio.getCliente().getPropietario());
+            envoltorio.txtFecha.setText(visitasUio.getFechavisita());
+        }
 
 
 
