@@ -2,6 +2,7 @@ package ar.com.syswork.sysmobile.penviapendientes;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.os.Build;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -37,6 +38,7 @@ public class PantallaManagerEnviaPendientes {
 
         Button btnEnviarPendientesInventario = (Button) a.findViewById(R.id.btnEnviarPendientesInventario);
 		Button btnEnviarPendientesvisitas = (Button) a.findViewById(R.id.btnEnviarPendientesvisitas);
+		Button btnEnviarReeviar=(Button)a.findViewById(R.id.btnEnviarReeviar);
 		editjson =(EditText)a.findViewById((R.id.editjson));
 		
 		if (btnEnviarPendientes!=null)
@@ -47,7 +49,8 @@ public class PantallaManagerEnviaPendientes {
             seteaListener(btnEnviarPendientesInventario);
 		if (btnEnviarPendientesvisitas!=null)
 			seteaListener(btnEnviarPendientesvisitas);
-
+		if (btnEnviarReeviar!=null)
+			seteaListener(btnEnviarReeviar);
 		
 		creaDialogoProgreso();
 	}

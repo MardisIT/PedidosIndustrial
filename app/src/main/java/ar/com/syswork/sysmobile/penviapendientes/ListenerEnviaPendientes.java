@@ -27,6 +27,9 @@ public class ListenerEnviaPendientes implements OnClickListener{
 			case R.id.btnEnviarPendientesvisitas:
 				logicaEnviaPendientes.enviarVisistasPendientes();
 				break;
+			case R.id.btnEnviarReeviar:
+				logicaEnviaPendientes.enviarPedidosPendientesMardis();
+				break;
 			case R.id.btnCerrarEnvioPendientes:
 				pantallaManagerEnviaPendientes.cerrarActivity();
 				break;

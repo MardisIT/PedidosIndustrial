@@ -13,6 +13,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Handler.Callback;
 import android.os.Handler;
 import android.os.Message;
@@ -24,8 +25,10 @@ import ar.com.syswork.sysmobile.R;
 //import ar.com.syswork.sysmobile.Tracking.JavaRestClient;
 import ar.com.syswork.sysmobile.Tracking.JavaRestClient;
 import ar.com.syswork.sysmobile.Tracking.User;
+import ar.com.syswork.sysmobile.daos.DaoConfiguracion;
 import ar.com.syswork.sysmobile.daos.DaoPedido;
 import ar.com.syswork.sysmobile.daos.DaoVisitasUio;
+import ar.com.syswork.sysmobile.entities.ConfiguracionDB;
 import ar.com.syswork.sysmobile.entities.Pedido;
 import ar.com.syswork.sysmobile.entities.Token;
 //import ar.com.syswork.sysmobile.Tracking.User;
@@ -35,6 +38,9 @@ import ar.com.syswork.sysmobile.daos.DaoVendedor;
 import ar.com.syswork.sysmobile.daos.DataManager;
 import ar.com.syswork.sysmobile.entities.Capania;
 import ar.com.syswork.sysmobile.entities.Registro;
+import ar.com.syswork.sysmobile.penviapendientes.ListenerEnviaPendientes;
+import ar.com.syswork.sysmobile.penviapendientes.LogicaEnviaPendientes;
+import ar.com.syswork.sysmobile.penviapendientes.PantallaManagerEnviaPendientes;
 import ar.com.syswork.sysmobile.shared.AppSysMobile;
 import ar.com.syswork.sysmobile.util.Utilidades;
 
@@ -94,6 +100,7 @@ public class LogicaSincronizacion implements Callback{
 
 	private DaoVisitasUio daoVisitasUio;
 	private DaoPedido daoPedido;
+	private DaoConfiguracion daoConfiguracion;
 
 	
 	private int cantVendedores;
@@ -101,7 +108,7 @@ public class LogicaSincronizacion implements Callback{
 	private final int OBTENER_REGISTROS = 1;
 	private final int OBTENER_JSONS = 2;
 	private final int 	OBTENER_ENGINE=3;
-	
+	private LogicaEnviaPendientes logicaEnviaPendientes;
 	private int tipoLlamada;
 	
 	public LogicaSincronizacion (Activity a) {
@@ -125,6 +132,20 @@ public class LogicaSincronizacion implements Callback{
 		daoPedido=dm.getDaoPedido();
 		setCantVendedores(daoVendedor.getCount());
 		ArrayAdapter<Capania> adaptador;
+		daoConfiguracion=dm.getDaoConfiguracion();
+
+		ListenerEnviaPendientes listenerEnviaPendientes = new ListenerEnviaPendientes ();
+
+		//Creo el PantallaManager y le paso el Listener y la Activity
+		PantallaManagerEnviaPendientes pantallaManagerEnviaPendientes = new PantallaManagerEnviaPendientes (a, listenerEnviaPendientes);
+
+		// Creo la Logica y le paso la Activity y el PantallaManager
+		logicaEnviaPendientes = new LogicaEnviaPendientes(a,pantallaManagerEnviaPendientes);
+
+		//Seteo la Logica al listener
+		listenerEnviaPendientes.seteaLogica(logicaEnviaPendientes);
+		listenerEnviaPendientes.seteaPantallaMager(pantallaManagerEnviaPendientes);
+
 	}
 	public String getImei() {
 		return imei;
@@ -135,15 +156,18 @@ public class LogicaSincronizacion implements Callback{
 	}
 	public void sincronizar()
 	{
-		List<Pedido> pedidos = new ArrayList<>();
-		pedidos=dm.getDaoPedido().getAll("enviomardis='E' and envioindustrial='E'");
-		for (Pedido x:pedidos) {
-			dm.getDaoPedidoItem().deleteByIdPedido(x.getIdPedido());
-			dm.getDaoPedido().delete(x);
+		if(daoCuenta.getAll("").size()==0)
+		{
+			Toast.makeText(a, "Descargar Campañas..", Toast.LENGTH_SHORT).show();
+			return;
 		}
 
-		if(daoVisitasUio.getAll("").size()==0) {
-			if(daoPedido.getAll("").size()==0) {
+		Calendar c = Calendar.getInstance();
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+		String formattedDate = df.format(c.getTime());
+		for (ConfiguracionDB da : daoConfiguracion.getAll("")
+		) {
+			if (da.getFechaCarga().equals(formattedDate)) {
 				pantallaManagerSincronizacion.seteaBotonSincronizarVisible(false);
 				pantallaManagerSincronizacion.seteaPrgEstadoConexionVisible(true);
 				pantallaManagerSincronizacion.seteaTxtEstadoConexionVisible(true);
@@ -157,13 +181,56 @@ public class LogicaSincronizacion implements Callback{
 				Thread t = new Thread(tc);
 				t.start();
 			}else{
+				validasincroniza();
+			}
+		}
+		if(daoConfiguracion.getAll("").size()==0){
+			validasincroniza();
+		}
+
+
+
+
+		
+	}
+	public void  validasincroniza(){
+		List<Pedido> pedidos,pedidosmardis,pedidosindustrial = new ArrayList<>();
+		pedidos=dm.getDaoPedido().getAll("enviomardis='E' and envioindustrial='E'");
+		for (Pedido x:pedidos) {
+			dm.getDaoPedidoItem().deleteByIdPedido(x.getIdPedido());
+			dm.getDaoPedido().delete(x);
+		}
+		pedidosmardis=dm.getDaoPedido().getAll("enviomardis='F' and envioindustrial='E'");
+		if(daoVisitasUio.getAll("").size()==0) {
+			if(daoPedido.getAll(" envioindustrial='F'").size()==0) {
+				if(pedidosmardis.size()>0){
+					logicaEnviaPendientes.enviarPedidosPendientesMardis();
+				}else {
+					pantallaManagerSincronizacion.seteaBotonSincronizarVisible(false);
+					pantallaManagerSincronizacion.seteaPrgEstadoConexionVisible(true);
+					pantallaManagerSincronizacion.seteaTxtEstadoConexionVisible(true);
+					pantallaManagerSincronizacion.seteaTxtEstadoConexion(strIntentandoConectarAlWebService);
+
+					tipoLlamada = OBTENER_REGISTROS;
+					Handler h = new Handler(this);
+
+					ValidToken();
+					ThreadSincronizacion tc = new ThreadSincronizacion(h, AppSysMobile.WS_REGISTROS, 0);
+					Thread t = new Thread(tc);
+					t.start();
+				}
+			}else{
 				Toast.makeText(a, "Enviar Pedidos Pendientes para continuar.", Toast.LENGTH_SHORT).show();
+				logicaEnviaPendientes.enviarPedidosPendientes();
+				if(pedidosmardis.size()>0){
+					logicaEnviaPendientes.enviarPedidosPendientesMardis();
+				}
 			}
 		}else{
 			Toast.makeText(a, "Enviar Visistas Pendientes para continuar.", Toast.LENGTH_SHORT).show();
-		}
+			logicaEnviaPendientes.enviarVisistasPendientes();
 
-		
+		}
 	}
 	//tracking david
 	private void ValidToken(){

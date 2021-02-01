@@ -112,6 +112,8 @@ public class ActivityConsultaGenericaDetalle extends AppCompatActivity {
 		// Seteo el Adapter
 		ListView lv = (ListView) this.findViewById(R.id.lstDetalleConsulta);
 		LinearLayout _LinearLayout=(LinearLayout) this.findViewById(R.id.lstcliente) ;
+		LinearLayout linearLayoutcod1=(LinearLayout) this.findViewById(R.id.cod1) ;
+		LinearLayout linearLayoutcod2=(LinearLayout) this.findViewById(R.id.cod2) ;
 		lv.setAdapter(adapter);
 		lv.setDividerHeight(0);
 
@@ -159,6 +161,11 @@ public class ActivityConsultaGenericaDetalle extends AppCompatActivity {
 		if(!edcodigol1.getText().toString().equals("")){
 			edcodigol1.setEnabled(false);
 			edcodigol2.setEnabled(false);
+			linearLayoutcod1.setVisibility(View.VISIBLE);
+			linearLayoutcod2.setVisibility(View.VISIBLE);
+		}else{
+			linearLayoutcod1.setVisibility(View.GONE);
+			linearLayoutcod2.setVisibility(View.GONE);
 		}
 		adapter.notifyDataSetChanged();
 		
@@ -207,6 +214,13 @@ public class ActivityConsultaGenericaDetalle extends AppCompatActivity {
 
 public void guardarcliente(){
 	try {
+		if(edcedula.getText().toString().equals(""))
+		{
+			Toast.makeText(app, "El número de cédula ees obligatorio..", Toast.LENGTH_SHORT).show();
+			return;
+		}
+		edcodigol2.setText(edcedula.getText().toString());
+		edcodigol1.setText(edcedula.getText().toString());
 		Cliente cliente = new Cliente();
 		cliente.setCodigo(edcodigol1.getText().toString());
 		cliente.setCodigoOpcional(edcodigol2.getText().toString());

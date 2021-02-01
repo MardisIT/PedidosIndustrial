@@ -193,14 +193,16 @@ public class LogicaEnviaPendientes implements Callback {
 				pantallaManagerEnviaPendientes.mostrarMensajeNoHayRegistrosPendientes();
 				return;
 			}
-			pantallaManagerEnviaPendientes.muestraDialogoEnviaPendientes();
-			pantallaManagerEnviaPendientes.seteaTxtResultadoEnvio(a.getString(R.string.conectando));
+			//pantallaManagerEnviaPendientes.muestraDialogoEnviaPendientes();
+			//pantallaManagerEnviaPendientes.seteaTxtResultadoEnvio(a.getString(R.string.conectando));
+			pantallaManagerEnviaPendientes.editjson.setText(jsonArrayPedidosL.toString());
 
-			EnvioOpcion="servidor";
+
+		/*	EnvioOpcion="servidor";
 			Handler hp = new Handler(this);
 			ThreadEnvioIndustrial teI = new ThreadEnvioIndustrial(hp, jsonArrayPedidosL.toString());
 			Thread tI = new Thread(teI);
-			tI.start();
+			tI.start();*/
 
 
 
@@ -210,6 +212,54 @@ public class LogicaEnviaPendientes implements Callback {
 		}
 
 	}
+
+	public void enviarPedidosPendientesMardis() {
+
+		String jSonPedidos =obtieneJsonPedidos("M");
+		//String jSonPagos=obtieneJsonPagos();
+		List<Cliente> lstcClientes = new ArrayList<>();
+		lstcClientes = daoCliente.getAll(" estadoenvio = 'P'");
+		String token = "";
+		for (Token a : daoToken.getAll("")
+		) {
+			token = a.getToken();
+		}
+		if(lstcClientes.size()>0) {
+			for (Cliente c : lstcClientes
+			) {
+				envioclientenuevo fetchJsonTask = new envioclientenuevo(this.a);
+				fetchJsonTask.execute(obtieneJsonCliente(c.getCodigo()), token);
+
+			}
+			Toast.makeText(app, "Enviado clientes nuevos..!! Enviar pedidos nuevamente ", Toast.LENGTH_SHORT).show();
+
+			return;
+		}else {
+
+			if (jSonPedidos.equals("")) {
+				pantallaManagerEnviaPendientes.mostrarMensajeNoHayRegistrosPendientes();
+				return;
+			}
+			pantallaManagerEnviaPendientes.muestraDialogoEnviaPendientes();
+			pantallaManagerEnviaPendientes.seteaTxtResultadoEnvio(a.getString(R.string.conectando));
+
+
+
+			EnvioOpcion="pedidos";
+
+			//pantallaManagerEnviaPendientes.editjson.setText(jSonPedidos);
+			Handler h = new Handler(this);
+			ThreadEnvio te = new ThreadEnvio(h, jSonPedidos);
+			Thread t = new Thread(te);
+			t.start();
+
+
+
+
+		}
+
+	}
+
 	public void enviarVisistasPendientes() {
 
 		String jSonVisistas = obtieneJsonVisitas();
@@ -228,6 +278,8 @@ public class LogicaEnviaPendientes implements Callback {
 		ThreadEnvioVisitas te = new ThreadEnvioVisitas(h, jSonVisistas);
 		Thread t = new Thread(te);
 		t.start();
+
+
 
 
 	}
@@ -556,7 +608,9 @@ public class LogicaEnviaPendientes implements Callback {
 					Cliente c= daoCliente.getByKey(localPedido.getCodCliente());
 					Articulo art=daoArticulo.getByKey(pedidoItem.getIdArticulo());
 					//armar json para envio servidor industrial
-					jsonObjectPedidoL.put("P_PEDIDO",localPedido.getCodigounico());
+					String codigopedio="";
+					codigopedio=localPedido.getCodigounico().toString() ;
+					jsonObjectPedidoL.put("P_PEDIDO",codigopedio);
 					jsonObjectPedidoL.put("P_NUEVO_CLIENTE",c.getCodigoOpcional());
 					jsonObjectPedidoL.put("P_ORDEN", pedidoItem.getIdPedidoItem());
 					jsonObjectPedidoL.put("P_FECHA",Integer.valueOf(fecha));

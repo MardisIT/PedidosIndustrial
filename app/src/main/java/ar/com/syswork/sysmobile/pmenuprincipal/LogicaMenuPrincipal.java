@@ -234,7 +234,9 @@ public class LogicaMenuPrincipal {
 						Toast.makeText(a, "Sincronizar su ruta para poder ingresar pedidos.", Toast.LENGTH_SHORT).show();
 					}
 				}
-
+				if(daoConfiguracion.getAll("").size()==0) {
+					Toast.makeText(a, "Sincronizar su ruta para poder ingresar pedidos.", Toast.LENGTH_SHORT).show();
+				}
 
 				break;
 		}

@@ -87,11 +87,31 @@
         android:textColor="@color/common_signin_btn_dark_text_default"
 
         android:text="ENVIAR PENDIENTES VISITAS" />
+
+    <Button
+        android:id="@+id/btnEnviarReeviar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btnEnviarPendientesvisitas"
+        android:layout_centerHorizontal="true"
+        android:visibility="visible"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_margin="15dp"
+        android:layout_marginTop="5dp"
+        android:background="@android:drawable/bottom_bar"
+        android:backgroundTint="@color/common_signin_btn_light_text_focused"
+        android:elevation="6dp"
+        android:textColor="@color/common_signin_btn_dark_text_default"
+
+        android:text="REENVIAR PENDIENTES" />
+
+
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/editjson"
-        android:layout_below="@+id/btnEnviarPendientesvisitas"
+        android:layout_below="@+id/btnEnviarReeviar"
 ></EditText>
 
 </RelativeLayout>
