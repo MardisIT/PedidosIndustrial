@@ -193,16 +193,16 @@ public class LogicaEnviaPendientes implements Callback {
 				pantallaManagerEnviaPendientes.mostrarMensajeNoHayRegistrosPendientes();
 				return;
 			}
-			//pantallaManagerEnviaPendientes.muestraDialogoEnviaPendientes();
-			//pantallaManagerEnviaPendientes.seteaTxtResultadoEnvio(a.getString(R.string.conectando));
-			pantallaManagerEnviaPendientes.editjson.setText(jsonArrayPedidosL.toString());
+			pantallaManagerEnviaPendientes.muestraDialogoEnviaPendientes();
+			pantallaManagerEnviaPendientes.seteaTxtResultadoEnvio(a.getString(R.string.conectando));
+			//pantallaManagerEnviaPendientes.editjson.setText(jsonArrayPedidosL.toString());
 
 
-		/*	EnvioOpcion="servidor";
+			EnvioOpcion="servidor";
 			Handler hp = new Handler(this);
 			ThreadEnvioIndustrial teI = new ThreadEnvioIndustrial(hp, jsonArrayPedidosL.toString());
 			Thread tI = new Thread(teI);
-			tI.start();*/
+			tI.start();
 
 
 
@@ -609,7 +609,7 @@ public class LogicaEnviaPendientes implements Callback {
 					Articulo art=daoArticulo.getByKey(pedidoItem.getIdArticulo());
 					//armar json para envio servidor industrial
 					String codigopedio="";
-					codigopedio=localPedido.getCodigounico().toString() ;
+					codigopedio=localPedido.getIdVendedor().replace("V","").toString()+localPedido.getCodigounico().toString();
 					jsonObjectPedidoL.put("P_PEDIDO",codigopedio);
 					jsonObjectPedidoL.put("P_NUEVO_CLIENTE",c.getCodigoOpcional());
 					jsonObjectPedidoL.put("P_ORDEN", pedidoItem.getIdPedidoItem());

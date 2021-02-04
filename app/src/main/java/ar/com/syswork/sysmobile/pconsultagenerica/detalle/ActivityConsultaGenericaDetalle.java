@@ -219,6 +219,7 @@ public void guardarcliente(){
 			Toast.makeText(app, "El número de cédula ees obligatorio..", Toast.LENGTH_SHORT).show();
 			return;
 		}
+
 		edcodigol2.setText(edcedula.getText().toString());
 		edcodigol1.setText(edcedula.getText().toString());
 		Cliente cliente = new Cliente();
@@ -268,6 +269,11 @@ public void guardarcliente(){
 			else {
 				if(cliente.getPropietario().equals("")){
 					cliente.setPropietario(cliente.getApellido() + " " + cliente.getNombre());
+				}
+
+				if(Integer.valueOf(edacelular.getText().toString())>999999999){
+					Toast.makeText(app, "El número de celular es incorrecto..", Toast.LENGTH_SHORT).show();
+					return;
 				}
 
 				daoCliente.save(cliente);

@@ -876,6 +876,7 @@ public void enviotrking(){
 
 
 
+
 		idPedido = daoPedido.save(pedido);
 		codigosNuevos.setUri("E");
 		daoCodigosNuevos.update(codigosNuevos);
@@ -900,7 +901,7 @@ public void enviotrking(){
 			while (i.hasNext())
 			{
 				pedidoItem = i.next();
-				
+
 				pedidoItem.setIdPedido(idPedido);
 				idPedidoItem = daoPedidoItem.save(pedidoItem);
 				reporteitem _Reporteitem=new reporteitem();
@@ -911,6 +912,7 @@ public void enviotrking(){
 				_Reporteitem.setUnidad(pedidoItem.getUnidcajas());
 				_Reporteitem.setPrecio(pedidoItem.getImporteUnitario());
 				_Reporteitem.setTotal(pedidoItem.getTotal());
+
 				daoreporteitem.save(_Reporteitem);
 				
 				if (idPedidoItem==-1)
