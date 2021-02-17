@@ -195,7 +195,7 @@ public class LogicaEnviaPendientes implements Callback {
 			}
 			pantallaManagerEnviaPendientes.muestraDialogoEnviaPendientes();
 			pantallaManagerEnviaPendientes.seteaTxtResultadoEnvio(a.getString(R.string.conectando));
-			//pantallaManagerEnviaPendientes.editjson.setText(jsonArrayPedidosL.toString());
+			pantallaManagerEnviaPendientes.editjson.setText(jsonArrayPedidosL.toString());
 
 
 			EnvioOpcion="servidor";
@@ -609,7 +609,7 @@ public class LogicaEnviaPendientes implements Callback {
 					Articulo art=daoArticulo.getByKey(pedidoItem.getIdArticulo());
 					//armar json para envio servidor industrial
 					String codigopedio="";
-					codigopedio=localPedido.getIdVendedor().replace("V","").toString()+localPedido.getCodigounico().toString();
+					codigopedio=localPedido.getCodigounico().toString();
 					jsonObjectPedidoL.put("P_PEDIDO",codigopedio);
 					jsonObjectPedidoL.put("P_NUEVO_CLIENTE",c.getCodigoOpcional());
 					jsonObjectPedidoL.put("P_ORDEN", pedidoItem.getIdPedidoItem());
