@@ -195,7 +195,7 @@ public class LogicaEnviaPendientes implements Callback {
 			}
 			pantallaManagerEnviaPendientes.muestraDialogoEnviaPendientes();
 			pantallaManagerEnviaPendientes.seteaTxtResultadoEnvio(a.getString(R.string.conectando));
-			pantallaManagerEnviaPendientes.editjson.setText(jsonArrayPedidosL.toString());
+			//pantallaManagerEnviaPendientes.editjson.setText(jsonArrayPedidosL.toString());
 
 
 			EnvioOpcion="servidor";

@@ -56,6 +56,7 @@ import ar.com.syswork.sysmobile.entities.Deposito;
 import ar.com.syswork.sysmobile.entities.PRECIO_ESCALA;
 import ar.com.syswork.sysmobile.entities.Rubro;
 import ar.com.syswork.sysmobile.entities.Vendedor;
+import ar.com.syswork.sysmobile.entities.reportecabecera;
 import ar.com.syswork.sysmobile.industrial.rutasupervisor;
 import ar.com.syswork.sysmobile.pconsultagenerica.detalle.obtenerCodigos;
 import ar.com.syswork.sysmobile.psplash.ActivitySplash;
@@ -543,6 +544,10 @@ private DaoCodigosNuevos daoCodigosNuevos;
 
 		if (this.pagina == 1)
 			daoCliente.deleteAll();
+
+
+
+
 		daoCodigosNuevos.deleteAll();
 
 		cliente = new Cliente();
@@ -574,7 +579,10 @@ private DaoCodigosNuevos daoCodigosNuevos;
 			for (int x = 0; x<arrayJson.length() ;x++) {
 				jsObject = arrayJson.getJSONObject(x);
 
-
+				cliente.setCpteDefault("");
+				for (reportecabecera k :daoreportecabecera.getAll("codcliente="+jsObject.getString("code"))){
+					cliente.setCpteDefault("E");
+				}
 				cliente.setCodigo(jsObject.getString("code"));
 				cliente.setCodigoOpcional(jsObject.getString("externalCode"));
 				cliente.setRazonSocial(jsObject.getString("name"));
@@ -602,7 +610,7 @@ private DaoCodigosNuevos daoCodigosNuevos;
 				cliente.setClaseDePrecio((byte) 0); //cliente activo credito
 
 				cliente.setPorcDto(0);
-				cliente.setCpteDefault("");
+
 				cliente.setIdVendedor(jsObject.getString("imeI_ID"));
 				cliente.setTelefono("");
 				ruta=jsObject.getString("rutaaggregate");

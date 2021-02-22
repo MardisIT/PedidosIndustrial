@@ -29,7 +29,7 @@ public class ThreadSincronizacion implements Runnable{
 		switch (tipoSincronizacion)
 		{
 		case AppSysMobile.WS_VENDEDORES:
-			rutaAcceso = AppSysMobile.WS_ACCESO_VENDEDORES;
+			rutaAcceso = AppSysMobile.WS_ACCESO_VENDEDORES +"?Idaccount="+objcuentaSession.getCu_idAccount();
 			break;
 		case AppSysMobile.WS_RUBROS:
 			rutaAcceso = AppSysMobile.WS_ACCESO_RUBROS ;
