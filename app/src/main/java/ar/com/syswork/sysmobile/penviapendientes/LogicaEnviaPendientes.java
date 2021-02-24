@@ -50,6 +50,7 @@ import ar.com.syswork.sysmobile.entities.ChequePagos;
 import ar.com.syswork.sysmobile.entities.Cliente;
 import ar.com.syswork.sysmobile.entities.CodigosNuevos;
 import ar.com.syswork.sysmobile.entities.ConfiguracionDB;
+import ar.com.syswork.sysmobile.entities.CuentaSession;
 import ar.com.syswork.sysmobile.entities.Inventario;
 import ar.com.syswork.sysmobile.entities.Pagos;
 import ar.com.syswork.sysmobile.entities.PagosDetalles;
@@ -94,6 +95,7 @@ public class LogicaEnviaPendientes implements Callback {
 	private long idPagosEnviar = -1;
 	private long idInventarioEnviar = -1;
 	private long idVisitasEnviar = -1;
+	public int idaccount=0;
 
 	List<Pedido> listaPedidos;
 	List<Pagos> listaPagos;
@@ -120,6 +122,11 @@ public class LogicaEnviaPendientes implements Callback {
 		daoInventario = dm.getDaoInventario();
 		daoinventariodetalles = dm.getDaoinventariodetalles();
 		daoVisitasUio=dm.getDaoVisitasUio();
+		String idac="";
+		for (ConfiguracionDB da : daoConfiguracion.getAll("")
+		) {
+			idaccount=Integer.valueOf(da.getId_cuenta());
+		}
 
 	}
 
@@ -144,8 +151,13 @@ public class LogicaEnviaPendientes implements Callback {
 
 	public void enviarInventarioPendientes() {
 
-		//String jSonPedidos = obtieneJsonPedidos();
-		String jSonInventario = obtieneJsonInventario("I");
+		String jSonInventario ="";
+		if(AppSysMobile.isServIndustrial()) {
+			jSonInventario = obtieneJsonInventario("I");
+		}
+		if(AppSysMobile.isServnutri()){
+			jSonInventario = obtieneJsonInventario("M");
+		}
 		EnvioOpcion = "devoluciones";
 
 		if (jSonInventario.equals("")) {
@@ -157,18 +169,39 @@ public class LogicaEnviaPendientes implements Callback {
 		pantallaManagerEnviaPendientes.ChkEnviarPagosPendientes.setText("Devoluciones Pendientes");
 		pantallaManagerEnviaPendientes.seteaTxtResultadoEnvio(a.getString(R.string.conectando));
 
-		Handler hp = new Handler(this);
-		ThredDevolucionesIndustrial tep = new ThredDevolucionesIndustrial(hp, jsonArrayDevolucionesL.toString());
-		Thread t1 = new Thread(tep);
-		t1.start();
+		if(AppSysMobile.isServIndustrial()) {
+			EnvioOpcion = "devoluciones";
+			Handler hp = new Handler(this);
+			ThredDevolucionesIndustrial tep = new ThredDevolucionesIndustrial(hp, jsonArrayDevolucionesL.toString());
+			Thread t1 = new Thread(tep);
+			t1.start();
+		}
+		if(AppSysMobile.isServnutri()){
+			EnvioOpcion="inventario";
+			String jSonInventariomardis = obtieneJsonInventario("M");
+			Handler hp = new Handler(this);
+			ThreadEnvioinvnetario tep = new ThreadEnvioinvnetario(hp, jSonInventariomardis);
+			Thread t11 = new Thread(tep);
+			t11.start();
+		}
 
 
 
 	}
 
 	public void enviarPedidosPendientes() {
+		String jSonPedidos = "";
+		if(AppSysMobile.isServnutri())
+		{
+			jSonPedidos = obtieneJsonPedidos("M");
+		}else{
+			if(AppSysMobile.isServIndustrial()) {
+				jSonPedidos = obtieneJsonPedidos("I");
+			}
+		}
 
-		String jSonPedidos = obtieneJsonPedidos("I");
+
+
 		//String jSonPagos=obtieneJsonPagos();
 		List<Cliente> lstcClientes = new ArrayList<>();
 		lstcClientes = daoCliente.getAll(" estadoenvio = 'P'");
@@ -197,12 +230,25 @@ public class LogicaEnviaPendientes implements Callback {
 			pantallaManagerEnviaPendientes.seteaTxtResultadoEnvio(a.getString(R.string.conectando));
 			//pantallaManagerEnviaPendientes.editjson.setText(jsonArrayPedidosL.toString());
 
+			if(AppSysMobile.isServnutri()) {
 
-			EnvioOpcion="servidor";
-			Handler hp = new Handler(this);
-			ThreadEnvioIndustrial teI = new ThreadEnvioIndustrial(hp, jsonArrayPedidosL.toString());
-			Thread tI = new Thread(teI);
-			tI.start();
+			EnvioOpcion="pedidos";
+
+			//pantallaManagerEnviaPendientes.editjson.setText(jSonPedidos);
+			Handler h = new Handler(this);
+			ThreadEnvio te = new ThreadEnvio(h, jSonPedidos);
+			Thread t = new Thread(te);
+			t.start();
+			}else{
+				if(AppSysMobile.isServIndustrial()) {
+					EnvioOpcion = "servidor";
+					Handler hp = new Handler(this);
+					ThreadEnvioIndustrial teI = new ThreadEnvioIndustrial(hp, jsonArrayPedidosL.toString());
+					Thread tI = new Thread(teI);
+					tI.start();
+				}
+			}
+
 
 
 
@@ -286,6 +332,7 @@ public class LogicaEnviaPendientes implements Callback {
 
 
 	private String obtieneJsonVisitas() {
+
 		String jSonVisitas = "";
 		JSONArray jsonArrayVisitas = null;
 		JSONObject jsonVisitas;
@@ -315,6 +362,7 @@ public class LogicaEnviaPendientes implements Callback {
 						jsonVisitas.put("Compro", visitasUio.getRealizapedido());
 						jsonVisitas.put("Observacion", visitasUio.getObservaciones()== null ? "" : visitasUio.getEstado());
 						jsonVisitas.put("estado", visitasUio.getEstado() == null ? "" : visitasUio.getEstado());
+						jsonVisitas.put("Idaccount ", idaccount);
 
 						jsonArrayVisitas.put(jsonVisitas);
 					}
@@ -384,7 +432,7 @@ public class LogicaEnviaPendientes implements Callback {
 		JSONArray jsa = null;
 
 		JSONObject jsonObjectDevolucionesL;
-		Inventario invactual=daoInventario.getById(idInvnetario);
+		Inventario invactual = daoInventario.getById(idInvnetario);
 		List<inventariodetalles> listaItemsInventariodetalles = daoinventariodetalles.getAll(" idinventario = " + idInvnetario);
 
 		Calendar cal = Calendar.getInstance();
@@ -399,7 +447,7 @@ public class LogicaEnviaPendientes implements Callback {
 			while (i.hasNext()) {
 				_Inventariodetalles = i.next();
 				jsoDetalleItem = new JSONObject();
-				jsonObjectDevolucionesL= new JSONObject();
+				jsonObjectDevolucionesL = new JSONObject();
 				try {
 
 					jsoDetalleItem.put("id", 0);
@@ -408,21 +456,22 @@ public class LogicaEnviaPendientes implements Callback {
 					jsoDetalleItem.put("valor", _Inventariodetalles.getValor());
 					jsoDetalleItem.put("unidad", _Inventariodetalles.getUnidad());
 					jsa.put(jsoDetalleItem);
-
-					Cliente c= daoCliente.getByKey(invactual.getCodcliente());
-					Articulo art=daoArticulo.getByKey(_Inventariodetalles.getCodproducto());
-					jsonObjectDevolucionesL.put("d_DEVOLUCION",invactual.getCodigounico());
-					jsonObjectDevolucionesL.put("d_ORDEN",_Inventariodetalles.getId());
-					jsonObjectDevolucionesL.put("d_FECHA",Integer.valueOf(fecha));
-					jsonObjectDevolucionesL.put("d_FACTURA",0000);
-					jsonObjectDevolucionesL.put("d_PRODUCTO",_Inventariodetalles.getCodproducto());
-					jsonObjectDevolucionesL.put("d_CANTIDAD",_Inventariodetalles.getValor());
-					jsonObjectDevolucionesL.put("d_PRECIO",art.getPrecio9());
-					jsonObjectDevolucionesL.put("d_CLIENTE",c.getCodigoOpcional());
-					jsonObjectDevolucionesL.put("d_VENDEDOR",invactual.getCodvendedor());
-					jsonObjectDevolucionesL.put("d_ESTADO",0);
-					jsonObjectDevolucionesL.put("d_PEDIDO_MARDIS",invactual.getCodigomardis());
-					jsonArrayDevolucionesL.put(jsonObjectDevolucionesL);
+					if (AppSysMobile.isServIndustrial()) {
+						Cliente c = daoCliente.getByKey(invactual.getCodcliente());
+						Articulo art = daoArticulo.getByKey(_Inventariodetalles.getCodproducto());
+						jsonObjectDevolucionesL.put("d_DEVOLUCION", invactual.getCodigounico());
+						jsonObjectDevolucionesL.put("d_ORDEN", _Inventariodetalles.getId());
+						jsonObjectDevolucionesL.put("d_FECHA", Integer.valueOf(fecha));
+						jsonObjectDevolucionesL.put("d_FACTURA", 0000);
+						jsonObjectDevolucionesL.put("d_PRODUCTO", _Inventariodetalles.getCodproducto());
+						jsonObjectDevolucionesL.put("d_CANTIDAD", _Inventariodetalles.getValor());
+						jsonObjectDevolucionesL.put("d_PRECIO", art.getPrecio9());
+						jsonObjectDevolucionesL.put("d_CLIENTE", c.getCodigoOpcional());
+						jsonObjectDevolucionesL.put("d_VENDEDOR", invactual.getCodvendedor());
+						jsonObjectDevolucionesL.put("d_ESTADO", 0);
+						jsonObjectDevolucionesL.put("d_PEDIDO_MARDIS", invactual.getCodigomardis());
+						jsonArrayDevolucionesL.put(jsonObjectDevolucionesL);
+					}
 
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
@@ -512,6 +561,7 @@ public class LogicaEnviaPendientes implements Callback {
 
 	private String obtieneJsonPedidos(String op) {
 		String jSonPedidos = "";
+		final CuentaSession objcuentaSession= new CuentaSession();
 		JSONArray jsonArrayPedidos = null;
 
 		JSONObject jsonPedido;
@@ -550,6 +600,7 @@ public class LogicaEnviaPendientes implements Callback {
 						jsonPedido.put("facturar", pedido.isFacturar());
 						jsonPedido.put("incluirEnReparto", pedido.isIncluirEnReparto());
 						jsonPedido.put("p_PEDIDO_MARDIS", pedido.getCodpedidomardis());
+						jsonPedido.put("Idaccount ", idaccount);
 						jsonPedido.put("pedidosItems", obtieneJsonDetalleDePedido(pedido.getIdPedido()));
 
 
@@ -578,7 +629,7 @@ public class LogicaEnviaPendientes implements Callback {
 		String fecha = df.format(date);
 
 		List<PedidoItem> listaItemsPedidos = daoPedidoItem.getAll(" idPedido = " + idPedido);
-		Pedido localPedido=daoPedido.getById((int)idPedido);
+		Pedido localPedido = daoPedido.getById((int) idPedido);
 
 
 		if (listaItemsPedidos.size() > 0) {
@@ -588,11 +639,11 @@ public class LogicaEnviaPendientes implements Callback {
 			while (i.hasNext()) {
 				pedidoItem = i.next();
 				jsoPedidoItem = new JSONObject();
-				jsonObjectPedidoL= new JSONObject();
+				jsonObjectPedidoL = new JSONObject();
 
 				try {
-					jsoPedidoItem.put("id",0);
-					jsoPedidoItem.put("idPedido",0);
+					jsoPedidoItem.put("id", 0);
+					jsoPedidoItem.put("idPedido", 0);
 					jsoPedidoItem.put("idArticulo", pedidoItem.getIdArticulo());
 					jsoPedidoItem.put("cantidad", pedidoItem.getCantidad());
 					jsoPedidoItem.put("importeUnitario", pedidoItem.getImporteUnitario());
@@ -603,29 +654,30 @@ public class LogicaEnviaPendientes implements Callback {
 					jsoPedidoItem.put("nespecial", pedidoItem.getNespecial());
 					jsoPedidoItem.put("formapago", pedidoItem.getFormaPago());
 					jsoPedidoItem.put("unidad", pedidoItem.getUnidcajas());
+					if (AppSysMobile.isServIndustrial()) {
+
+						Cliente c = daoCliente.getByKey(localPedido.getCodCliente());
+						Articulo art = daoArticulo.getByKey(pedidoItem.getIdArticulo());
+						//armar json para envio servidor industrial
+						String codigopedio = "";
+						codigopedio = localPedido.getCodigounico().toString();
+						jsonObjectPedidoL.put("P_PEDIDO", codigopedio);
+						jsonObjectPedidoL.put("P_NUEVO_CLIENTE", c.getCodigoOpcional());
+						jsonObjectPedidoL.put("P_ORDEN", pedidoItem.getIdPedidoItem());
+						jsonObjectPedidoL.put("P_FECHA", Integer.valueOf(fecha));
+						jsonObjectPedidoL.put("P_PRODUCTO", pedidoItem.getIdArticulo());
+						jsonObjectPedidoL.put("P_PRECIO", art.getPrecio9());
+						jsonObjectPedidoL.put("P_CANTIDAD", pedidoItem.getCantidad());
+						jsonObjectPedidoL.put("P_ESTADO", 0);
+						jsonObjectPedidoL.put("P_FILLER", "");
+						jsonObjectPedidoL.put("p_CLIENTE", !localPedido.getCodCliente().equals(c.getCodigoOpcional()) ? c.getCodigoOpcional() : localPedido.getCodCliente());
+						jsonObjectPedidoL.put("p_PEDIDO_MARDIS", localPedido.getCodpedidomardis());
+						jsonObjectPedidoL.put("P_VENDEDOR", Integer.valueOf(localPedido.getIdVendedor().replace("V", "")));
+						jsonObjectPedidoL.put("P_FORMA_PAGO", pedidoItem.getFormaPago());
 
 
-					Cliente c= daoCliente.getByKey(localPedido.getCodCliente());
-					Articulo art=daoArticulo.getByKey(pedidoItem.getIdArticulo());
-					//armar json para envio servidor industrial
-					String codigopedio="";
-					codigopedio=localPedido.getCodigounico().toString();
-					jsonObjectPedidoL.put("P_PEDIDO",codigopedio);
-					jsonObjectPedidoL.put("P_NUEVO_CLIENTE",c.getCodigoOpcional());
-					jsonObjectPedidoL.put("P_ORDEN", pedidoItem.getIdPedidoItem());
-					jsonObjectPedidoL.put("P_FECHA",Integer.valueOf(fecha));
-					jsonObjectPedidoL.put("P_PRODUCTO",pedidoItem.getIdArticulo());
-					jsonObjectPedidoL.put("P_PRECIO",art.getPrecio9());
-					jsonObjectPedidoL.put("P_CANTIDAD",pedidoItem.getCantidad());
-					jsonObjectPedidoL.put("P_ESTADO",0);
-					jsonObjectPedidoL.put("P_FILLER","");
-					jsonObjectPedidoL.put("p_CLIENTE",!localPedido.getCodCliente().equals(c.getCodigoOpcional())?c.getCodigoOpcional():localPedido.getCodCliente());
-					jsonObjectPedidoL.put("p_PEDIDO_MARDIS",localPedido.getCodpedidomardis());
-					jsonObjectPedidoL.put("P_VENDEDOR",Integer.valueOf(localPedido.getIdVendedor().replace("V","")));
-					jsonObjectPedidoL.put("P_FORMA_PAGO",pedidoItem.getFormaPago());
-
-
-					jsonArrayPedidosL.put(jsonObjectPedidoL);
+						jsonArrayPedidosL.put(jsonObjectPedidoL);
+					}
 
 					jsa.put(jsoPedidoItem);
 
@@ -803,17 +855,22 @@ public class LogicaEnviaPendientes implements Callback {
 						} else {
 							pantallaManagerEnviaPendientes.seteaBtnCerrarEnvioPendientesVisible(true);
 						}
-						/*modifica para enviados a industrial*/
-						for (int i = 0; i < jsonArrayPedidosL.length(); i++) {
-							try {
-								JSONObject jsonObject = jsonArrayPedidosL.getJSONObject(i);
-								if (jsonObject.has("P_PEDIDO")) {
-									String codigounico = jsonObject.getString("P_PEDIDO");
-									// Aquí actualizamos estado de pedidos Industrial
-									daoPedido.updatecodigomardis(codigounico);
+						if(AppSysMobile.isServnutri()){
+							eliminaPedidos();
+						}
+						if(AppSysMobile.isServIndustrial()){
+							/*modifica para enviados a industrial*/
+							for (int i = 0; i < jsonArrayPedidosL.length(); i++) {
+								try {
+									JSONObject jsonObject = jsonArrayPedidosL.getJSONObject(i);
+									if (jsonObject.has("P_PEDIDO")) {
+										String codigounico = jsonObject.getString("P_PEDIDO");
+										// Aquí actualizamos estado de pedidos Industrial
+										daoPedido.updatecodigomardis(codigounico);
+									}
+								} catch (JSONException e) {
+									e.printStackTrace();
 								}
-							} catch (JSONException e) {
-								e.printStackTrace();
 							}
 						}
 						enviarVisistasPendientes();
@@ -966,21 +1023,24 @@ public class LogicaEnviaPendientes implements Callback {
 						} else {
 							pantallaManagerEnviaPendientes.seteaBtnCerrarEnvioPendientesVisible(true);
 						}
-
-						/*modifica para enviados a industrial*/
-						for (int i = 0; i < jsonArrayDevolucionesL.length(); i++) {
-							try {
-								JSONObject jsonObject = jsonArrayDevolucionesL.getJSONObject(i);
-								if (jsonObject.has("d_DEVOLUCION")) {
-									String codigounico = jsonObject.getString("d_DEVOLUCION");
-									// Aquí actualizamos estado de pedidos Industrial
-									daoInventario.updatecodigomardis(codigounico);
+						if (AppSysMobile.isServIndustrial()) {
+							/*modifica para enviados a industrial*/
+							for (int i = 0; i < jsonArrayDevolucionesL.length(); i++) {
+								try {
+									JSONObject jsonObject = jsonArrayDevolucionesL.getJSONObject(i);
+									if (jsonObject.has("d_DEVOLUCION")) {
+										String codigounico = jsonObject.getString("d_DEVOLUCION");
+										// Aquí actualizamos estado de pedidos Industrial
+										daoInventario.updatecodigomardis(codigounico);
+									}
+								} catch (JSONException e) {
+									e.printStackTrace();
 								}
-							} catch (JSONException e) {
-								e.printStackTrace();
 							}
 						}
-						//eliminaInvnetario();
+						if(AppSysMobile.isServnutri()) {
+						 eliminaInvnetario();
+						}
 					} else {
 						// Muestro toast
 						pantallaManagerEnviaPendientes.seteaTxtResultadoEnvio("Error al enviar las devoluciones mardis");

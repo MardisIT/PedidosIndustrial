@@ -46,12 +46,18 @@ public class ListenerConsultaArticulos  implements OnClickListener, OnItemClickL
 					pantallaManagerConsultaArticulos.muestraDetalleArticulo(articulo);
 					break;
 				case AppSysMobile.DESDE_CARGA_DE_PEDIDOS:
-					if(articulo.getPrecio10()>0) {
+					if(AppSysMobile.isServIndustrial()) {
+						if (articulo.getPrecio10() > 0) {
+							this.logicaConsultaArticulos.seteaCodigoArticuloCargaPedidos(articulo.getIdArticulo());
+							break;
+						} else {
+							pantallaManagerConsultaArticulos.muestraAlertaError("Error", "No existe Stock del Producto");
+							return;
+						}
+					}
+					if(AppSysMobile.isServnutri()){
 						this.logicaConsultaArticulos.seteaCodigoArticuloCargaPedidos(articulo.getIdArticulo());
-					break;
-					}else{
-						pantallaManagerConsultaArticulos.muestraAlertaError("Error","No existe Stock del Producto");
-						return;
+						break;
 					}
 			}
 

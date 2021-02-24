@@ -179,19 +179,21 @@ public class visita extends AppCompatActivity
             dataManager.getDaoPedidoItem().deleteByIdPedido(x.getIdPedido());
             dataManager.getDaoPedido().delete(x);
         }
-        List<Cartera> listac = new ArrayList<>();
-        listac = daoCartera.getAll(" Codcli='" + codCliente + "'");
-        String CuantasPorPagar="";
-        Cliente cliente=daoCliente.getByKey(codCliente);
-        Double valorpendipa=0.00;
-        for (Cartera c: listac
-             ) {
-            CuantasPorPagar=CuantasPorPagar+"Fecha Vencimiento: "+c.getFe_vecto().substring(0,4)+"-"+c.getFe_vecto().substring(4,6)+"-"+c.getFe_vecto().substring(6,8)
-           + "\n N° Factura: "+ c.getNro_docm()+" Valor: "+c.getCorriente()+"\n ";
-            valorpendipa=valorpendipa+c.getCorriente();
+        if(AppSysMobile.isServIndustrial()) {
+            List<Cartera> listac = new ArrayList<>();
+            listac = daoCartera.getAll(" Codcli='" + codCliente + "'");
+            String CuantasPorPagar = "";
+            Cliente cliente = daoCliente.getByKey(codCliente);
+            Double valorpendipa = 0.00;
+            for (Cartera c : listac
+            ) {
+                CuantasPorPagar = CuantasPorPagar + "Fecha Vencimiento: " + c.getFe_vecto().substring(0, 4) + "-" + c.getFe_vecto().substring(4, 6) + "-" + c.getFe_vecto().substring(6, 8)
+                        + "\n N° Factura: " + c.getNro_docm() + " Valor: " + c.getCorriente() + "\n ";
+                valorpendipa = valorpendipa + c.getCorriente();
+            }
+            if (!CuantasPorPagar.equals(""))
+                muestraAlertaCuentasporpagar(CuantasPorPagar, valorpendipa, Double.valueOf(cliente.getSaldoActual()), cliente.getDiasPlazo());
         }
-        if(!CuantasPorPagar.equals(""))
-            muestraAlertaCuentasporpagar(CuantasPorPagar,valorpendipa,Double.valueOf(cliente.getSaldoActual()),cliente.getDiasPlazo());
 
 
 

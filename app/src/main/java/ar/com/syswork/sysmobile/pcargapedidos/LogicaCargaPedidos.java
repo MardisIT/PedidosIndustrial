@@ -260,10 +260,15 @@ public class LogicaCargaPedidos implements IAlertResult, Handler.Callback
 	}
 	public int ValidaCantidadStockBodegaCentral(String codigoProducto)
 	{
-		Handler h = new Handler(this);
-		ThreadConsultaStock tc = new ThreadConsultaStock (h,codigoProducto);
-		Thread t = new Thread(tc);
-		t.start();
+		if(AppSysMobile.isServIndustrial()) {
+			Handler h = new Handler(this);
+			ThreadConsultaStock tc = new ThreadConsultaStock(h, codigoProducto);
+			Thread t = new Thread(tc);
+			t.start();
+		}
+		if(AppSysMobile.isServnutri()){
+			validaCantidadIntroducidaConStock();
+		}
 		return 0;
 	}
 
@@ -406,7 +411,7 @@ public class LogicaCargaPedidos implements IAlertResult, Handler.Callback
 				utilDialogos.muestraToastGenerico(a, debeInformarLaCantidad , false);
 				return false;
 			}else{
-				if(articulo.getPrecio10() < Double.valueOf(valor))
+				if(articulo.getPrecio10() < Double.valueOf(valor) && AppSysMobile.isServIndustrial())
 				{
 					utilDialogos.muestraToastGenerico(a, "Cantidad mayor a existencia..!!!" , false);
 					return false;

@@ -230,8 +230,8 @@ public class AppSysMobile extends Application {
 		String clasesDePrecioHabilitadas = prefs.getString("clasesDePrecioHabilitadas", "1");
 		boolean solicitaIncluirEnReparto = prefs.getBoolean("solicitaIncluirEnReparto", true);
 
-		boolean ServIndustrial = prefs.getBoolean("ServIndustrial", true);
-		boolean Servnutri = prefs.getBoolean("Servnutri", false);
+		boolean ServIndustrial = prefs.getBoolean("ServIndustrial", false);
+		boolean Servnutri = prefs.getBoolean("Servnutri", true);
 
 		WS_IMAIL=obterImeid();
 		Editor editor = prefs.edit();

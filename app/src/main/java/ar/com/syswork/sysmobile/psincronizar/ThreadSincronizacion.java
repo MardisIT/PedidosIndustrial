@@ -32,10 +32,10 @@ public class ThreadSincronizacion implements Runnable{
 			rutaAcceso = AppSysMobile.WS_ACCESO_VENDEDORES +"?Idaccount="+objcuentaSession.getCu_idAccount();
 			break;
 		case AppSysMobile.WS_RUBROS:
-			rutaAcceso = AppSysMobile.WS_ACCESO_RUBROS ;
+			rutaAcceso = AppSysMobile.WS_ACCESO_RUBROS +"?Idaccount="+objcuentaSession.getCu_idAccount();
 			break;
 		case AppSysMobile.WS_DEPOSITOS:
-			rutaAcceso = AppSysMobile.WS_ACCESO_DEPOSITOS ;
+			rutaAcceso = AppSysMobile.WS_ACCESO_DEPOSITOS +"?Idaccount="+objcuentaSession.getCu_idAccount();
 			break;
 		case AppSysMobile.WS_CLIENTES:
 			rutaAcceso = AppSysMobile.WS_ACCESO_CLIENTES +"idAccount="+ objcuentaSession.getCu_idAccount()+"&IDDEVICE="+AppSysMobile.WS_IMAIL;
@@ -43,7 +43,7 @@ public class ThreadSincronizacion implements Runnable{
 
 			break;
 		case AppSysMobile.WS_ARTICULOS:
-			rutaAcceso = AppSysMobile.WS_ACCESO_ARTICULOS ;
+			rutaAcceso = AppSysMobile.WS_ACCESO_ARTICULOS +"?Idaccount="+objcuentaSession.getCu_idAccount();
 			break;
 		case AppSysMobile.WS_REGISTROS:
 			rutaAcceso = AppSysMobile.WS_CONSULTA_CANTIDAD_REGISTOS;
