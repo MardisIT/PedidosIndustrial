@@ -362,7 +362,7 @@ public class LogicaEnviaPendientes implements Callback {
 						jsonVisitas.put("Compro", visitasUio.getRealizapedido());
 						jsonVisitas.put("Observacion", visitasUio.getObservaciones()== null ? "" : visitasUio.getEstado());
 						jsonVisitas.put("estado", visitasUio.getEstado() == null ? "" : visitasUio.getEstado());
-						jsonVisitas.put("Idaccount ", idaccount);
+						jsonVisitas.put("Idaccount", idaccount);
 
 						jsonArrayVisitas.put(jsonVisitas);
 					}
@@ -600,7 +600,7 @@ public class LogicaEnviaPendientes implements Callback {
 						jsonPedido.put("facturar", pedido.isFacturar());
 						jsonPedido.put("incluirEnReparto", pedido.isIncluirEnReparto());
 						jsonPedido.put("p_PEDIDO_MARDIS", pedido.getCodpedidomardis());
-						jsonPedido.put("Idaccount ", idaccount);
+						jsonPedido.put("Idaccount", idaccount);
 						jsonPedido.put("pedidosItems", obtieneJsonDetalleDePedido(pedido.getIdPedido()));
 
 

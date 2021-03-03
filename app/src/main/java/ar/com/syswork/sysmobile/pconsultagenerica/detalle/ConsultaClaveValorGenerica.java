@@ -24,7 +24,7 @@ public class ConsultaClaveValorGenerica {
 		this.a =a;
 
 	}
-	
+
 	public void lanzarActivity()
 	{
 

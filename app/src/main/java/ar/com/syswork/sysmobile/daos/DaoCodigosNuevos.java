@@ -181,6 +181,8 @@ public class DaoCodigosNuevos implements DaoInterface<CodigosNuevos> {
 
     public void deleteAll() {
         String sql = "DELETE FROM CodigosNuevos" ;
+
+
         db.execSQL(sql);
     }
 

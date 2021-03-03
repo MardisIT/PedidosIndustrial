@@ -384,8 +384,12 @@ public class DaoCliente implements DaoInterface<Cliente>{
 			return lista;
 		}
 
-	public void deleteAll() {
+	public void deleteAll(String where) {
 		String sql = "DELETE FROM Clientes" ;
+		if (!where.equals("")){
+			sql = sql + " WHERE " + where;
+		}
+
 		db.execSQL(sql);
 	}
 

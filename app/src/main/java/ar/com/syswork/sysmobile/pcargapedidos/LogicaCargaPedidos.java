@@ -792,16 +792,13 @@ public  double CalcularDescuentoMix(String codigoProductoActual,String opcion,do
 			Pedido tmpPedido = daoPedido.getById((int)_idPedidoAEliminar);
 			daoPedido.delete(tmpPedido);
 			for (reportecabecera x:
-			daoreportecabecera.getAll("idpedido="+tmpPedido.getIdPedido())) {
+				daoreportecabecera.getAll("idpedido="+tmpPedido.getIdPedido())) {
 				daoreporteitem.deleteAllKey(String.valueOf(x.get_id()));
 				daoreportecabecera.delete(x);
 			}
 
-
-
 			daoPedidoItem.deleteByIdPedido(_idPedidoAEliminar);
 			utilDialogos.muestraToastGenerico(a, "Pedido eliminado correcto..!!!", false);
-
 			Intent intent = new Intent(AppSysMobile.INTENT_FILTER_CAMBIOS_LISTA_PEDIDOS);
 			a.sendBroadcast(intent);
 			pantallaManagerCargaPedidos.finalizaActivityCargaPedidos();

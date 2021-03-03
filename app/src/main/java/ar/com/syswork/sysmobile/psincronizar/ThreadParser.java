@@ -543,7 +543,7 @@ private DaoCodigosNuevos daoCodigosNuevos;
 	private void grabaClientes() {
 
 		if (this.pagina == 1)
-			daoCliente.deleteAll();
+			daoCliente.deleteAll(" estadoenvio = 'P'");
 
 
 
