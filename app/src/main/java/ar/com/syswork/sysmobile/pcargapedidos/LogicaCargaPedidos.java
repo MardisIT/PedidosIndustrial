@@ -835,7 +835,11 @@ public void enviotrking(){
 	{
 		long idPedido;
 		long idPedidoItem;
-		
+		if(importeTotalPedido <= 4)
+		{
+			utilDialogos.muestraToastGenerico(a, "El valor de la factura es menor a $4 dolares", false);
+			return;
+		}
 		if (listaPedidoItems.size() == 0)
 		{
 			utilDialogos.muestraToastGenerico(a, noHaCargadoProductos, false);
@@ -860,7 +864,9 @@ public void enviotrking(){
 	    }
 		CodigosNuevos codigosNuevos= new CodigosNuevos();
 		codigosNuevos= daoCodigosNuevos.CodigosActual();
-	    
+
+
+
 		Pedido pedido = new Pedido();
 		pedido.setCodCliente(cliente.getCodigo());
 		pedido.setFecha(fecha);
@@ -893,9 +899,10 @@ public void enviotrking(){
 		if (idPedido!=-1)
 		{
 			reportecabecera _Reportecabecera= new reportecabecera();
-			_Reportecabecera.setIdpedido((int) idPedido);
+			_Reportecabecera.setIdpedido(Integer.valueOf(pedido.getCodigounico()));
 			_Reportecabecera.setFecha(fecha);
 			_Reportecabecera.setCodcliente(cliente.getCodigo());
+
 			idReporteEncabezado= (int) daoreportecabecera.save(_Reportecabecera);
 
 
@@ -908,7 +915,7 @@ public void enviotrking(){
 				idPedidoItem = daoPedidoItem.save(pedidoItem);
 				reporteitem _Reporteitem=new reporteitem();
 
-				_Reporteitem.setCodcabecera(idReporteEncabezado);
+				_Reporteitem.setCodcabecera(Integer.valueOf(pedido.getCodigounico()));
 				_Reporteitem.setCodproducto(pedidoItem.getIdArticulo());
 				_Reporteitem.setCantidad(pedidoItem.getCantidad());
 				_Reporteitem.setUnidad(pedidoItem.getUnidcajas());

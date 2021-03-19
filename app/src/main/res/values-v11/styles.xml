@@ -6,7 +6,7 @@
     -->
     <style name="AppBaseTheme" parent="android:Theme.Holo.Light">
         <!-- API 11 theme customizations can go here. -->
-        <item name="colorPrimary">#0071B8</item>
+        <item name="colorPrimary">#0D1C3A</item>
     </style>
 
 </resources>

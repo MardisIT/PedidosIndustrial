@@ -24,7 +24,7 @@
     <color name="defaultLightIconColor">#de000000</color>
     <color name="lightDividerColor">#1e000000</color>
     <color name="lightRankItemColor">#EEEEEE</color>
-    <color name="lightAccentColor">@color/blue_500</color>
+    <color name="lightAccentColor">#0D1C3A</color>
     <color name="lightIconColorDisabled">#61000000</color>
     <color name="lightIconColorEnabled">#de000000</color>
     <!-- Background colors in the GeoTrace status bar, under white text. -->
@@ -44,12 +44,12 @@
     <color name="mapLine">#ffff0000</color>
 
     <color name="primaryTextColor">#000000</color>
-    <color name="tintColor">#2196F3</color>
+    <color name="tintColor">#0D1C3A</color>
     <color name="black">#000000</color>
     <color name="grey">#757575</color>
     <color name="white">#ffffff</color>
-    <color name="colorPrimary">#42A5F5</color>
-    <color name="colorPrimaryDark">#1E88E5</color>
+    <color name="colorPrimary">#0D1C3A</color>
+    <color name="colorPrimaryDark">#0D1C3A</color>
     <color name="common_signin_btn_dark_text_default">@android:color/white</color>
     <color name="common_signin_btn_dark_text_pressed">@android:color/white</color>
     <color name="common_signin_btn_dark_text_disabled">#FFAAAAAA</color>

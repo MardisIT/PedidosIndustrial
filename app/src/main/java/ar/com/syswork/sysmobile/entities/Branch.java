@@ -23,9 +23,10 @@ public class Branch {
     public String imeI_ID;
     public String LatitudeBranch;
     public String LenghtBranch;
+    public String ZonaPeligrosa;
+    public int ActualizaGeo;
 
-    public Branch(String ID, String idbranch, String idAccount, String externalCode, String code, String name, String mainStreet, String neighborhood, String reference, String propietario, String uriformulario, String idprovince, String iddistrict,
-                  String idParish, String rutaaggregate, String imeI_ID, String LatitudeBranch, String LenghtBranch) {
+    public Branch(String ID, String idbranch, String idAccount, String externalCode, String code, String name, String mainStreet, String neighborhood, String reference, String propietario, String uriformulario, String idprovince, String iddistrict, String idParish, String rutaaggregate, String imeI_ID, String latitudeBranch, String lenghtBranch, String zonaPeligrosa, int actualizaGeo) {
         this.ID = ID;
         this.idbranch = idbranch;
         this.idAccount = idAccount;
@@ -42,8 +43,26 @@ public class Branch {
         this.idParish = idParish;
         this.rutaaggregate = rutaaggregate;
         this.imeI_ID = imeI_ID;
-        this.LatitudeBranch = LatitudeBranch;
-        this.LenghtBranch = LenghtBranch;
+        LatitudeBranch = latitudeBranch;
+        LenghtBranch = lenghtBranch;
+        ZonaPeligrosa = zonaPeligrosa;
+        ActualizaGeo = actualizaGeo;
+    }
+
+    public String getZonaPeligrosa() {
+        return ZonaPeligrosa;
+    }
+
+    public void setZonaPeligrosa(String zonaPeligrosa) {
+        ZonaPeligrosa = zonaPeligrosa;
+    }
+
+    public int getActualizaGeo() {
+        return ActualizaGeo;
+    }
+
+    public void setActualizaGeo(int actualizaGeo) {
+        ActualizaGeo = actualizaGeo;
     }
 
     public String getLatitudeBranch() {

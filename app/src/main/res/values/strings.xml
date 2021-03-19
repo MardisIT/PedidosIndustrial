@@ -19,14 +19,14 @@
     <string name="filler">FILLER-</string>
 
     <string name="title_activity_activity_pmenu_principal">Ventas</string>
-    <string name="title_activity_activity_sincornizar">SINCRONIZAR DATOS</string>
-    <string name="title_activity_activity_config">CONFIGURACION</string>
-    <string name="title_activity_activity_consulta_clientes">CLIENTES</string>
-    <string name="title_activity_activity_consulta_clientes_editar">CLIENTES</string>
-    <string name="title_activity_activity_envia_pendientes">ENVIAR PEDIDOS PENDIENTES</string>
-    <string name="title_activity_activity_consulta_articulos">ARTICULOS</string>
-    <string name="title_activity_activity_toma_pedidos">PEDIDOS</string>
-    <string name="title_activity_activity_consulta_cta_cte">CUENTA CORRIENTE</string>
+    <string name="title_activity_activity_sincornizar">Sincronizar Datos</string>
+    <string name="title_activity_activity_config">Configuración</string>
+    <string name="title_activity_activity_consulta_clientes">Clientes</string>
+    <string name="title_activity_activity_consulta_clientes_editar">Clientes</string>
+    <string name="title_activity_activity_envia_pendientes">Enviar Pedidos Pendientes</string>
+    <string name="title_activity_activity_consulta_articulos">Articulos</string>
+    <string name="title_activity_activity_toma_pedidos">Pedidos</string>
+    <string name="title_activity_activity_consulta_cta_cte">Cuenta Corriente</string>
     <string name="title_activity_activity_consulta_stock">Consulta Stock</string>
     <string name="title_activity_activity_lista_pedidos">Lista Pedidos</string>
 

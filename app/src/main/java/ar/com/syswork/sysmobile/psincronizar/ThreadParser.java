@@ -543,7 +543,10 @@ private DaoCodigosNuevos daoCodigosNuevos;
 	private void grabaClientes() {
 
 		if (this.pagina == 1)
-			daoCliente.deleteAll(" estadoenvio = 'P'");
+			daoCliente.deleteAll("");
+
+
+
 
 
 
@@ -628,6 +631,13 @@ private DaoCodigosNuevos daoCodigosNuevos;
 				cliente.setCanton(jsObject.getString("district"));
 				cliente.setParroquia(jsObject.getString("district"));
 				cliente.setImeI_ID(AppSysMobile.WS_IMAIL);
+				cliente.setIDCLIENTE(jsObject.getInt("id"));
+				cliente.setZonaPeligrosa(jsObject.getString("zonaPeliograsa"));
+				if(jsObject.getString("actualizoGeo").equals("null")) {
+					cliente.setActualizaGeo(0);
+				}else {
+					cliente.setActualizaGeo(jsObject.getInt("actualizoGeo"));
+				}
 
 
 

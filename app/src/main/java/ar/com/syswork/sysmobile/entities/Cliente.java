@@ -43,6 +43,33 @@ private String parroquia;
 private	String canton;
 private  String SaldoActual;
 private  String DiasPlazo;
+	public String ZonaPeligrosa;
+	public int ActualizaGeo;
+	public int IDCLIENTE;
+
+	public int getIDCLIENTE() {
+		return IDCLIENTE;
+	}
+
+	public void setIDCLIENTE(int IDCLIENTE) {
+		this.IDCLIENTE = IDCLIENTE;
+	}
+
+	public String getZonaPeligrosa() {
+		return ZonaPeligrosa;
+	}
+
+	public void setZonaPeligrosa(String zonaPeligrosa) {
+		ZonaPeligrosa = zonaPeligrosa;
+	}
+
+	public int getActualizaGeo() {
+		return ActualizaGeo;
+	}
+
+	public void setActualizaGeo(int actualizaGeo) {
+		ActualizaGeo = actualizaGeo;
+	}
 
 	public String getSaldoActual() {
 		return SaldoActual;

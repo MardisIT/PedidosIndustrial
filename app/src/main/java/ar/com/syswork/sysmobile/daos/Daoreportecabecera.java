@@ -51,7 +51,8 @@ public class Daoreportecabecera implements DaoInterface<reportecabecera>  {
 
         String sql = "UPDATE PRECIO_ESCALA SET " +
                 "fecha='" + _reportecabecera.getFecha() + "',"
-                +"codcliente='" + _reportecabecera.getCodcliente() + "',"
+                +"codcliente='" + _reportecabecera.getCodcliente() + "' "
+
                 + " WHERE _ID  = '" + _reportecabecera.get_id() +  "'" ;
 
         db.execSQL(sql);
@@ -82,6 +83,7 @@ public class Daoreportecabecera implements DaoInterface<reportecabecera>  {
             _reportecabecera.setFecha(c.getString(1));
             _reportecabecera.setCodcliente(c.getString(2));
             _reportecabecera.setIdpedido(c.getInt(3));
+
         }
         if(!c.isClosed())
         {

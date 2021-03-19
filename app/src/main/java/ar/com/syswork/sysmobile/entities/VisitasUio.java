@@ -13,6 +13,7 @@ public class VisitasUio {
     private String observaciones;
     private String realizapedido;
     private String estado;
+    private String actualizarubicacion;
 
     public Cliente getCliente() {
         return cliente;

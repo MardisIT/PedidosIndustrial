@@ -26,6 +26,6 @@
         <item name="android:padding">16dp</item>
     </style>
     <style name="my" parent="Base.Theme.AppCompat.Light">
-        <item name="colorPrimaryDark">#004C72</item>
+        <item name="colorPrimaryDark">#0D1C3A</item>
     </style>
 </resources>

@@ -5,6 +5,15 @@ public class reportecabecera {
     private String codcliente;
     private  int _id;
     private int idpedido;
+   private  String idpedidouri;
+
+    public String getIdpedidouri() {
+        return idpedidouri;
+    }
+
+    public void setIdpedidouri(String idpedidouri) {
+        this.idpedidouri = idpedidouri;
+    }
 
     public int getIdpedido() {
         return idpedido;
