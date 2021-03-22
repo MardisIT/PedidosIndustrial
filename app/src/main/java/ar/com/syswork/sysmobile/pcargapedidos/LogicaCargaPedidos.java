@@ -793,7 +793,7 @@ public  double CalcularDescuentoMix(String codigoProductoActual,String opcion,do
 			daoPedido.delete(tmpPedido);
 			for (reportecabecera x:
 				daoreportecabecera.getAll("idpedido="+tmpPedido.getIdPedido())) {
-				daoreporteitem.deleteAllKey(String.valueOf(x.get_id()));
+				daoreporteitem.deleteAllKey(String.valueOf(tmpPedido.getIdPedido()));
 				daoreportecabecera.delete(x);
 			}
 
@@ -857,8 +857,8 @@ public void enviotrking(){
 	    	daoPedido.delete(tmpPedido);
 	    	daoPedidoItem.deleteByIdPedido(_idPedidoAEliminar);
 			for (reportecabecera x:
-					daoreportecabecera.getAll("idpedido="+tmpPedido.getIdPedido())) {
-				daoreporteitem.deleteAllKey(String.valueOf(x.get_id()));
+					daoreportecabecera.getAll("idpedido="+tmpPedido.getCodigounico())) {
+				daoreporteitem.deleteAllKey(String.valueOf(tmpPedido.getCodigounico()));
 				daoreportecabecera.delete(x);
 			}
 	    }

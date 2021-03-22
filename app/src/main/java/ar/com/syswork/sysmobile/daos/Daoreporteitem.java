@@ -87,7 +87,7 @@ public class Daoreporteitem implements DaoInterface<reporteitem>  {
         ArrayList<reportepedidosE> lista = new ArrayList<>();
         reportepedidosE _ReportepedidosE = null;
 
-        String sql = "SELECT r.codproducto,a.descripcion, sum(r.cantidad),r.unidades,r.precio,sum(r.total) FROM reporteitem r  inner join articulos a on a.idArticulo=r.codproducto  group by r.codproducto " ;
+        String sql = "SELECT r.codproducto,a.descripcion, sum(r.cantidad),r.unidades,r.precio,sum(r.total) FROM reporteitem r  inner join articulos a on a.idArticulo=r.codproducto  INNER join reportecabecera c on c.idpedido=r.codcabecera group by r.codproducto " ;
         Cursor c = db.rawQuery(sql,null);
         if(c.moveToFirst())
         {

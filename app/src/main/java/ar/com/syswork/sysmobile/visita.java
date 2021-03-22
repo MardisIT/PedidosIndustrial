@@ -423,7 +423,8 @@ public class visita extends AppCompatActivity
                     Cliente selccion = daoCliente.getByKey(codCliente);
                     if (selccion.getLatitudeBranch() != null && selccion.getLenghtBranch() != null) {
                         if (selccion.getLatitudeBranch() != "0" && selccion.getLenghtBranch() != "0") {
-                            distanciaCoord(Double.valueOf(latitudeValueGPS.getText().toString()), Double.valueOf(longitudeValueGPS.getText().toString()), Double.valueOf(selccion.getLatitudeBranch()), Double.valueOf(selccion.getLenghtBranch()), selccion);
+
+                           distanciaCoord(Double.valueOf(latitudeValueGPS.getText().toString()), Double.valueOf(longitudeValueGPS.getText().toString()), Double.valueOf(selccion.getLatitudeBranch().replace(",",".")), Double.valueOf(selccion.getLenghtBranch().replace(",",".")), selccion);
                         }
                     }
                 }
