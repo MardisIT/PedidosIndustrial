@@ -1,0 +1,2 @@
+ar/com/syswork/sysmobile/test/BuildConfig.java
+ ar.com.syswork.sysmobile.test.BuildConfig

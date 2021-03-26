@@ -633,7 +633,7 @@ public class visita extends AppCompatActivity
 
                     try {
 
-                        final String imageName = com.microsoft.photouploader.ImageManager.UploadImage(imageStream, imageLength,textView1.getText().toString().replace("Nombre: ",""));
+                        final String imageName = "";//com.microsoft.photouploader.ImageManager.UploadImage(imageStream, imageLength,textView1.getText().toString().replace("Nombre: ",""));
 
                         handler.post(new Runnable() {
 
