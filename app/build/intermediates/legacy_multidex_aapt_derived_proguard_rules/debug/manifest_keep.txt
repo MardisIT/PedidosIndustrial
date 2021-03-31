@@ -1,2 +1,0 @@
--keep class androidx.core.app.CoreComponentFactory { <init>(); }
--keep class ar.com.syswork.sysmobile.shared.AppSysMobile { <init>(); }

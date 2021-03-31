@@ -52,7 +52,7 @@ public class ActivitySincronizar extends AppCompatActivity {
 		TelephonyManager tm = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
 		TelephonyManager mTelephony = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
 		String simSerialNo="";
-		String  myIMEI = mTelephony.getDeviceId();
+		String  myIMEI = "358240051111110"; //mTelephony.getDeviceId();
 
 		if (myIMEI == null) {
 			SubscriptionManager subsManager = (SubscriptionManager) getSystemService(Context.TELEPHONY_SUBSCRIPTION_SERVICE);
