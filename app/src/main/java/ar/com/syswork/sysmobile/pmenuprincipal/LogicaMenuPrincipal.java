@@ -41,11 +41,9 @@ public class LogicaMenuPrincipal {
 	private boolean forzarLogueo;
 	
 	
-	public LogicaMenuPrincipal(Activity  a, AdapterMenuPrincipal adapter) {
+	public LogicaMenuPrincipal(Activity  a) {
 		
 		this.a = a;
-		this.adapter = adapter;
-		
 		app = (AppSysMobile) a.getApplication();
 		dm = app.getDataManager();
 		daoVendedor = dm.getDaoVendedor();
@@ -68,6 +66,8 @@ public class LogicaMenuPrincipal {
 			dm.getDaoPedido().delete(x);
 		}
 	}
+
+
 	
 	public void seteaListaOpciones(List<ItemMenuPrincipal> listaOpciones){
 		this.listaOpciones = listaOpciones;

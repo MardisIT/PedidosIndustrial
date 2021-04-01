@@ -10,10 +10,13 @@
         <entry key="..\:/Users/jpina/StudioProjects/PedidosIndustrial/app/src/main/res/layout/activity_consulta_articulos.xml" value="0.2786458333333333" />
         <entry key="..\:/Users/jpina/StudioProjects/PedidosIndustrial/app/src/main/res/layout/activity_consulta_clientes.xml" value="0.2786458333333333" />
         <entry key="..\:/Users/jpina/StudioProjects/PedidosIndustrial/app/src/main/res/layout/activity_fragment_main.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/jpina/StudioProjects/PedidosIndustrial/app/src/main/res/layout/activity_item_carga_visitas.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/jpina/StudioProjects/PedidosIndustrial/app/src/main/res/layout/activity_lista_pedidos.xml" value="0.2786458333333333" />
         <entry key="..\:/Users/jpina/StudioProjects/PedidosIndustrial/app/src/main/res/layout/activity_login.xml" value="0.2786458333333333" />
+        <entry key="..\:/Users/jpina/StudioProjects/PedidosIndustrial/app/src/main/res/layout/activity_menu_principal.xml" value="0.25" />
         <entry key="..\:/Users/jpina/StudioProjects/PedidosIndustrial/app/src/main/res/layout/activity_splash.xml" value="0.25" />
         <entry key="..\:/Users/jpina/StudioProjects/PedidosIndustrial/app/src/main/res/layout/fragment_blank.xml" value="0.35260416666666666" />
+        <entry key="..\:/Users/jpina/StudioProjects/PedidosIndustrial/app/src/main/res/menu/activity_pmenu_principal.xml" value="0.36666666666666664" />
       </map>
     </option>
   </component>

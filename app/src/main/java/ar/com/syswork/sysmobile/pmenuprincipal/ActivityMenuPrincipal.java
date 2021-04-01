@@ -37,7 +37,7 @@ public class ActivityMenuPrincipal extends AppCompatActivity {
 		ListenerMenuPrincipal listenerMenuPrincipal = new ListenerMenuPrincipal();
 		
 		//Creo la Logica
-		logicaMenuPrincipal = new LogicaMenuPrincipal(this, adapter);
+		//logicaMenuPrincipal = new LogicaMenuPrincipal(this, adapter);
 		
 		//Creo el Pantalla Manager
 		PantallaManagerMenuPrincipal pantallaManagerMenuPrincipal = new PantallaManagerMenuPrincipal(this,listenerMenuPrincipal);
