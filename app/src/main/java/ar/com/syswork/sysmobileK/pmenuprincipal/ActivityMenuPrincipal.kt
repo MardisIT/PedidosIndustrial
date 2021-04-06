@@ -14,6 +14,8 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ar.com.syswork.sysmobileK.ui.theme.MyApplicationTheme
@@ -24,6 +26,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import ar.com.syswork.sysmobile.entities.ItemMenuPrincipal
 import ar.com.syswork.sysmobile.pmenuprincipal.LogicaMenuPrincipal
+import ar.com.syswork.sysmobileK.pmenuprincipal.widgets.ShowForceLoginDialog
 import java.util.ArrayList
 
 
@@ -32,33 +35,45 @@ private var logicaMenuPrincipal: LogicaMenuPrincipal? = null
 
 
 class ActivityMenuPrincipal : ComponentActivity() {
+
+    @ExperimentalMaterialApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         // Creo la Lista
-        val listaOpciones: List<ItemMenuPrincipal> = ArrayList()
-
+        val opcionesMenu: List<ItemMenuPrincipal> = ArrayList()
 
         setContent {
             val context = LocalContext.current
             logicaMenuPrincipal = LogicaMenuPrincipal(context as Activity)
-            logicaMenuPrincipal?.seteaListaOpciones(listaOpciones)
-
+            logicaMenuPrincipal?.seteaListaOpciones(opcionesMenu)
+            logicaMenuPrincipal?.creaItemsMenuPrincipal()
+            val statusForceLogin = logicaMenuPrincipal?.forzarLogueo
+            val forceLogin  = remember {
+                mutableStateOf(statusForceLogin)
+            }
             MyApplicationTheme(
                 false
             ) {
                 Body(
-                    logicaMenuPrincipal?.listaOpciones
+                    logicaMenuPrincipal!!.listaOpciones
                 )
+                if (forceLogin.value!!) {
+                    ShowForceLoginDialog(
+                        onOptionClicked = { result ->
+                            forceLogin.value = result
+                        },
+                    )
+                }
+
             }
         }
     }
 
 }
 
-@OptIn(ExperimentalMaterialApi::class)
+@ExperimentalMaterialApi
 @Composable
-private fun Body(lisItemsMenu: List<ItemMenuPrincipal>) {
+private fun Body(lisItemsMenu:List<ItemMenuPrincipal> ) {
     Scaffold(
         topBar = {
            TopAppBar(
@@ -97,15 +112,21 @@ private fun Body(lisItemsMenu: List<ItemMenuPrincipal>) {
                 }
             }
         }
+
     )
 }
 
+@ExperimentalMaterialApi
 @Preview(showBackground = true)
 @Composable
 private fun DefaultPreview() {
+    val opcionesMenu: List<ItemMenuPrincipal> = ArrayList()
+
     MyApplicationTheme(
         false
     ) {
-        Body()
+        Body(
+            opcionesMenu
+        )
     }
 }

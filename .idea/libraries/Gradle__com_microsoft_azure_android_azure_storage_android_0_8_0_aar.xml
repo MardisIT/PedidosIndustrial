@@ -1,9 +1,9 @@
 <component name="libraryTable">
   <library name="Gradle: com.microsoft.azure.android:azure-storage-android:0.8.0@aar">
     <CLASSES>
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/f733db6d02778fdde42adc08d469d927/transformed/jetified-azure-storage-android-0.8.0/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/f733db6d02778fdde42adc08d469d927/transformed/jetified-azure-storage-android-0.8.0/AndroidManifest.xml" />
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/f733db6d02778fdde42adc08d469d927/transformed/jetified-azure-storage-android-0.8.0/jars/classes.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/4cea137ace6721c47eed85e123381d67/transformed/jetified-azure-storage-android-0.8.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/4cea137ace6721c47eed85e123381d67/transformed/jetified-azure-storage-android-0.8.0/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/4cea137ace6721c47eed85e123381d67/transformed/jetified-azure-storage-android-0.8.0/res" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.microsoft.azure.android/azure-storage-android/0.8.0/eac239f1ab7be654b747ada63406748af805f659/azure-storage-android-0.8.0-javadoc.jar!/" />

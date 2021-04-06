@@ -2,9 +2,11 @@
   <library name="Gradle: com.evernote:android-job:1.4.2@aar">
     <CLASSES>
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/90b49359ccfd2185f730e24e79eb8ab7/transformed/jetified-android-job-1.4.2/res" />
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/b612e10003492510ed7996556ff74fd4/transformed/jetified-android-job-1.4.2/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/b612e10003492510ed7996556ff74fd4/transformed/jetified-android-job-1.4.2/AndroidManifest.xml" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/b612e10003492510ed7996556ff74fd4/transformed/jetified-android-job-1.4.2/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/287056ba3c17443466d68bfc6da14b42/transformed/jetified-android-job-1.4.2/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/9a681e20d5330e083c93a80071640f40/transformed/jetified-android-job-1.4.2/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/9a681e20d5330e083c93a80071640f40/transformed/jetified-android-job-1.4.2/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/9a681e20d5330e083c93a80071640f40/transformed/jetified-android-job-1.4.2/res" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.evernote/android-job/1.4.2/7a4c6812dedcf0a60dd17c68654ae5afd3fc8bd/android-job-1.4.2-javadoc.jar!/" />

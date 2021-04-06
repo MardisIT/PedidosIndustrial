@@ -11,38 +11,32 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
-import androidx.compose.runtime.mutableStateOf
-import ar.com.syswork.sysmobile.daos.DaoCodigosNuevos
-import ar.com.syswork.sysmobile.daos.DataManager
-import ar.com.syswork.sysmobile.shared.AppSysMobile
-import ar.com.syswork.sysmobile.R
 import androidx.compose.animation.core.animateDp
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import ar.com.syswork.sysmobile.R
+import ar.com.syswork.sysmobile.daos.DaoCodigosNuevos
+import ar.com.syswork.sysmobile.daos.DataManager
 import ar.com.syswork.sysmobile.industrial.DemoJobCreator
 import ar.com.syswork.sysmobile.pconsultagenerica.detalle.obtenerCodigos
-import ar.com.syswork.sysmobile.plogin.ActivityLogin
-import ar.com.syswork.sysmobile.pmenuprincipal.ActivityMenuPrincipal
+import ar.com.syswork.sysmobile.shared.AppSysMobile
+import ar.com.syswork.sysmobileK.pmenuprincipal.ActivityMenuPrincipal
+import ar.com.syswork.sysmobileK.psplash.widgets.ShowAlertDialog
 import ar.com.syswork.sysmobileK.ui.theme.MyApplicationTheme
-import ar.com.syswork.sysmobileK.ui.theme.Purple200
 import com.evernote.android.job.JobManager
 import com.evernote.android.job.JobManagerCreateException
 import java.util.*
-import androidx.compose.runtime.remember as remember
 import ar.com.syswork.sysmobileK.psplash.daoNewCodes as daoNewCode
 
 private enum class BoxState {
@@ -55,7 +49,6 @@ private var dm:DataManager? = null
 private var app:AppSysMobile? = null
 internal var daoNewCodes:DaoCodigosNuevos? = null
 private var showDialogLocationEnabled:MutableState<Boolean>? = null
-
 
 private fun checkPermission() {
     showDialogLocationEnabled!!.value = getIsLocationEnabled()
@@ -87,11 +80,22 @@ private fun launchActivity(context: Context,onStartActivity: (result: Intent) ->
         i = Intent(activity, ActivityMenuPrincipal::class.java)
         app?.vendedorLogueado = ""
     } else {
-        i = Intent(activity, ActivityLogin::class.java)
+        i = Intent(activity, ActivityMenuPrincipal::class.java)
     }
     onStartActivity(i)
 }
 
+@RequiresApi(Build.VERSION_CODES.LOLLIPOP_MR1)
+private fun instanceDataManager(context: Context, application: AppSysMobile){
+    //Instance of DataManager
+    dm = DataManager(context)
+    //Set the application
+    app = application
+    app?.dataManager = dm
+
+    //Initialize las SharedPreferences
+    app?.iniciaConfiguracion()
+}
 
 class ActivitySplash: ComponentActivity() {
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP_MR1)
@@ -103,14 +107,12 @@ class ActivitySplash: ComponentActivity() {
 
         setContent {
             val context = LocalContext.current
-            //Instance of DataManager
-            dm = DataManager(context)
-            //Set the application
-            app = application as AppSysMobile
-            app?.dataManager = dm
+            val applicationInstance = application as AppSysMobile
 
-            //Initialize las SharedPreferences
-            app?.iniciaConfiguracion()
+            instanceDataManager(
+                context,
+                applicationInstance
+            )
 
             showDialogLocationEnabled = remember {
                 mutableStateOf(isLocationEnabled)
@@ -218,30 +220,6 @@ private fun SplashIcon() {
     )
 
     boxState.value = BoxState.Large
-}
-
-@Composable
-private fun ShowAlertDialog(onOptionClicked: (result: Boolean) -> Unit, onAccept:() -> Unit ) {
-    AlertDialog(
-        onDismissRequest = {
-            onOptionClicked(true)
-        },
-        title = {
-            Text(text = "Habilitar Ubicación")
-        },
-        text = {
-            Text("Su ubicación esta desactivada.\npor favor active su ubicación para continuar.")
-        },
-        confirmButton = {
-            Button(
-                onClick = {
-                    onOptionClicked(true)
-                    onAccept()
-                }) {
-                Text("Configurar")
-            }
-        },
-    )
 }
 
 @Preview(showBackground = true)

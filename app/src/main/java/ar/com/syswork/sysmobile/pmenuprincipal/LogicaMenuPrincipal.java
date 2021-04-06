@@ -28,7 +28,7 @@ public class LogicaMenuPrincipal {
 	
 	private Activity a;
 	private ItemMenuPrincipal itemMP;
-	private List<ItemMenuPrincipal> listaOpciones;
+	public	List<ItemMenuPrincipal> listaOpciones;
 	private AppSysMobile app;
 	private DataManager dm;
 	private DaoVendedor daoVendedor;
@@ -87,7 +87,7 @@ public class LogicaMenuPrincipal {
 		forzarLogueo = (daoVendedor.getCount() == 0);
 		if (forzarLogueo)
 		{
-			pantallaManagerMenuPrincipal.muestraAlertaFaltanVendedores();
+			//pantallaManagerMenuPrincipal.muestraAlertaFaltanVendedores();
 			return;
 		}
 		itemMP = new ItemMenuPrincipal();
