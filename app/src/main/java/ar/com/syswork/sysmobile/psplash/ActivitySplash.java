@@ -119,18 +119,17 @@ public class ActivitySplash extends Activity {
 			if (grantResults.length > 0
 					&& grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 				permissionGranted = true;
-				Toast.makeText(this, "Permiso de cámara otorgado",
-						Toast.LENGTH_SHORT).show();
+				//Toast.makeText(this, "Permiso de cámara otorgado",						Toast.LENGTH_SHORT).show();
 			} else {
-				Toast.makeText(this, "Debes otorgar permiso de cámara!", Toast.LENGTH_SHORT).show();
+				//Toast.makeText(this, "Debes otorgar permiso de cámara!", Toast.LENGTH_SHORT).show();
 			}
 			//break;
 			//case REQUEST_PERMISSION_WRITE:
 			if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
 				permissionGranted = true;
-				Toast.makeText(this, "Permiso de almacenamiento externo otorgado", Toast.LENGTH_SHORT).show();
+				//Toast.makeText(this, "Permiso de almacenamiento externo otorgado", Toast.LENGTH_SHORT).show();
 			}else {
-				Toast.makeText(this, "Debes otorgar el permiso de memoria", Toast.LENGTH_SHORT).show();
+				//Toast.makeText(this, "Debes otorgar el permiso de memoria", Toast.LENGTH_SHORT).show();
 			}
 			// break;
 		}
