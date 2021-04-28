@@ -168,6 +168,9 @@ public class LogicaSincronizacion implements Callback{
 		for (ConfiguracionDB da : daoConfiguracion.getAll("")
 		) {
 			if (da.getFechaCarga().equals(formattedDate)) {
+				if(AppSysMobile.isServnutri()){
+					logicaEnviaPendientes.enviarPedidosPendientesMardis();
+				}
 				pantallaManagerSincronizacion.seteaBotonSincronizarVisible(false);
 				pantallaManagerSincronizacion.seteaPrgEstadoConexionVisible(true);
 				pantallaManagerSincronizacion.seteaTxtEstadoConexionVisible(true);
@@ -274,6 +277,28 @@ public class LogicaSincronizacion implements Callback{
 		ThreadSincronizacion tc = new ThreadSincronizacion(h,AppSysMobile.WS_CUENTA,0);
 		Thread t = new Thread(tc);
 		t.start();
+		try {
+			t.join(5000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+
+		pantallaManagerSincronizacion.seteaBotonSincronizarVisible(false);
+		pantallaManagerSincronizacion.seteaPrgEstadoConexionVisible(true);
+		pantallaManagerSincronizacion.seteaTxtEstadoConexionVisible(true);
+		pantallaManagerSincronizacion.seteaTxtEstadoConexion(strIntentandoConectarAlWebService);
+
+		tipoLlamada = OBTENER_ENGINE;
+		 h = new Handler(this);
+
+
+		ThreadSincronizacion tc1 = new ThreadSincronizacion(h, AppSysMobile.WS_VENDEDORES, 0);
+		Thread t1 = new Thread(tc1);
+		t1.start();
+
+
+
+
 	}
 	
 	public void obtenerJsonsYProcesar() {
@@ -503,6 +528,7 @@ public class LogicaSincronizacion implements Callback{
 							jSonCuenta=resultado;
 							pantallaManagerSincronizacion.seteatxtResultadoCuenta(strDescargaExitosa);
 							pantallaManagerSincronizacion.seteaValorCuenta(true);
+
 							break;
 
 
@@ -657,6 +683,9 @@ public class LogicaSincronizacion implements Callback{
 			{
 				if (huboErrores)
 				{
+
+
+
 					// NO PARSEO NADA. ASI QUE PERMITO QUE CIERRE LA PANTALLA
 					pantallaManagerSincronizacion.setVisibleBtnCerrarSincronizacion(true);
 					pantallaManagerSincronizacion.seteaImgSincronizarVisible(true);
@@ -763,6 +792,12 @@ public class LogicaSincronizacion implements Callback{
 			registro.setCantidadRegistros(1);
 			registro.setPaginas(1);
 			registro.setTabla("Cuenta");
+			listaRegistros.add(registro);
+
+			registro = new Registro();
+			registro.setCantidadRegistros(1);
+			registro.setPaginas(1);
+			registro.setTabla("wsSysMobileVendedores");
 			listaRegistros.add(registro);
 
 		}

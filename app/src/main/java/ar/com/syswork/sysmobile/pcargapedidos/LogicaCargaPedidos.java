@@ -380,7 +380,13 @@ public class LogicaCargaPedidos implements IAlertResult, Handler.Callback
 		try{
 
 
+			String valor = pantallaManagerCargaPedidos.getCantidadIntroducida();
+			String formaPago=pantallaManagerCargaPedidos.getFormadePagoIntroducida();
+			String unidadmedida=pantallaManagerCargaPedidos.getUnidadesIntroducida();
 			Articulo articulo ;
+
+
+
 			if(((ActivityCargaPedidos) a).getPosicionItemSeleccionadoEn()!=-1)
 			{
 				int valorseleccionado=((ActivityCargaPedidos) a).getPosicionItemSeleccionadoEn();
@@ -389,29 +395,18 @@ public class LogicaCargaPedidos implements IAlertResult, Handler.Callback
 				setCodigoProductoActual(seleccion.getIdArticulo().toString().trim());
 				listaPedidoItems.remove(seleccion);
 
+
+
 			}else{
 				articulo= daoArticulo.getByKey(getCodigoProductoActual().toString().trim());
 			}
 
-			for (PedidoItem p: listaPedidoItems
-				 ) {
-				if(p.getIdArticulo().equals(articulo.getIdArticulo())) {
-					Toast.makeText(a, "Ya se agrego el producto en el pedido por favor modificar cantidad..!!!", Toast.LENGTH_SHORT).show();
-					return false;
-				}
-
-			}
-
-			String valor = pantallaManagerCargaPedidos.getCantidadIntroducida();
-			String formaPago=pantallaManagerCargaPedidos.getFormadePagoIntroducida();
-			String unidadmedida=pantallaManagerCargaPedidos.getUnidadesIntroducida();
-
-
+			articulo= daoArticulo.getByKey(getCodigoProductoActual().toString().trim());
 			if (valor.equals("")){
 				utilDialogos.muestraToastGenerico(a, debeInformarLaCantidad , false);
 				return false;
 			}else{
-				if(articulo.getPrecio10() < Double.valueOf(valor) && AppSysMobile.isServIndustrial())
+				if(articulo.getPrecio10() < Double.valueOf(valor) )
 				{
 					utilDialogos.muestraToastGenerico(a, "Cantidad mayor a existencia..!!!" , false);
 					return false;
@@ -422,6 +417,17 @@ public class LogicaCargaPedidos implements IAlertResult, Handler.Callback
 					return false;
 				}
 			}
+
+			for (PedidoItem p: listaPedidoItems
+			) {
+				if(p.getIdArticulo().equals(articulo.getIdArticulo())) {
+					Toast.makeText(a, "Ya se agrego el producto en el pedido por favor modificar cantidad..!!!", Toast.LENGTH_SHORT).show();
+					return false;
+				}
+
+			}
+
+
 
 			/*
 			 *Aqui validar forma de pago
@@ -791,10 +797,29 @@ public  double CalcularDescuentoMix(String codigoProductoActual,String opcion,do
 		{
 			Pedido tmpPedido = daoPedido.getById((int)_idPedidoAEliminar);
 			daoPedido.delete(tmpPedido);
+
+
+
 			for (reportecabecera x:
-				daoreportecabecera.getAll("idpedido="+tmpPedido.getIdPedido())) {
-				daoreporteitem.deleteAllKey(String.valueOf(tmpPedido.getIdPedido()));
+				daoreportecabecera.getAll("idpedido="+tmpPedido.getCodigounico())) {
+				daoreporteitem.deleteAllKey(String.valueOf(tmpPedido.getCodigounico()));
 				daoreportecabecera.delete(x);
+			}
+
+			//Actualiza stock pedido
+			if (AppSysMobile.isServnutri()) {
+				List<PedidoItem> pedidoItemA=daoPedidoItem.getAll("idPedido="+_idPedidoAEliminar);
+				for (PedidoItem o:pedidoItemA) {
+
+					Articulo actual = daoArticulo.getByKey(o.getIdArticulo());
+					double cantidadactual = actual.getPrecio10();
+					double cantidad = cantidadactual + o.getCantidad();
+					actual.setPrecio10(cantidad);
+					daoArticulo.update(actual);
+
+
+
+				}
 			}
 
 			daoPedidoItem.deleteByIdPedido(_idPedidoAEliminar);
@@ -835,7 +860,7 @@ public void enviotrking(){
 	{
 		long idPedido;
 		long idPedidoItem;
-		if(importeTotalPedido <= 4)
+		if(importeTotalPedido <= 4 && AppSysMobile.isServIndustrial())
 		{
 			utilDialogos.muestraToastGenerico(a, "El valor de la factura es menor a $4 dolares", false);
 			return;
@@ -854,6 +879,7 @@ public void enviotrking(){
 	    if (_idPedidoAEliminar>0)
 	    {
 	    	Pedido tmpPedido = daoPedido.getById((int)_idPedidoAEliminar);
+	    	List<PedidoItem> pedidoItemA=daoPedidoItem.getAll("idPedido="+_idPedidoAEliminar);
 	    	daoPedido.delete(tmpPedido);
 	    	daoPedidoItem.deleteByIdPedido(_idPedidoAEliminar);
 			for (reportecabecera x:
@@ -861,6 +887,21 @@ public void enviotrking(){
 				daoreporteitem.deleteAllKey(String.valueOf(tmpPedido.getCodigounico()));
 				daoreportecabecera.delete(x);
 			}
+			if (AppSysMobile.isServnutri()) {
+				for (PedidoItem o:pedidoItemA) {
+
+						Articulo actual = daoArticulo.getByKey(o.getIdArticulo());
+						double cantidadactual = actual.getPrecio10();
+						double cantidad = cantidadactual + o.getCantidad();
+						actual.setPrecio10(cantidad);
+						daoArticulo.update(actual);
+
+
+
+				}
+			}
+
+
 	    }
 		CodigosNuevos codigosNuevos= new CodigosNuevos();
 		codigosNuevos= daoCodigosNuevos.CodigosActual();
@@ -914,6 +955,18 @@ public void enviotrking(){
 				pedidoItem.setIdPedido(idPedido);
 				idPedidoItem = daoPedidoItem.save(pedidoItem);
 				reporteitem _Reporteitem=new reporteitem();
+				//actualizar stock de productos auto venta
+				if(AppSysMobile.isServnutri())
+				{
+					Articulo actual= daoArticulo.getByKey(pedidoItem.getIdArticulo());
+					double cantidadactual=actual.getPrecio10();
+					double cantidad=cantidadactual-pedidoItem.getCantidad();
+					actual.setPrecio10(cantidad);
+					daoArticulo.update(actual);
+
+
+				}
+
 
 				_Reporteitem.setCodcabecera(Integer.valueOf(pedido.getCodigounico()));
 				_Reporteitem.setCodproducto(pedidoItem.getIdArticulo());
@@ -964,7 +1017,7 @@ public void enviotrking(){
 		}
 		Double taskTime=-1.0;
 		Date Dataend = new Date();
-		long differenceInMillis = Dataend.getTime() - activityCargaPedidos.DataStartPedido.getTime();
+		long differenceInMillis =60000;
 		long Time = (differenceInMillis) / 60000;
 		DecimalFormat twoDForm = new DecimalFormat("#.##");
 		taskTime = Double.valueOf(twoDForm.format(Time));

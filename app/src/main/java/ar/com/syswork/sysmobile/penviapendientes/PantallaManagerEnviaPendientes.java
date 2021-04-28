@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import ar.com.syswork.sysmobile.R;
+import ar.com.syswork.sysmobile.shared.AppSysMobile;
 import ar.com.syswork.sysmobile.util.DialogManager;
 
 public class PantallaManagerEnviaPendientes {
@@ -40,6 +41,13 @@ public class PantallaManagerEnviaPendientes {
 		Button btnEnviarPendientesvisitas = (Button) a.findViewById(R.id.btnEnviarPendientesvisitas);
 		Button btnEnviarReeviar=(Button)a.findViewById(R.id.btnEnviarReeviar);
 		editjson =(EditText)a.findViewById((R.id.editjson));
+		if(AppSysMobile.isServnutri())
+		{
+			if(btnEnviarPendientesvisitas!=null && btnEnviarReeviar!=null) {
+				btnEnviarPendientesvisitas.setVisibility(View.INVISIBLE);
+				btnEnviarReeviar.setVisibility(View.INVISIBLE);
+			}
+		}
 		
 		if (btnEnviarPendientes!=null)
 			seteaListener(btnEnviarPendientes);
@@ -58,22 +66,22 @@ public class PantallaManagerEnviaPendientes {
 	public void mostrarMensajeNoHayRegistrosPendientes() 
 	{
 		DialogManager dialogManager = new DialogManager();
-		dialogManager.muestraToastGenerico(a, "error al generar el Json", false);
+		dialogManager.muestraToastGenerico(a, "No existe información para enviar", false);
 	}
 	public void mostrarMensajeNoHayRegistrosVisistas()
 	{
 		DialogManager dialogManager = new DialogManager();
-		dialogManager.muestraToastGenerico(a, "error al generar el Json", false);
+		dialogManager.muestraToastGenerico(a, "No existe información para enviar", false);
 	}
 	public void mostrarMensajeNoHayRegistrosPagos()
 	{
 		DialogManager dialogManager = new DialogManager();
-		dialogManager.muestraToastGenerico(a, "error al generar el Json", false);
+		dialogManager.muestraToastGenerico(a, "No existe información para enviar", false);
 	}
 	public void mostrarMensajeNoHayRegistrosInventario()
 	{
 		DialogManager dialogManager = new DialogManager();
-		dialogManager.muestraToastGenerico(a, "error al generar el Json", false);
+		dialogManager.muestraToastGenerico(a, "No existe información para enviar", false);
 	}
 
 	public void creaDialogoProgreso() {

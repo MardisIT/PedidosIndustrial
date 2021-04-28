@@ -85,7 +85,7 @@ public class ThreadParser implements Runnable{
 	private DaoDESCUENTO_VOLUMEN daoDESCUENTO_volumen;
 	private DaoPRECIO_ESCALA daoPRECIO_escala;
 	private DaoCartera daoCartera;
-private DaoCodigosNuevos daoCodigosNuevos;
+	private DaoCodigosNuevos daoCodigosNuevos;
 	
 	private Cliente cliente;
 	private Articulo articulo;
@@ -541,15 +541,30 @@ private DaoCodigosNuevos daoCodigosNuevos;
 	//@RequiresApi(api = Build.VERSION_CODES.LOLLIPOP_MR1)
 	@RequiresApi(api = Build.VERSION_CODES.LOLLIPOP_MR1)
 	private void grabaClientes() {
+		final CuentaSession objcuentaSession= new CuentaSession();
+
+
+
+		Calendar c1 = Calendar.getInstance();
+		SimpleDateFormat df1 = new SimpleDateFormat("yyyy-MM-dd");
+		String formattedDate1 = df1.format(c1.getTime());
+
+
+
+		List<Cliente> listaclienteactual = new ArrayList<>();
+		String fechaactual1="";
+		for (ConfiguracionDB da : daoConfiguracion.getAll("")
+		) {
+			fechaactual1=da.getFechaCarga();
+		}
+
+		if(fechaactual1.equals(formattedDate1)) {
+			listaclienteactual = daoCliente.getAll("");
+		}
+
 
 		if (this.pagina == 1)
 			daoCliente.deleteAll("");
-
-
-
-
-
-
 
 		daoCodigosNuevos.deleteAll();
 
@@ -574,18 +589,20 @@ private DaoCodigosNuevos daoCodigosNuevos;
 		List<RouteBranches> _route= new ArrayList<RouteBranches>() {
 		};
 		List<rutasupervisor> objenviarrutassuper= new ArrayList<>();
-		final CuentaSession objcuentaSession= new CuentaSession();
+
 		try
 		{
 			arrayJson = new JSONArray(msgJson);
 			String ruta = "";
 			for (int x = 0; x<arrayJson.length() ;x++) {
 				jsObject = arrayJson.getJSONObject(x);
-
 				cliente.setCpteDefault("");
-				for (reportecabecera k :daoreportecabecera.getAll("codcliente="+jsObject.getString("code"))){
-					cliente.setCpteDefault("E");
+				for(Cliente clie : listaclienteactual) {
+					if (clie.getCodigo().toString().equals(jsObject.getString("code"))) {
+						cliente.setCpteDefault(clie.getCpteDefault());
+					}
 				}
+
 				cliente.setCodigo(jsObject.getString("code"));
 				cliente.setCodigoOpcional(jsObject.getString("externalCode"));
 				cliente.setRazonSocial(jsObject.getString("name"));

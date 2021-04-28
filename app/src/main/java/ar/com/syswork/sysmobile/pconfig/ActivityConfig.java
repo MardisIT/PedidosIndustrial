@@ -36,7 +36,7 @@ public class ActivityConfig extends AppCompatActivity implements OnClickListener
 		setContentView(R.layout.activity_config);
 		
 		edtRutaAccesoWebService = (EditText) findViewById(R.id.edtRutaWebService);
-		edtRutaAccesoWebService.setText("https://dyvenpro.azurewebsites.net/api/Order");
+		edtRutaAccesoWebService.setText("https://mardisservice.azurewebsites.net/api/Order");
 		edtPuertoWebService = (EditText) findViewById(R.id.edtPuertoWebService);
 		edtTimeout = (EditText) findViewById(R.id.edtTimeout);
 		chkSolicitaClaseDePrecio = (CheckBox) findViewById(R.id.chkSolicitaClaseDePrecio);

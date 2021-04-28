@@ -19,17 +19,22 @@ public class ThreadSincronizacion implements Runnable{
 	private int tipoSincronizacion;
 	private String rutaAcceso;
 	private String  servidor;
+	private AppSysMobile app;
 	private String rutaAccesoServidor;
 	final CuentaSession objcuentaSession= new CuentaSession();
 	public ThreadSincronizacion(Handler h, int tipoSincronizacion, int pagina)
 	{
 		this.h = h;
-		this.tipoSincronizacion = tipoSincronizacion; 
+		this.tipoSincronizacion = tipoSincronizacion;
+
 		
 		switch (tipoSincronizacion)
 		{
 		case AppSysMobile.WS_VENDEDORES:
-			rutaAcceso = AppSysMobile.WS_ACCESO_VENDEDORES +"?Idaccount="+objcuentaSession.getCu_idAccount();
+			if(objcuentaSession.getCu_idAccount()==null)
+				rutaAcceso = AppSysMobile.WS_ACCESO_VENDEDORES +"?Idaccount="+"0";
+			else
+				rutaAcceso = AppSysMobile.WS_ACCESO_VENDEDORES +"?Idaccount="+objcuentaSession.getCu_idAccount();
 			break;
 		case AppSysMobile.WS_RUBROS:
 			rutaAcceso = AppSysMobile.WS_ACCESO_RUBROS +"?Idaccount="+objcuentaSession.getCu_idAccount();
@@ -38,12 +43,15 @@ public class ThreadSincronizacion implements Runnable{
 			rutaAcceso = AppSysMobile.WS_ACCESO_DEPOSITOS +"?Idaccount="+objcuentaSession.getCu_idAccount();
 			break;
 		case AppSysMobile.WS_CLIENTES:
-			rutaAcceso = AppSysMobile.WS_ACCESO_CLIENTES +"idAccount="+ objcuentaSession.getCu_idAccount()+"&IDDEVICE="+AppSysMobile.WS_IMAIL;
+			if(AppSysMobile.isServIndustrial())
+				rutaAcceso = AppSysMobile.WS_ACCESO_CLIENTES +"idAccount="+ objcuentaSession.getCu_idAccount()+"&IDDEVICE="+AppSysMobile.WS_IMAIL;
+			else
+				rutaAcceso = AppSysMobile.WS_ACCESO_CLIENTES +"idAccount="+ objcuentaSession.getCu_idAccount()+"&IDDEVICE="+objcuentaSession.getCu_vendedor();
 			servidor="engine";
 
 			break;
 		case AppSysMobile.WS_ARTICULOS:
-			rutaAcceso = AppSysMobile.WS_ACCESO_ARTICULOS +"?Idaccount="+objcuentaSession.getCu_idAccount();
+			rutaAcceso = AppSysMobile.WS_ACCESO_ARTICULOS +"?Idaccount="+objcuentaSession.getCu_idAccount()+"&Idvendedor="+objcuentaSession.getCu_vendedor();
 			break;
 		case AppSysMobile.WS_REGISTROS:
 			rutaAcceso = AppSysMobile.WS_CONSULTA_CANTIDAD_REGISTOS;

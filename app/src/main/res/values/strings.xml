@@ -18,7 +18,7 @@
     <string name="never_value" translatable="false"></string>
     <string name="filler">FILLER-</string>
 
-    <string name="title_activity_activity_pmenu_principal">Ventas</string>
+    <string name="title_activity_activity_pmenu_principal">Ventas 1.1</string>
     <string name="title_activity_activity_sincornizar">Sincronizar Datos</string>
     <string name="title_activity_activity_config">Configuración</string>
     <string name="title_activity_activity_consulta_clientes">Clientes</string>
@@ -70,7 +70,7 @@
     <string name="grabar_pedido">Grabar Pedido</string>
     <string name="grabar_pedido_y_enviar">Grabar y Enviar</string>
     <string name="enviar_y_facturar">Enviar y Facturar</string>
-    <string name="api_server" translatable="false">https://dyvenpro.azurewebsites.net/</string>
+    <string name="api_server" translatable="false">https://mardisservice.azurewebsites.net/</string>
 
     <string name="cancelar_pedido">Cancelar Pedido</string>
     <string name="que_hacer_con_el_item">Que hacer con el ITEM?</string>
@@ -160,7 +160,7 @@
     <string name="solicitaIncluirEnReparto">Solicita incluir en reparto</string>
     <string name="srvindustrial">Industrial</string>
     <string name="srvnutri">Nutri</string>
-    <string name="incluirEnReparto">Incluir en Reparto?</string>
+    <string name="incluirEnReparto">Finalizar Pedido?</string>
     <string name="debeSeleccionarLaClaseDePrecio">Debe Seleccionar la clase de Precio</string>
     <string name="clasesDePrecioHabilitadas">Clases de Precio Habilitadas</string>
     <string name="clasesDeServidor">Servidor Cliente</string>

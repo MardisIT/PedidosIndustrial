@@ -115,7 +115,7 @@ public class visita extends AppCompatActivity
     private AppSysMobile app;
     public String opcionpedido;
     public String opcionpedidono;
-
+    private LocationListener locListener;
 
     private DataManager dataManager;
 
@@ -124,8 +124,13 @@ public class visita extends AppCompatActivity
     private String codigoVendedor;
     public static Date DataStart;
 
-
+    private static final long MIN_TIEMPO_ENTRE_UPDATES = 1000 * 45 * 1; // 1 minuto
     private DaoCliente daoCliente;
+    private static final int REQUEST_PERMISSION_CAMERA = 1001;
+    private static final int REQUEST_PERMISSION_WRITE = 1002;
+    private static final int REQUEST_PERMISSION_RED_PHONE = 1003;
+    private static final int REQUEST_PERMISSION_RED_LOCATION = 1004;
+    private boolean permissionGranted;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -274,38 +279,53 @@ public class visita extends AppCompatActivity
         double va2 = 2 * Math.atan2(Math.sqrt(va1), Math.sqrt(1 - va1));
         double distancia = radioTierra * va2;
         double distanciametros=distancia*1000;
-        if(distanciametros>100 && !c.getZonaPeligrosa().equals("SI") && c.getActualizaGeo()==0 ){
+        double distanciavar=0;
+        if(AppSysMobile.isServIndustrial())
+            distanciavar=100;
+            else
+            distanciavar=30;
+
+        if(distanciametros>distanciavar && !c.getZonaPeligrosa().equals("SI") && c.getActualizaGeo()==0 ){
             final AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("Actualizar Información");
             builder.setMessage("¿Quieres actualizar ubicación del cliente?");
             builder.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialogo1, int id) {
                     btnguardarvisita.setVisibility(View.VISIBLE);
-                    ActualizarGeo fetchJsonTask = new ActualizarGeo(a);
-                    fetchJsonTask.execute(String.valueOf(c.getIDCLIENTE()), latitudeValueGPS.getText().toString(),longitudeValueGPS.getText().toString(),codCliente);
+                   ActualizarGeo fetchJsonTask = new ActualizarGeo(a);
+                   fetchJsonTask.execute(String.valueOf(c.getIDCLIENTE()), latitudeValueGPS.getText().toString(),longitudeValueGPS.getText().toString(),codCliente);
                 }
             });
             builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialogo1, int id) {
-                    finish();
+                    //finish();
                 }
             });
 
             AlertDialog dialog = builder.create();
-            dialog.show();
+            try {
+                dialog.show();
+            }catch (Exception ex) {
+
+            }
         }
-        if(distanciametros>100 &&  c.getActualizaGeo()==1 )
+        if(distanciametros>distanciavar &&  c.getActualizaGeo()==1 && !c.getZonaPeligrosa().equals("SI") )
         {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("Informacón Ubicación");
             builder.setMessage("Su ubicación actual es mayor a 100 metros del PDV. por favor informar al Supervisor");
             builder.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialogo1, int id) {
-                    finish();
+                    //finish();
                 }
             });
             AlertDialog dialog = builder.create();
-            dialog.show();
+            try {
+                dialog.show();
+            }catch (Exception ex) {
+
+            }
+
         }else{
             btnguardarvisita.setVisibility(View.VISIBLE);
         }
@@ -313,9 +333,10 @@ public class visita extends AppCompatActivity
         return distanciametros;
     }
 
-
+//detalle de campos
     private final LocationListener locationListenerGPS = new LocationListener() {
         public void onLocationChanged(Location location) {
+
             longitudeGPS = location.getLongitude();
             latitudeGPS = location.getLatitude();
 
@@ -328,13 +349,13 @@ public class visita extends AppCompatActivity
                         Cliente selccion=daoCliente.getByKey(codCliente);
                         if(selccion.getLatitudeBranch()!=null && selccion.getLenghtBranch()!=null){
                             if(selccion.getLatitudeBranch()!="0" && selccion.getLenghtBranch()!="0"){
-                                distanciaCoord(Double.valueOf(latitudeValueGPS.getText().toString()),Double.valueOf(longitudeValueGPS.getText().toString()),Double.valueOf(selccion.getLatitudeBranch()),Double.valueOf(selccion.getLenghtBranch()),selccion);
+                                distanciaCoord(Double.valueOf(latitudeValueGPS.getText().toString()),Double.valueOf(longitudeValueGPS.getText().toString()),Double.valueOf(selccion.getLatitudeBranch().toString().replace(",",".")),Double.valueOf(selccion.getLenghtBranch().toString().replace(",",".")),selccion);
                             }
                         }
                     }
 
 
-                    Toast.makeText(getApplication(), "GPS Provider update", Toast.LENGTH_SHORT).show();
+                   // Toast.makeText(getApplication(), "GPS Provider update", Toast.LENGTH_SHORT).show();
                     //btnguardarvisita.setVisibility(View.VISIBLE);
                     if(daoVisitasUio.getAll("").size()!=0){
                         Toast.makeText(a, "Enviar Visitas Pendientes", Toast.LENGTH_SHORT).show();
@@ -410,36 +431,46 @@ public class visita extends AppCompatActivity
 
     }
     @SuppressLint("MissingPermission")
-    public  void  tomarGPSinicial(){
+    public  void  tomarGPSinicial() {
         if (!checkLocation())
             return;
         locationManager.removeUpdates(locationListenerGPS);
         Location loc = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        if(loc!= null) {
+
+
+        if (loc != null) {
             longitudeValueGPS.setText(loc.getLongitude() + "");
             latitudeValueGPS.setText(loc.getLatitude() + "");
-            if(codCliente!=""){
-                if(loc.getLongitude()!=0.0 && loc.getLatitude()!=0.0) {
+            if (codCliente != "") {
+                if (loc.getLongitude() != 0.0 && loc.getLatitude() != 0.0) {
                     Cliente selccion = daoCliente.getByKey(codCliente);
                     if (selccion.getLatitudeBranch() != null && selccion.getLenghtBranch() != null) {
                         if (selccion.getLatitudeBranch() != "0" && selccion.getLenghtBranch() != "0") {
 
-                           distanciaCoord(Double.valueOf(latitudeValueGPS.getText().toString()), Double.valueOf(longitudeValueGPS.getText().toString()), Double.valueOf(selccion.getLatitudeBranch().replace(",",".")), Double.valueOf(selccion.getLenghtBranch().replace(",",".")), selccion);
+                            distanciaCoord(Double.valueOf(latitudeValueGPS.getText().toString()), Double.valueOf(longitudeValueGPS.getText().toString()), Double.valueOf(selccion.getLatitudeBranch().replace(",", ".")), Double.valueOf(selccion.getLenghtBranch().replace(",", ".")), selccion);
                         }
                     }
                 }
             }
+        }
 
 
 
-            Toast.makeText(getApplication(), "GPS Provider update", Toast.LENGTH_SHORT).show();
-            //btnguardarvisita.setVisibility(View.VISIBLE);
-            if(daoVisitasUio.getAll("").size()!=0){
-                Toast.makeText(a, "Enviar Visitas Pendientes", Toast.LENGTH_SHORT).show();
-            }
-            if(daoPedido.getAll("").size()!=0){
-                Toast.makeText(a, "Enviar Pedidos Pendientes", Toast.LENGTH_SHORT).show();
-            }
+
+        //Se define la interfaz LocationListener, que deberá implementarse con los siguientes métodos.
+
+        locationManager.requestLocationUpdates(
+                LocationManager.GPS_PROVIDER, MIN_TIEMPO_ENTRE_UPDATES, 10, locationListenerGPS);
+
+
+            // Toast.makeText(getApplication(), "GPS Provider update", Toast.LENGTH_SHORT).show();
+        //btnguardarvisita.setVisibility(View.VISIBLE);
+        if (daoVisitasUio.getAll("").size() != 0) {
+            Toast.makeText(a, "Enviar Visitas Pendientes", Toast.LENGTH_SHORT).show();
+        }
+        if (daoPedido.getAll("").size() != 0) {
+            Toast.makeText(a, "Enviar Pedidos Pendientes", Toast.LENGTH_SHORT).show();
+
         }
     }
 
@@ -455,7 +486,7 @@ public class visita extends AppCompatActivity
         } else {
 
             locationManager.requestLocationUpdates(
-                    LocationManager.GPS_PROVIDER, 2 * 20 * 1000, 10, locationListenerGPS);
+                    LocationManager.GPS_PROVIDER, MIN_TIEMPO_ENTRE_UPDATES, 10, locationListenerGPS);
             button.setText(R.string.pause);
         }
     }

@@ -3,18 +3,23 @@ package ar.com.syswork.sysmobile.shared;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.provider.Settings;
 import androidx.annotation.RequiresApi;
+import androidx.core.content.ContextCompat;
+
 import android.telephony.SubscriptionInfo;
 import android.telephony.SubscriptionManager;
 import android.telephony.TelephonyManager;
+import android.widget.Toast;
 
 //import com.evernote.android.job.JobManager;
 //import com.evernote.android.job.JobManagerCreateException;
@@ -108,12 +113,12 @@ public class AppSysMobile extends Application {
 	//GETTERS
 	public final static String WS_ACCESO_VENDEDORES = "/getVendedores";
 	public final static String WS_ACCESO_RUBROS  = "/getRubros";
-	public final static String WS_ACCESO_CLIENTES = "https://dyvenpro.azurewebsites.net/api/Branch/RouteBranch?";
+	public final static String WS_ACCESO_CLIENTES = "https://mardisservice.azurewebsites.net/api/Branch/RouteBranch?";
 	public final static String WS_ACCESO_ARTICULOS = "/getArticulos";
 	public final static String WS_CONSULTA_CTA_CTE = "/getCtaCte";
 	public final static String WS_ACCESO_DEPOSITOS = "/getDepositos";
 	public final static String WS_CONSULTA_STOCK = "/GETObtenerProductoXCodigo";
-	//http://dyvenpro.azurewebsites.net/api/Order/GETObtenerProductoXCodigo?
+	//http://mardisservice.azurewebsites.net/api/Order/GETObtenerProductoXCodigo?
 	public final static String WS_CONSULTA_CANTIDAD_REGISTOS = "/getRegistros";
 
 
@@ -122,7 +127,7 @@ public class AppSysMobile extends Application {
 	public final static String WS_CONSULTA_DESVOLUMEN = "/GetDescuentoVolumens";
 	public final static String WS_CONSULTA_DESPRECIOESCALA = "/GetPrecioEscalas";
 	public  final  static  String WS_CONSULTA_CARTERA="http://pedido.gnoboa.com:2108/api/CoberturaCartera/obtener";
-	public  final  static  String WS_CONSULTA_CODIGOS="http://dyvenpro.azurewebsites.net/api/Order/SequeceOrder?";
+	public  final  static  String WS_CONSULTA_CODIGOS="http://mardisservice.azurewebsites.net/api/Order/SequeceOrder?";
 
 
 	public  static String WS_IMAIL="";
@@ -131,14 +136,14 @@ public class AppSysMobile extends Application {
 
 
 	//GETTERS ENGIENE
-	public  final  static  String WS_CARGARCIENTAS="https://dyvenpro.azurewebsites.net/api/Branch/Campaign";
+	public  final  static  String WS_CARGARCIENTAS="https://mardisservice.azurewebsites.net/api/Branch/Campaign";
 	public final static String WS_LOCALES_RUTA = "http://geomardis6728.cloudapp.net/servicios/api/Task?";
 	//SETTERS
-	public final static String WS_ACCESO_GRABAR_PEDIDOS = "https://dyvenpro.azurewebsites.net/api/Order/PEDIDOS";
+	public final static String WS_ACCESO_GRABAR_PEDIDOS = "https://mardisservice.azurewebsites.net/api/Order/PEDIDOS";
 	public final static String WS_ACCESO_GRABAR_PEDIDOS_INDUSTRIAL = "https://pedido.gnoboa.com:2108/api/PedidoCobertura/AgregarLista";
 	public final static String WS_ACCESO_GRABAR_PAGOS = "http://geomardis6728.cloudapp.net/API/api/PAGOS";
-	public final static String WS_ACCESO_GRABAR_INVENTARIO = "https://dyvenpro.azurewebsites.net/api/Order/inventario";
-	public final static String WS_ACCESO_GRABAR_VISITAS = "http://dyvenpro.azurewebsites.net/api/Order/GETGuardarVisitas";
+	public final static String WS_ACCESO_GRABAR_INVENTARIO = "https://mardisservice.azurewebsites.net/api/Order/inventario";
+	public final static String WS_ACCESO_GRABAR_VISITAS = "http://mardisservice.azurewebsites.net/api/Order/GETGuardarVisitas";
 	public final static String WS_ACCESO_GRABA_PEDIDO = "/setPedido";
 	public final  static  String WS_ACCESO_GRABA_DEVOLUCIONES="https://pedido.gnoboa.com:2108/api/CoberturaDevolucion/AgregarLista";
 
@@ -212,17 +217,26 @@ public class AppSysMobile extends Application {
 
      /* String  deviceId = new PropertyManager(Collect.getInstance().getApplicationContext())
                 .getSingularProperty(PropertyManager.withUri(PropertyManager.PROPMGR_DEVICE_ID));*/
+
 		return myIMEI;
 
 	}
+
+
+
 	@RequiresApi(api = Build.VERSION_CODES.LOLLIPOP_MR1)
 	public void iniciaConfiguracion()
 	{
 
+
+
+
+		//solicitar permisos
+
 		SharedPreferences prefs = getSharedPreferences("CONFIGURACION_WS",Context.MODE_PRIVATE);
 		
 		//String ruta = prefs.getString("rutaAccesoWebService", "http://serviciopedidos.azurewebsites.net/api");
-		String ruta = prefs.getString("rutaAccesoWebService", "https://dyvenpro.azurewebsites.net/api/Order");
+		String ruta = prefs.getString("rutaAccesoWebService", "https://mardisservice.azurewebsites.net/api/Order");
 
 		int puerto = prefs.getInt("puertoWebService", 80);
 		int timeOutSockets = prefs.getInt("timeOut", DEFAULT_TIMEOUT_SOCKETS);
@@ -230,10 +244,10 @@ public class AppSysMobile extends Application {
 		String clasesDePrecioHabilitadas = prefs.getString("clasesDePrecioHabilitadas", "1");
 		boolean solicitaIncluirEnReparto = prefs.getBoolean("solicitaIncluirEnReparto", true);
 
-		boolean ServIndustrial = prefs.getBoolean("ServIndustrial", true);
-		boolean Servnutri = prefs.getBoolean("Servnutri", false);
+		boolean ServIndustrial = prefs.getBoolean("ServIndustrial", false);
+		boolean Servnutri = prefs.getBoolean("Servnutri", true);
 
-		WS_IMAIL=obterImeid();
+		//WS_IMAIL=obterImeid();
 		Editor editor = prefs.edit();
 		
 		editor.putString("rutaAccesoWebService", ruta);

@@ -46,7 +46,7 @@ public class JavaRestClient {
          SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
          String Token="";
          Retrofit _retrofit =new  Retrofit.Builder()
-                 .baseUrl("https://dyvenpro.azurewebsites.net/")
+                 .baseUrl("https://mardisservice.azurewebsites.net/")
                  .addConverterFactory(GsonConverterFactory.create())
                  .build();
          PostService service = _retrofit.create(PostService.class);
@@ -81,7 +81,7 @@ public class JavaRestClient {
          }
         }
     */
-String apiser="https://dyvenpro.azurewebsites.net/";
+String apiser="https://mardisservice.azurewebsites.net/";
     public void getToken2(User _user,Activity c){
         try {
 

@@ -11,6 +11,15 @@ public class CuentaSession {
     public static String Cu_idcampania ;
     public static String Cu_CampaniaNombre ;
     public static  String Cu_imail;
+    public  static  String Cu_vendedor;
+
+    public static String getCu_vendedor() {
+        return Cu_vendedor;
+    }
+
+    public static void setCu_vendedor(String cu_vendedor) {
+        Cu_vendedor = cu_vendedor;
+    }
 
     public static String getCu_imail() {
         return Cu_imail;

@@ -28,8 +28,8 @@ public class AdapterConsultaArticulos  extends ArrayAdapter<Articulo> {
 		
 		View view = null;
 		EnvoltorioAux envoltorio = null;
-		
-		
+
+
 		if (convertView == null){
 			view = lInflater.inflate(R.layout.item_consulta_articulos,null);
 			
@@ -37,6 +37,7 @@ public class AdapterConsultaArticulos  extends ArrayAdapter<Articulo> {
 			envoltorio.txtDescripcion = (TextView) view.findViewById(R.id.txtDescripcion);
 			envoltorio.txtCodigo = (TextView) view.findViewById(R.id.txtCodigo);
 			envoltorio.txtPrecio = (TextView) view.findViewById(R.id.txtPrecio);
+			envoltorio.txtstock = (TextView) view.findViewById(R.id.txtstock);
 			
 			view.setTag(envoltorio);
 			
@@ -47,12 +48,14 @@ public class AdapterConsultaArticulos  extends ArrayAdapter<Articulo> {
 			envoltorio = (EnvoltorioAux) view.getTag();
 			
 		}
-		
+
 		Articulo articulo = getItem(position);
+
 
 		envoltorio.txtDescripcion.setText(articulo.getDescripcion());
 		envoltorio.txtCodigo.setText(articulo.getIdArticulo());
 		envoltorio.txtPrecio.setText(Double.toString(articulo.getPrecio1()));
+		envoltorio.txtstock.setText("Stock: "+ articulo.getPrecio10());
 
 
 		// Si es el Ultimo, RECARGO
@@ -75,6 +78,7 @@ public class AdapterConsultaArticulos  extends ArrayAdapter<Articulo> {
 		TextView txtDescripcion;
 		TextView txtPrecio;
 		TextView txtCodigo;
+		TextView txtstock;
 
 	}
 }

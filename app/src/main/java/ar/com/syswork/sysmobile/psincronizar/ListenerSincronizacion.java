@@ -1,16 +1,21 @@
 package ar.com.syswork.sysmobile.psincronizar;
 
+import android.content.Intent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import ar.com.syswork.sysmobile.R;
+import ar.com.syswork.sysmobile.daos.DataManager;
+import ar.com.syswork.sysmobile.pmenuprincipal.LogicaMenuPrincipal;
+import ar.com.syswork.sysmobile.shared.AppSysMobile;
 
 public class ListenerSincronizacion implements OnClickListener {
 	
 	private LogicaSincronizacion logicaSincronizacion;
 	private PantallaManagerSincronizacion pantallaManagerSincronizacion;
-	
+	private DataManager dm;
 	public ListenerSincronizacion(LogicaSincronizacion logicaSincronizacion) {
 		this.logicaSincronizacion = logicaSincronizacion;
+
 	}
 
 	public void seteaListener(View v)
@@ -36,6 +41,8 @@ public class ListenerSincronizacion implements OnClickListener {
 					//pantallaManagerSincronizacion.finalizarActivityConErrores();
 				else
 					pantallaManagerSincronizacion.finalizarActivitySinErrores();
+
+
 				break;
 			
 		}

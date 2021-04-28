@@ -94,9 +94,9 @@ public class AppSysMobile extends Application {
 	public  final  static  String WS_CARGARCIENTAS="http://geomardis6728.cloudapp.net/servicios/api/Canpania";
 	public final static String WS_LOCALES_RUTA = "http://geomardis6728.cloudapp.net/servicios/api/Task?";
 	//SETTERS
-	public final static String WS_ACCESO_GRABAR_PEDIDOS = "https://dyvenpro.azurewebsites.net/api/Order/PEDIDOS";
+	public final static String WS_ACCESO_GRABAR_PEDIDOS = "https://mardisservice.azurewebsites.net/api/Order/PEDIDOS";
 	public final static String WS_ACCESO_GRABAR_PAGOS = "http://geomardis6728.cloudapp.net/API/api/PAGOS";
-	public final static String WS_ACCESO_GRABAR_INVENTARIO = "https://dyvenpro.azurewebsites.net/api/Order/inventario";
+	public final static String WS_ACCESO_GRABAR_INVENTARIO = "https://mardisservice.azurewebsites.net/api/Order/inventario";
 	public final static String WS_ACCESO_GRABAR_VISITAS = "http://geomardis6728.cloudapp.net/API/api/visitasUios";
 	public final static String WS_ACCESO_GRABA_PEDIDO = "/setPedido";
 	
@@ -176,13 +176,13 @@ public class AppSysMobile extends Application {
 		SharedPreferences prefs = getSharedPreferences("CONFIGURACION_WS",Context.MODE_PRIVATE);
 		
 		//String ruta = prefs.getString("rutaAccesoWebService", "http://serviciopedidos.azurewebsites.net/api");
-		String ruta = prefs.getString("rutaAccesoWebService", "https://dyvenpro.azurewebsites.net/api/Order");
+		String ruta = prefs.getString("rutaAccesoWebService", "https://mardisservice.azurewebsites.net/api/Order");
 		int puerto = prefs.getInt("puertoWebService", 80);
 		int timeOutSockets = prefs.getInt("timeOut", DEFAULT_TIMEOUT_SOCKETS);
 		boolean solicitaClaseDePrecio = prefs.getBoolean("solicitaClaseDePrecio", true);
 		String clasesDePrecioHabilitadas = prefs.getString("clasesDePrecioHabilitadas", "1");
 		boolean solicitaIncluirEnReparto = prefs.getBoolean("solicitaIncluirEnReparto", true);
-		WS_IMAIL=obterImeid();
+		//WS_IMAIL=obterImeid();
 		Editor editor = prefs.edit();
 		
 		editor.putString("rutaAccesoWebService", ruta);

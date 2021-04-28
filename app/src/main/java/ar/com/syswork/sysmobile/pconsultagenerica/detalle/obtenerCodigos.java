@@ -53,7 +53,7 @@ public class obtenerCodigos extends AsyncTask<String, Void, String> {
 
         try {
             JsonObject postData = new JsonObject();
-            URL url = new URL("http://dyvenpro.azurewebsites.net/api/Order/SequeceOrder?idvendedor=1&iddevice="+AppSysMobile.WS_IMAIL);
+            URL url = new URL("http://mardisservice.azurewebsites.net/api/Order/SequeceOrder?idvendedor=1&iddevice="+AppSysMobile.WS_IMAIL);
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestProperty("Content-Type", "application/json");
             urlConnection.setRequestMethod("POST");

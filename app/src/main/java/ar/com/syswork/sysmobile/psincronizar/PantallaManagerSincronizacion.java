@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.Intent;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
@@ -83,6 +84,7 @@ public class PantallaManagerSincronizacion {
 	private Button btnCerrarSincronizacion;
 	private Button btncargarlocalesCL;
 	private Spinner cmbcampaniaCL;
+
 	private AppSysMobile app;
 	private DataManager dm;
 	private DaoCuenta daoCuenta;
@@ -111,7 +113,12 @@ public class PantallaManagerSincronizacion {
 			fetchJsonTask.execute("", "");
 		}
 
-
+		if (app.getVendedorLogueado()=="") {
+			btnSincronizar.setVisibility(View.INVISIBLE);
+		}else{
+			btnSincronizar.setVisibility(View.VISIBLE);
+			objcuentaSession.setCu_vendedor(app.getVendedorLogueado());
+		}
 
 		daoConfiguracion=dm.getDaoConfiguracion();
 		List<Capania> listOBJ= daoCuenta.getAll("");
@@ -162,6 +169,7 @@ public class PantallaManagerSincronizacion {
 						objcuentaSession.setCu_AccountNombre("");
 						objcuentaSession.setCu_idcampania("");
 						objcuentaSession.setCu_CampaniaNombre("");
+						//objcuentaSession.setCu_vendedor("");
 
 						objcuentaSession.setCu_ID(currentLead.getID());
 						objcuentaSession.setCu_idAccount(currentLead.getIdAccount());
@@ -169,6 +177,7 @@ public class PantallaManagerSincronizacion {
 						objcuentaSession.setCu_idcampania(currentLead.getIdCampania());
 						objcuentaSession.setCu_CampaniaNombre(currentLead.getCampaniaNombre());
 						objcuentaSession.setCu_imail(getImei_id());
+
 
 					}
 
@@ -315,8 +324,20 @@ public class PantallaManagerSincronizacion {
 
 	public void finalizarActivitySinErrores()
 	{
-		a.setResult(Activity.RESULT_OK);
-		a.finish();
+
+
+		if (app.getVendedorLogueado()=="")
+		{
+
+				Intent i = new Intent(a,ar.com.syswork.sysmobile.plogin.ActivityLogin.class);
+				a.startActivity(i);
+				a.finish();
+
+
+		}else{
+			a.setResult(Activity.RESULT_OK);
+			a.finish();
+		}
 	}
 	
 	public void cierraDialogoSincronizacion()

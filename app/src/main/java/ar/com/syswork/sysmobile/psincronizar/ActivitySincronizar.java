@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;;
 import java.util.List;
 
 import ar.com.syswork.sysmobile.R;
+import ar.com.syswork.sysmobile.shared.AppSysMobile;
 /*import ar.com.syswork.sysmobile.Tracking.JavaRestClient;
 import ar.com.syswork.sysmobile.Tracking.User;*/
 
@@ -40,7 +41,8 @@ public class ActivitySincronizar extends AppCompatActivity {
 		pantallaManagerSincronizacion.seteaListeners();
 		
 		listenerSincronizacion.setPantallaManager(pantallaManagerSincronizacion);
-		
+
+
 		logicaSincronizacion.setPantallaManager(pantallaManagerSincronizacion);
 	}
 

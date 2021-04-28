@@ -374,7 +374,7 @@ public class LogicaEnviaPendientes implements Callback {
 
 			jSonVisitas = jsonArrayVisitas.toString();
 		}
-		Toast.makeText(app, "Se creo el Json", Toast.LENGTH_SHORT).show();
+		//Toast.makeText(app, "Se creo el Json", Toast.LENGTH_SHORT).show();
 		return jSonVisitas;
 	}
 
@@ -858,6 +858,7 @@ public class LogicaEnviaPendientes implements Callback {
 						if(AppSysMobile.isServnutri()){
 							eliminaPedidos();
 						}
+
 						if(AppSysMobile.isServIndustrial()){
 							/*modifica para enviados a industrial*/
 							for (int i = 0; i < jsonArrayPedidosL.length(); i++) {

@@ -93,7 +93,7 @@ public class DaoArticulo implements DaoInterface<Articulo> {
 		Cursor c;
 		
 		String sql = "SELECT  idArticulo,descripcion,idRubro,iva,impuestosInternos,exento,"
-				     + "precio1,precio2,precio3,precio4,precio5,precio6,precio7,precio8,precio9,precio10 FROM ARTICULOS WHERE RTRIM(idArticulo) = '" + key.toString().trim() + "'";
+				     + "precio1,precio2,precio3,precio4,precio5,precio6,precio7,precio8,precio9,precio10 FROM ARTICULOS WHERE precio10>0 and    RTRIM(idArticulo) = '" + key.toString().trim() + "'";
 				
 		c = db.rawQuery(sql, null);		
 						
@@ -133,10 +133,10 @@ public class DaoArticulo implements DaoInterface<Articulo> {
 		Articulo articulo = null;
 
 		String sql = "SELECT idArticulo,descripcion,idRubro,iva,impuestosInternos,exento,"
-				     + "precio1,precio2,precio3,precio4,precio5,precio6,precio7,precio8,precio9,precio10 FROM ARTICULOS";
+				     + "precio1,precio2,precio3,precio4,precio5,precio6,precio7,precio8,precio9,precio10 FROM ARTICULOS WHERE precio10>0";
 		
 		if (!where.equals("")){
-			sql = sql + " WHERE " + where;
+			sql = sql + "  and " + where;
 		}	
 		
 		Cursor c = db.rawQuery(sql,null);
@@ -188,10 +188,10 @@ public class DaoArticulo implements DaoInterface<Articulo> {
 		Articulo articulo = null;
 		
 		String sql = "SELECT idArticulo,descripcion,idRubro,iva,impuestosInternos,exento,"
-			     + "precio1,precio2,precio3,precio4,precio5,precio6,precio7,precio8,precio9,precio10 FROM ARTICULOS";
+			     + "precio1,precio2,precio3,precio4,precio5,precio6,precio7,precio8,precio9,precio10 FROM ARTICULOS  WHERE precio10>0";
 		
 		if (!where.equals("")){
-			sql = sql + " WHERE " + where;
+			sql = sql + " and " + where;
 		}	
 		
 		if (!order.equals("")){
