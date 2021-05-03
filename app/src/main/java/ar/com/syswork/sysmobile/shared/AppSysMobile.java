@@ -179,6 +179,10 @@ public class AppSysMobile extends Application {
 	}
 	public void setVendedorLogueado(String vendedorLogueado) {
 		this.vendedorLogueado = vendedorLogueado;
+		SharedPreferences prefs = getSharedPreferences("CONFIGURACION_WS",Context.MODE_PRIVATE);
+		Editor editor = prefs.edit();
+		editor.putString("logincache",  vendedorLogueado);
+		editor.commit();
 	}
 
 	public List<ItemClaveValor> getListaClaveValor() {

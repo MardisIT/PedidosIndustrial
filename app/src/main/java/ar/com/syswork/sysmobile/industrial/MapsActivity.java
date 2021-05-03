@@ -243,12 +243,20 @@ public class MapsActivity extends AppCompatActivity implements
                 builder.setTitle("Iniciar Tarea");
                 builder.setMessage("Local: "+seleccion.getRazonSocial()+
                         '\n'+"Propietario: "+seleccion.getPropietario()+ '\n'+"Dirección: "+seleccion.getMainStreet());
+                /// David Samueza
                 builder.setPositiveButton("Pedido", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        Intent i = new Intent(a,ar.com.syswork.sysmobile.pcargapedidos.ActivityCargaPedidos.class);
+
+
+                        Intent i = new Intent(a,ar.com.syswork.sysmobile.visita.class);
                         i.putExtra("cliente", seleccion.getCodigo());
                         a.startActivity(i);
                         a.finish();
+
+                      //  Intent i = new Intent(a,ar.com.syswork.sysmobile.pcargapedidos.ActivityCargaPedidos.class);
+                      ///  i.putExtra("cliente", seleccion.getCodigo());
+                      //  a.startActivity(i);
+                       // a.finish();
                     }
                 });
                 builder.setNegativeButton("Como llegar", new DialogInterface.OnClickListener() {

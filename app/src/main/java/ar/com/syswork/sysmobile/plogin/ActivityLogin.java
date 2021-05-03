@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.provider.Settings;
 import android.view.Menu;
 import android.widget.Button;
 import ar.com.syswork.sysmobile.R;
+import ar.com.syswork.sysmobile.shared.AppSysMobile;
 
 public class ActivityLogin extends Activity {
 	
@@ -19,7 +21,7 @@ public class ActivityLogin extends Activity {
 	private LogicaLogin logicaLogin;
 	private PantallaManagerLogin pantallaManagerLogin;
 	private static LocationManager locationManager;
-	
+	private AppSysMobile app;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		
@@ -28,13 +30,22 @@ public class ActivityLogin extends Activity {
 		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 		checkLocation();
 		pantallaManagerLogin = new PantallaManagerLogin(this);
-		
+
+		SharedPreferences prefs = getSharedPreferences("CONFIGURACION_WS",Context.MODE_PRIVATE);
+		String logincache = prefs.getString("logincache", "sincachelogin");
 		logicaLogin = new LogicaLogin(this,pantallaManagerLogin);
-		
+
 		listener = new ListenerLogin(logicaLogin,pantallaManagerLogin);
-		
+
 		Button btnLogin = (Button) this.findViewById(R.id.btnLogin);
 		btnLogin.setOnClickListener(listener);
+		if(!logincache.equals("sincachelogin") && !logincache.equals("")){
+			app = (AppSysMobile) this.getApplication();
+			app.setVendedorLogueado(logincache);
+			Intent i = new Intent(this, ar.com.syswork.sysmobile.pmenuprincipal.ActivityMenuPrincipal.class);
+			this.startActivity(i);
+			this.finish();
+		}
 	}
 
 	@Override

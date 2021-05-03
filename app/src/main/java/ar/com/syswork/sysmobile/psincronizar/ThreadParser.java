@@ -499,7 +499,8 @@ public class ThreadParser implements Runnable{
 			arrayJson = new JSONArray(msgJson);
 			for (int x = 0; x<arrayJson.length() ;x++)
 			{
-
+				try
+				{
 				jsObject = arrayJson.getJSONObject(x);
 				
 				articulo.setIdArticulo(jsObject.getString("idArticulo"));
@@ -528,8 +529,12 @@ public class ThreadParser implements Runnable{
 				articulo.setPrecio10(jsObject.getDouble("precio10"));
 
 				daoArticulo.save(articulo);
-				
-			}
+						}
+					catch(Error e)
+						{
+							Log.d("SW","Error ejecutar guardado articulo "+jsObject.getString("idArticulo"));
+						}
+		}
 		}
 		catch(JSONException e)
 		{

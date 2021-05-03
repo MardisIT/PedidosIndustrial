@@ -27,7 +27,7 @@ public class ThreadSincronizacion implements Runnable{
 		this.h = h;
 		this.tipoSincronizacion = tipoSincronizacion;
 
-		
+		// david samueza
 		switch (tipoSincronizacion)
 		{
 		case AppSysMobile.WS_VENDEDORES:

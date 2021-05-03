@@ -124,7 +124,8 @@ public class PantallaManagerSincronizacion {
 		List<Capania> listOBJ= daoCuenta.getAll("");
 		ArrayAdapter<Capania> adaptador;
 		adaptador = new ArrayAdapter<Capania>(a, R.layout.support_simple_spinner_dropdown_item, listOBJ);
-		TextversionImeid.setText(AppSysMobile.WS_IMAIL);
+		TextversionImeid.setText(app.getVendedorLogueado());
+
 		copibutton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
